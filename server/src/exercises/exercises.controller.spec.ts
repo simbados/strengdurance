@@ -1,6 +1,6 @@
 import {Test, TestingModule} from '@nestjs/testing';
-import {Exercise} from './interfaces/exercises';
 import {Category} from './categories';
+import {Exercise} from './interfaces/exercises';
 import {ExerciseController} from './exercises.controller';
 import {ExerciseService} from './exercises.service';
 

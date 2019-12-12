@@ -1,13 +1,13 @@
 import {Model} from 'mongoose';
 import {Injectable, Logger} from '@nestjs/common';
 import {InjectModel} from '@nestjs/mongoose';
-import {Exercise} from 'src/exercises/interfaces/exercise.interface';
-import {ExerciseDto} from 'src/exercises/dto/exercise.dto';
+import {ExerciseDto} from './dto/exercise.dto';
+import {Exercise} from './interfaces/exercises';
 
 @Injectable()
 export class ExerciseService {
 
-        constructor(@InjectModel('Order') private readonly exerciseModel: Model<Exercise>) {
+        constructor(@InjectModel('Exercise') private readonly exerciseModel: Model<Exercise>) {
         }
 
         async postExercise(exerciseDto: ExerciseDto): Promise<Exercise> {
