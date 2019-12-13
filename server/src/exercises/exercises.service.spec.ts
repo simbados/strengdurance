@@ -2,16 +2,16 @@ import {Test, TestingModule} from '@nestjs/testing';
 import {getModelToken} from '@nestjs/mongoose';
 import {ExerciseService} from './exercises.service';
 import {Exercise} from './interfaces/exercises';
-import {Category} from './categories';
+import Category from './categories';
 
 describe('ExerciseService', () => {
         let exerciseService: ExerciseService;
         const exerciseMockData: Exercise[] = [
-                {name: 'Curls', category: Category.Arms},
-                {name: 'Pushdowns', category: Category.Arms},
-                {name: 'Bench', category: Category.Chest},
+                {name: 'Curls', category: Category[0]},
+                {name: 'Pushdowns', category: Category[0]},
+                {name: 'Bench', category: Category[0]},
         ];
-        const mockDto = {name: 'Curls', category: Category.Arms};
+        const mockDto = {name: 'Curls', category: Category[0]};
         const mockExercises: Promise<Exercise[]> =
                 new Promise<Exercise[]>((resolve, reject) => {
                         resolve(exerciseMockData);

@@ -1,4 +1,4 @@
-import { Controller, Get, Post } from '@nestjs/common';
+import { Controller, Get, Post, Logger, Body } from '@nestjs/common';
 import {ExerciseService} from './exercises.service';
 import {Exercise} from './interfaces/exercises';
 import {ExerciseDto} from './dto/exercise.dto';
@@ -13,7 +13,9 @@ export class ExerciseController {
         } 
 
         @Post()
-        async postExercise(exerciseDto: ExerciseDto): Promise<Exercise> {
+        async postExercise(@Body() exerciseDto: ExerciseDto): Promise<Exercise> {
+                Logger.log('Post /exercises');
+                Logger.log(`Dto is: , ${exerciseDto}`);
                 return this.exerciseService.postExercise(exerciseDto);
         }
 }

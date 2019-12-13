@@ -1,7 +1,6 @@
-import { Document } from 'mongoose';
-import {Category} from 'src/exercises/categories';
+import {Document} from 'mongoose';
 
 export interface Exercise extends Document {
-    readonly name: string;
-    readonly category: Category;
+        readonly name: string;
+        readonly category: string;
 }

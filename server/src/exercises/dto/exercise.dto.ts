@@ -1,6 +1,4 @@
-import {Category} from "../categories";
-
 export class ExerciseDto {
-    readonly name: string;
-    readonly category: Category;
+        readonly name: string;
+        readonly category: string;
 }

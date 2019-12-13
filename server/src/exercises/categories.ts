@@ -1,8 +1,10 @@
-export enum Category {
-        Back,
-        Legs,
-        Arms,
-        Abs,
-        Shoulders,
-        Chest,
-}
+const Category = [
+        'Back',
+        'Chest',
+        'Arms',
+        'Legs',
+        'Abs',
+        'Shoulder'
+]
+
+export default Category;

@@ -6,7 +6,7 @@ import { ExercisesModule } from './exercises/exercises.module';
 
 @Module({
         imports: [
-                MongooseModule.forRoot('mongodb://mongo:27017/strengdurance'),
+                MongooseModule.forRoot('mongodb://localhost/strengdurance'),
                 HttpModule,
                 ExercisesModule,
         ],

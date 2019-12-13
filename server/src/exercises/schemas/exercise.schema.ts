@@ -1,7 +1,11 @@
 import * as mongoose from 'mongoose';
-import {Category} from 'src/exercises/categories';
+import Category from '../categories';
 
 export const ExerciseSchema = new mongoose.Schema({
-    name: String,
-    category: Category,
+        name: String,
+        category: {
+                type: String,
+                enum: Category,
+        },
 });
+
