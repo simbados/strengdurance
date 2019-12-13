@@ -8,20 +8,26 @@ describe('ExerciseService', () => {
         let exerciseService: ExerciseService;
         const exerciseMockData: Exercise[] = [
                 {name: 'Curls', category: Category[0]},
-                {name: 'Pushdowns', category: Category[0]},
-                {name: 'Bench', category: Category[0]},
+                {name: 'Pushdowns', category: Category[2]},
+                {name: 'Bench', category: Category[1]},
         ];
         const mockDto = {name: 'Curls', category: Category[0]};
         const mockExercises: Promise<Exercise[]> =
-                new Promise<Exercise[]>((resolve, reject) => {
+                new Promise<Exercise[]>((resolve) => {
                         resolve(exerciseMockData);
                 });
         class mockExerciseModel {
                 constructor(private data) {
                 }
-                save() { return mockDto;}
-                static find() {return mockExerciseModel};
-                static exec() { return mockExercises };
+                save() {return mockDto;}
+                static find(category: string) {
+                        if (category == undefined) {
+                                return this;
+                        } else {
+                                return {name: 'Bench', category: Category[1]};
+                        }
+                };
+                static exec() {return mockExercises};
         }
         beforeEach(async () => {
                 const module: TestingModule = await Test.createTestingModule({
@@ -40,6 +46,11 @@ describe('ExerciseService', () => {
 
         it('should be defined', () => {
                 expect(exerciseService).toBeDefined();
+        });
+
+        it('getExercisesByCategory should return only the data with the correct category', async () => {
+                const actualResult = await exerciseService.getExercisesByCategory('Chest');
+                expect(actualResult).toEqual({name: 'Bench', category: Category[1]});
         });
 
         it('getAllExercises should return all stored exercises', async () => {

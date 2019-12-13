@@ -1,0 +1,4 @@
+{
+  "dbConnectionUri": "mongodb://localhost/strengdurance",
+  "migrationsDir": "src/db/migrations"
+}

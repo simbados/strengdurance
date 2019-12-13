@@ -1,4 +1,4 @@
-import { Controller, Get, Post, Logger, Body } from '@nestjs/common';
+import { Controller, Get, Post, Logger, Body, Param } from '@nestjs/common';
 import {ExerciseService} from './exercises.service';
 import {Exercise} from './interfaces/exercises';
 import {ExerciseDto} from './dto/exercise.dto';
@@ -9,7 +9,12 @@ export class ExerciseController {
 
         @Get()
         async getAllExercises(): Promise<Exercise[]> {
-                return await this.exerciseService.getAllExercises();
+                return this.exerciseService.getAllExercises();
+        } 
+
+        @Get('/:category')
+        async getExercisesByCategory(@Param() params): Promise<Exercise[]> {
+                return this.exerciseService.getExercisesByCategory(params.category);
         } 
 
         @Post()

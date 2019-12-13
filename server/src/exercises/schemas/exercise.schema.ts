@@ -8,4 +8,4 @@ export const ExerciseSchema = new mongoose.Schema({
                 enum: Category,
         },
 });
-
+module.exports = mongoose.model('Exercise', ExerciseSchema); 
