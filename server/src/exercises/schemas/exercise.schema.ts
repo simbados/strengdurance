@@ -1,11 +1,11 @@
 import * as mongoose from 'mongoose';
-import Category from '../categories';
-
-export const ExerciseSchema = new mongoose.Schema({
-        name: String,
-        category: {
-                type: String,
-                enum: Category,
-        },
+export const StrengthWorkoutSchema = new mongoose.Schema({
+        date: Date,
+        allExercises: [
+                {
+                // TODO: Change to reference and not include object
+                /* exercise: Exercise, */
+                repetition: [Number],
+                },
+        ],
 });
-module.exports = mongoose.model('Exercise', ExerciseSchema); 
