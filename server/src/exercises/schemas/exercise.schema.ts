@@ -1,11 +1,6 @@
 import * as mongoose from 'mongoose';
-export const StrengthWorkoutSchema = new mongoose.Schema({
-        date: Date,
-        allExercises: [
-                {
-                // TODO: Change to reference and not include object
-                /* exercise: Exercise, */
-                repetition: [Number],
-                },
-        ],
+const Schema = mongoose.Schema;
+export const ExerciseSchema = new Schema({
+        name: String,
+        category: String,
 });
