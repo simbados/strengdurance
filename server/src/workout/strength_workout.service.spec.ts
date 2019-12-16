@@ -1,47 +1,23 @@
 import {Test, TestingModule} from '@nestjs/testing';
 import {StrengthWorkoutService} from './strength_workout.service';
 import {getModelToken} from '@nestjs/mongoose';
-import {Exercise} from '../exercises/interfaces/exercises';
-import Category from '../exercises/categories';
-import {StrengthWorkout} from './interfaces/strength_workout';
-// TODO: Implement
+import {StrengthWorkoutMockModel, strengthWorkoutMockData, strengthWorkoutMockDto} from '../mocks/strength_workout_mock';
+import {ExerciseMockModel, testId} from '../mocks/exercise_mock';
+
 describe('StrengthWorkoutService', () => {
         let service: StrengthWorkoutService;
-
-        const exerciseMockData: Exercise[] = [
-                {name: 'Curls', category: Category[0]},
-                {name: 'Pushdowns', category: Category[0]},
-                {name: 'Bench', category: Category[2]},
-        ];
-        const date = new Date();
-
-        const strengthWorkoutMockData: StrengthWorkout[] = [
-                {
-                        date,
-                        allExercises: [
-                                {exercise: exerciseMockData[0], repetition: [8, 8, 8]}
-                        ],
-                },
-        ];
-
-        class mockStrengthWorkoutModel {
-                constructor(private data) {
-                }
-                save() {return strengthWorkoutMockData[0];}
-                static find() {
-                        // Return an insance of mockStrengthWorkoutModel because the exec function is called thereafter
-                        return this;
-                };
-                static exec() {return strengthWorkoutMockData};
-        }
 
         beforeEach(async () => {
                 const module: TestingModule = await Test.createTestingModule({
                         providers: [
                                 StrengthWorkoutService,
                                 {
+                                        provide: getModelToken('Exercise'),
+                                        useValue: ExerciseMockModel,
+                                },
+                                {
                                         provide: getModelToken('StrengthWorkout'),
-                                        useValue: mockStrengthWorkoutModel,
+                                        useValue: StrengthWorkoutMockModel,
                                 },
                         ],
                 }).compile();
@@ -54,12 +30,17 @@ describe('StrengthWorkoutService', () => {
         });
 
         it('getAllStrengthWorkouts should return all strength workouts from DB', async () => {
-               const actualResult = await service.getAllStrengthWorkouts();
-               expect(actualResult).toEqual(strengthWorkoutMockData);
+                const actualResult = await service.getAllStrengthWorkouts();
+                expect(actualResult).toEqual(strengthWorkoutMockData);
         });
 
         it('createStrengthWorkout should return created strength workout', async () => {
-               const actualResult = await service.createStrengthWorkout(strengthWorkoutMockData[0]);
-               expect(actualResult).toEqual(strengthWorkoutMockData[0]);
+                const actualResult = await service.createStrengthWorkout(strengthWorkoutMockDto[0]);
+                console.log('actual Result is, ', actualResult);
+                expect(actualResult.date).toBeDefined();
+                // The exercise should be swaped with the provided exercise id of the found db model
+                // Because only the objectId reference is stored in the db
+                const expectedExercises = [ { exercise: testId, repetition: strengthWorkoutMockDto[0].allExercises[0].repetition } ]
+                expect(actualResult.allExercises).toEqual(expectedExercises);
         });
 });

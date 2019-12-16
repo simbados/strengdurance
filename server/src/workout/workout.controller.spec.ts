@@ -2,42 +2,18 @@ import {Test, TestingModule} from '@nestjs/testing';
 import {WorkoutController} from './workout.controller';
 import {StrengthWorkoutService} from './strength_workout.service';
 import {StrengthWorkout} from './interfaces/strength_workout';
-import {Exercise} from '../exercises/interfaces/exercises';
-import Category from '../exercises/categories';
+import {StrengthWorkoutMockService, strengthWorkoutMockData} from '../mocks/strength_workout_mock';
 
 describe('Workout Controller', () => {
-        const exerciseMockData: Exercise[] = [
-                {name: 'Curls', category: Category[0]},
-                {name: 'Pushdowns', category: Category[0]},
-                {name: 'Bench', category: Category[2]},
-        ];
-        const date = new Date();
-
-        const strengthWorkoutMockData: StrengthWorkout[] = [
-                {
-                        date,
-                        allExercises: [
-                                {exercise: exerciseMockData[0], repetition: [8, 8, 8]}
-                        ],
-                },
-        ];
 
         let controller: WorkoutController;
         let service: StrengthWorkoutService;
-        class StrengthWorkoutServiceMock {
-                async getAllStrengthWorkouts(): Promise<StrengthWorkout[]> {
-                        return [];
-                }
-                async createStrengthWorkout(): Promise<StrengthWorkout> {
-                        return undefined;
-                }
-        }
         beforeEach(async () => {
                 const module: TestingModule = await Test.createTestingModule({
                         controllers: [WorkoutController],
                         providers: [{
                                 provide: StrengthWorkoutService,
-                                useValue: new StrengthWorkoutServiceMock(),
+                                useValue: new StrengthWorkoutMockService(),
                         }]
                 }).compile();
 

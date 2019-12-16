@@ -1,28 +1,13 @@
 import {Test, TestingModule} from '@nestjs/testing';
-import Category from './categories';
 import {Exercise} from './interfaces/exercises';
 import {ExerciseController} from './exercises.controller';
 import {ExerciseService} from './exercises.service';
+import {ExerciseMockService, exerciseMockData} from '../mocks/exercise_mock';
 
 describe('Exercise Controller', () => {
-        const exerciseMockData: Exercise[] = [
-                {name: 'Curls', category: Category[0]},
-                {name: 'Pushdowns', category: Category[0]},
-                {name: 'Bench', category: Category[2]},
-        ];
         let controller: ExerciseController;
         let service: ExerciseService;
-        class ExerciseMockService {
-                async getAllExercises(): Promise<Exercise[]> {
-                        return [];
-                }
-                async getExercisesByCategory(): Promise<Exercise[]> {
-                        return [];
-                }
-                async postExercise(): Promise<Exercise> {
-                        return undefined;
-                }
-        }
+
         beforeEach(async () => {
                 const module: TestingModule = await Test.createTestingModule({
                         controllers: [ExerciseController],

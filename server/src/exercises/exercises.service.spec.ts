@@ -1,41 +1,18 @@
 import {Test, TestingModule} from '@nestjs/testing';
 import {getModelToken} from '@nestjs/mongoose';
 import {ExerciseService} from './exercises.service';
-import {Exercise} from './interfaces/exercises';
-import Category from './categories';
+import {ExerciseMockModel, exerciseMockData} from '../mocks/exercise_mock';
 
 describe('ExerciseService', () => {
         let exerciseService: ExerciseService;
-        const exerciseMockData: Exercise[] = [
-                {name: 'Curls', category: Category[0]},
-                {name: 'Pushdowns', category: Category[2]},
-                {name: 'Bench', category: Category[1]},
-        ];
-        const mockDto = {name: 'Curls', category: Category[0]};
-        const mockExercises: Promise<Exercise[]> =
-                new Promise<Exercise[]>((resolve) => {
-                        resolve(exerciseMockData);
-                });
-        class mockExerciseModel {
-                constructor(private data) {
-                }
-                save() {return mockDto;}
-                static find(category: string) {
-                        if (category == undefined) {
-                                return this;
-                        } else {
-                                return {name: 'Bench', category: Category[1]};
-                        }
-                };
-                static exec() {return mockExercises};
-        }
+
         beforeEach(async () => {
                 const module: TestingModule = await Test.createTestingModule({
                         providers: [
                                 ExerciseService,
                                 {
                                         provide: getModelToken('Exercise'),
-                                        useValue: mockExerciseModel,
+                                        useValue: ExerciseMockModel,
                                 },
                         ],
                 }).compile();
@@ -50,7 +27,7 @@ describe('ExerciseService', () => {
 
         it('getExercisesByCategory should return only the data with the correct category', async () => {
                 const actualResult = await exerciseService.getExercisesByCategory('Chest');
-                expect(actualResult).toEqual({name: 'Bench', category: Category[1]});
+                expect(actualResult).toEqual(exerciseMockData[2]);
         });
 
         it('getAllExercises should return all stored exercises', async () => {
@@ -59,7 +36,7 @@ describe('ExerciseService', () => {
         });
 
         it('postExercise should return the input DTO', async () => {
-                const actualResult = await exerciseService.postExercise(mockDto);
-                expect(actualResult).toEqual(mockDto)
+                const actualResult = await exerciseService.postExercise(exerciseMockData[0]);
+                expect(actualResult).toEqual(exerciseMockData[0])
         });
 });
