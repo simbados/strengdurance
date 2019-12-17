@@ -20,7 +20,6 @@ describe('ExerciseService', () => {
                 }).compile();
 
                 exerciseService = module.get<ExerciseService>(ExerciseService);
-                console.log('exercise Service is: ');
         });
 
         it('should be defined', () => {
@@ -54,7 +53,6 @@ describe('ExerciseService', () => {
         it('postExercise should throw Error when category of dto is not in the defined Array', async () => {
                 try {
                         const errorfulMockdata = Object.assign({}, exerciseMockData[0], { ...exerciseMockData[0], category: 'NotDefined' });
-                        console.log('errorfulMockData: , ', errorfulMockdata);
                         expect(await exerciseService.postExercise(errorfulMockdata)).rejects.toThrow();
                 } catch (error) {
                         expect(error).toBeInstanceOf(HttpException);

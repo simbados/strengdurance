@@ -34,4 +34,13 @@ export class StrengthWorkoutService {
                 Logger.debug('getAllStrengthWorkouts called');
                 return await this.strengthWorkoutModel.find().exec();
         }
+
+        // params: startDate - Date which constitutes the start date of the retrieval
+        //         endDate - Date which constitutes the end date of the retrieval
+        // CAUTION: Must be given as ISODate
+        // return: All the workouts between to Dates beginning at startDate (inclusive) ending at endDate (inclusive)
+        async getStrengthWorkoutsInTimeFrame(startDate: Date, endDate: Date): Promise<StrengthWorkout[]> {
+        Logger.debug('getStrengthWorkoutsInTimeFrame called');
+                return await this.strengthWorkoutModel.find().where('date').gte(startDate).lte(endDate).exec();
+        }
 }

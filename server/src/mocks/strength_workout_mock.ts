@@ -21,6 +21,15 @@ const strengthWorkoutMockData: StrengthWorkout[] = [
         },
 ];
 
+const strengthWorkoutsBetweenDatesMock: StrengthWorkout[] = [
+        {
+                date: new Date('2019-12-14'),
+                allExercises: [
+                        {exercise: exerciseMockData[0], repetition: [8, 8, 8]}
+                ],
+        },
+];
+
 class StrengthWorkoutMockService {
         async getAllStrengthWorkouts(): Promise<StrengthWorkout[]> {
                 return [];
@@ -38,7 +47,10 @@ class StrengthWorkoutMockModel {
                 // Return an instance of mockStrengthWorkoutModel because the exec function is called thereafter
                 return this;
         };
-        static exec() {return strengthWorkoutMockData};
+        static where() { return this; }
+        static gte() { return this; }
+        static lte() { return this; }
+        static exec(): Promise<any> {return new Promise(resolve => resolve(strengthWorkoutMockData))};
 }
 
-export {StrengthWorkoutMockModel, strengthWorkoutMockData, strengthWorkoutMockDto, StrengthWorkoutMockService}
+export {StrengthWorkoutMockModel, strengthWorkoutMockData, strengthWorkoutMockDto, StrengthWorkoutMockService, strengthWorkoutsBetweenDatesMock }
