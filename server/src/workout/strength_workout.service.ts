@@ -40,7 +40,15 @@ export class StrengthWorkoutService {
         // CAUTION: Must be given as ISODate
         // return: All the workouts between to Dates beginning at startDate (inclusive) ending at endDate (inclusive)
         async getStrengthWorkoutsInTimeFrame(startDate: Date, endDate: Date): Promise<StrengthWorkout[]> {
-        Logger.debug('getStrengthWorkoutsInTimeFrame called');
-                return await this.strengthWorkoutModel.find().where('date').gte(startDate).lte(endDate).exec();
+                Logger.debug(`getStrengthWorkoutsInTimeFrame called, with startDate: ${startDate} and endDate: ${endDate}`);
+                let parsedStartDate: Date;
+                let parsedEndDate: Date;
+                try {
+                        parsedStartDate = new Date(startDate);
+                        parsedEndDate = new Date(endDate);
+                } catch (error) {
+                        throw new HttpException('Start Date or End date is not in a valid date format, please provide ISODate format', HttpStatus.UNPROCESSABLE_ENTITY);
+                }
+                return await this.strengthWorkoutModel.find().where('date').gte(parsedStartDate).lte(parsedEndDate).exec();
         }
 }

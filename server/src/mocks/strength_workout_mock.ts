@@ -34,6 +34,11 @@ class StrengthWorkoutMockService {
         async getAllStrengthWorkouts(): Promise<StrengthWorkout[]> {
                 return [];
         }
+
+        async getStrengthWorkoutsInTimeFrame(): Promise<StrengthWorkout[]> {
+                return [];
+        }
+
         async createStrengthWorkout(): Promise<StrengthWorkout> {
                 return undefined;
         }

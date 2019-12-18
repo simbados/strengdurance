@@ -2,7 +2,7 @@ import {Test, TestingModule} from '@nestjs/testing';
 import {WorkoutController} from './workout.controller';
 import {StrengthWorkoutService} from './strength_workout.service';
 import {StrengthWorkout} from './interfaces/strength_workout';
-import {StrengthWorkoutMockService, strengthWorkoutMockData} from '../mocks/strength_workout_mock';
+import {StrengthWorkoutMockService, strengthWorkoutMockData, strengthWorkoutsBetweenDatesMock} from '../mocks/strength_workout_mock';
 
 describe('Workout Controller', () => {
 
@@ -32,7 +32,16 @@ describe('Workout Controller', () => {
                 const actualResponse = await controller.getAllStrengthWorkouts();
                 expect(spy).toBeCalledTimes(1);
                 expect(actualResponse).toEqual(strengthWorkoutMockData);
-        })
+        });
+
+        it('getStrengthWorkoutsInTimeFrame should return all workouts in the specified timeframe', async () => {
+                const spy = jest.spyOn(service, 'getStrengthWorkoutsInTimeFrame').mockImplementation(() => {
+                        return new Promise<StrengthWorkout[]>((resolve) => resolve(strengthWorkoutsBetweenDatesMock))
+                });
+                const actualResponse = await controller.getStrengthWorkoutsInTimeFrame({startDate: new Date('2019-12-01'), endDate: new Date('2019-12-15')});
+                expect(spy).toBeCalledTimes(1);
+                expect(actualResponse).toEqual(strengthWorkoutsBetweenDatesMock);
+        });
 
         it('createStrengthWorkout should return provided exercise when called', async () => {
                 const spy = jest.spyOn(service, 'createStrengthWorkout').mockImplementation(() => {
@@ -41,5 +50,5 @@ describe('Workout Controller', () => {
                 const actualResponse = await controller.createStrengthWorkout(strengthWorkoutMockData[0]);
                 expect(spy).toBeCalledTimes(1);
                 expect(actualResponse).toEqual(strengthWorkoutMockData[0]);
-        })
+        });
 });
