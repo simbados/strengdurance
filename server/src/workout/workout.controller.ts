@@ -21,5 +21,4 @@ export class WorkoutController {
         async createStrengthWorkout(@Body() strengthWorkoutDto: StrengthWorkoutDto): Promise<StrengthWorkout> {
                 return this.strengthWorkoutService.createStrengthWorkout(strengthWorkoutDto);
         }
-
 }
