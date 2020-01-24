@@ -1,3 +1,3 @@
-export function saveExercises({state}, loadedExercises) {
+export function saveExercises({ state }, loadedExercises) {
   state.exercises = loadedExercises;
 }

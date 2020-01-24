@@ -1,7 +1,7 @@
 import Vue from 'vue';
 import Vuex from 'vuex';
 
-import exercise from './exercise/index'
+import exercise from './exercise/index';
 
 Vue.use(Vuex);
 
@@ -17,7 +17,7 @@ Vue.use(Vuex);
 export default function(/* { ssrContext } */) {
   const Store = new Vuex.Store({
     modules: {
-      exercise
+      exercise,
       // example
     },
 

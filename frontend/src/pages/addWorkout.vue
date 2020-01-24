@@ -11,6 +11,9 @@
 <script>
 export default {
   name: 'Add Workout',
+  created() {
+    this.$log.debug('test');
+  },
   data() {},
   methods: {},
 };
