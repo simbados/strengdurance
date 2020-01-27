@@ -1,5 +1,7 @@
 export default function() {
   return {
-    exercises: [],
+    exercises: undefined,
+    exercisesNames: undefined,
+    exercisesCategories: undefined,
   };
 }

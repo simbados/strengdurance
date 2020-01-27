@@ -25,7 +25,9 @@
 </template>
 
 <script>
-const stringOptions = ['Bench', 'Incline Bench', 'Row', 'Cable Row', 'Squat'];
+import { mapState } from 'vuex';
+
+/* const stringOptions = ['Bench', 'Incline Bench', 'Row', 'Cable Row', 'Squat']; */
 export default {
   name: 'Exercise',
   data() {
@@ -33,15 +35,19 @@ export default {
       model: null,
       sets: 3,
       reps: 10,
+      options: this.exercisesNames,
       // Include options from backend here
-      options: stringOptions,
     };
+  },
+  mounted() {},
+  computed: {
+    ...mapState('exercise', ['exercisesNames', 'exercisesCategories', 'exercises']),
   },
   methods: {
     filterFn(val, update) {
       if (val === '') {
         update(() => {
-          this.options = stringOptions;
+          this.options = this.exercisesNames;
 
           // with Quasar v1.7.4+
           // here you have access to "ref" which
@@ -52,7 +58,7 @@ export default {
 
       update(() => {
         const needle = val.toLowerCase();
-        this.options = stringOptions.filter(
+        this.options = this.exercisesNames.filter(
           v => v.toLowerCase().indexOf(needle) > -1,
         );
       });
