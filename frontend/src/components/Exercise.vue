@@ -36,7 +36,7 @@ export default {
       sets: 3,
       reps: 10,
       options: this.exercisesNames,
-      // Include options from backend here
+      // TODO: Make sure error message is displayed if options are undefined
     };
   },
   mounted() {},

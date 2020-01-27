@@ -9,15 +9,21 @@
 </template>
 
 <script>
+import { mapState } from 'vuex';
 export default {
   name: 'add_workout',
   mounted() {
-    this.$store.dispatch('exercise/loadExercises', this);
+    if (this.exercises === undefined) {
+      this.$store.dispatch('exercise/loadExercises', this);
+    }
   },
   data() {
     return {};
   },
   methods: {},
+  computed: {
+    ...mapState('exercise', ['exercises']),
+  },
 };
 </script>
 
