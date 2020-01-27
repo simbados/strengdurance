@@ -1,12 +1,14 @@
-import { IsArray } from 'class-validator';
+import {IsArray} from 'class-validator';
 import {Exercise} from '../../exercises/interfaces/exercises';
 
 export class StrengthWorkoutDto {
-        @IsArray()
-        readonly allExercises: [
-                {
-                        exercise: Exercise,
-                        repetition: number[],
-                }
-        ]
+  @IsArray()
+  readonly allExercises: [
+    {
+      exercise: Exercise;
+      repetition: number[];
+      weight: number[];
+      comment: string;
+    },
+  ];
 }

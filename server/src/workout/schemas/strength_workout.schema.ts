@@ -6,6 +6,8 @@ export const StrengthWorkoutSchema = new Schema({
                 {
                         exercise: mongoose.Schema.Types.ObjectId,
                         repetition: [Number],
+                        weight: [Number],
+                        comment: String,
                 }
         ],
 });
