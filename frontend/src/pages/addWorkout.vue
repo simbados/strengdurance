@@ -3,7 +3,6 @@
     <div class="column">
       <h4>Strength Workout</h4>
       <exercise></exercise>
-      <exercise></exercise>
     </div>
   </q-page>
 </template>

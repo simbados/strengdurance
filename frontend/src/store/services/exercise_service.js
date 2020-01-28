@@ -4,7 +4,9 @@ import axios from 'axios';
 export class ExerciseService {
   static getAllExercises() {
     return new Promise(resolve => {
-      axios.get('http://127.0.1:3000/exercises').then(response => {
+      console.log('process env is, ', process.env);
+      const URL=`${process.env.SERVER_URL}/exercises`;
+      axios.get(URL).then(response => {
         console.log(response.data);
         resolve(response.data.map(({ __v, _id, ...rest }) => rest));
       });

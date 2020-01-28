@@ -2,6 +2,7 @@ import Vue from 'vue';
 import Vuex from 'vuex';
 
 import exercise from './exercise/index';
+import workouts from './workouts/index';
 
 Vue.use(Vuex);
 
@@ -18,7 +19,7 @@ export default function(/* { ssrContext } */) {
   const Store = new Vuex.Store({
     modules: {
       exercise,
-      // example
+      workouts
     },
 
     // enable strict mode (adds overhead!)
