@@ -18,8 +18,8 @@
           </q-item>
         </template>
       </q-select>
-      <q-input class="strength" label="Weight" v-model.number="weight" type="number" filled />
       <q-input class="strength" label="Repetitions" v-model.number="reps" type="number" filled />
+      <q-input class="strength" label="Weight" v-model="weight" type="string" filled />
     </div>
   </div>
 </template>
@@ -36,17 +36,43 @@ export default {
   data() {
     return {
       exerciseName: null,
+      weightModel: null,
       reps: 3,
       options: this.exercisesNames,
       // TODO: Make sure error message is displayed if options are undefined
     };
   },
-  mounted() {},
+  mounted() {
+    this.exerciseName = this.exercisesNames[this.index];
+  },
   computed: {
-    ...mapState('exercise', ['exercisesNames', 'exercisesCategories', 'exercises']),
+    ...mapState('exercise', [
+      'exercisesNames',
+      'exercisesCategories',
+      'exercises',
+    ]),
     ...mapState('workouts', ['workouts']),
-    weight: function(){
-      return this.workouts[this.workouts.length-1].allExercises[this.index].weight;
+    weight: {
+      get: function() {
+        let displayedWeight = '';
+        if (this.weightModel === null) {
+          const weightArr = this.workouts[this.workouts.length - 1]
+            .allExercises[this.index].weight;
+          weightArr.forEach(element => (displayedWeight += `${element}/`));
+          // Need to cut the last slash
+          displayedWeight = displayedWeight.substring(
+            0,
+            displayedWeight.length - 1,
+          );
+        } else {
+          displayedWeight = this.weightModel;
+        }
+        return displayedWeight;
+      },
+      set: function(newWeight) {
+        this.weightModel = newWeight;
+        this.$log.debug('weightModel after set');
+      },
     },
   },
   methods: {
