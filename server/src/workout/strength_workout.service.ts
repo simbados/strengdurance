@@ -19,7 +19,7 @@ export class StrengthWorkoutService {
     const exercises = await Promise.all(
       strengthWorkoutDto.allExercises.map(async entry => {
         const model = await this.exerciseModel
-          .findOne({ name: entry.exerciseName })
+          .findOne({ name: entry.exerciseName }, '_id')
           .exec();
         if (model.length == 0) {
           throw new HttpException(
@@ -43,7 +43,7 @@ export class StrengthWorkoutService {
 
   async getAllStrengthWorkouts(): Promise<StrengthWorkout[]> {
     Logger.debug('getAllStrengthWorkouts called');
-    return await this.strengthWorkoutModel.find().exec();
+    return await this.strengthWorkoutModel.find().select('-_id -__v -allExercises._id').populate({path: 'allExercises.exercise', select: '-_id -__v'}).exec();
   }
 
   // params: startDate - Date which constitutes the start date of the retrieval

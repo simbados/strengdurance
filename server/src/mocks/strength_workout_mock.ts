@@ -71,6 +71,12 @@ class StrengthWorkoutMockModel {
   static where() {
     return this;
   }
+  static select() {
+    return this;
+  }
+  static populate() {
+    return this;
+  }
   static gte() {
     return this;
   }

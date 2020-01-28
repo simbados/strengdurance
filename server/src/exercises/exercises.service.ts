@@ -22,7 +22,7 @@ export class ExerciseService {
         }
 
         async getAllExercises(): Promise<Exercise[]> {
-                return await this.exerciseModel.find().exec();
+                return await this.exerciseModel.find().select('-_id -__v').exec();
         }
 
         async getExercisesByCategory(category: string): Promise<Exercise[]> {
