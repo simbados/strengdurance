@@ -4,7 +4,7 @@
       <q-select
         class="strength"
         filled
-        v-model="model"
+        v-model="exerciseName"
         use-input
         input-debounce="0"
         label="Exercise"
@@ -18,7 +18,7 @@
           </q-item>
         </template>
       </q-select>
-      <q-input class="strength" label="Sets" v-model.number="sets" type="number" filled />
+      <q-input class="strength" label="Weight" v-model.number="weight" type="number" filled />
       <q-input class="strength" label="Repetitions" v-model.number="reps" type="number" filled />
     </div>
   </div>
@@ -30,11 +30,13 @@ import { mapState } from 'vuex';
 /* const stringOptions = ['Bench', 'Incline Bench', 'Row', 'Cable Row', 'Squat']; */
 export default {
   name: 'Exercise',
+  props: {
+    index: Number,
+  },
   data() {
     return {
-      model: null,
-      sets: 3,
-      reps: 10,
+      exerciseName: null,
+      reps: 3,
       options: this.exercisesNames,
       // TODO: Make sure error message is displayed if options are undefined
     };
@@ -42,6 +44,10 @@ export default {
   mounted() {},
   computed: {
     ...mapState('exercise', ['exercisesNames', 'exercisesCategories', 'exercises']),
+    ...mapState('workouts', ['workouts']),
+    weight: function(){
+      return this.workouts[this.workouts.length-1].allExercises[this.index].weight;
+    },
   },
   methods: {
     filterFn(val, update) {
