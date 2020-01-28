@@ -8,7 +8,7 @@ const strengthWorkoutMockDto: StrengthWorkoutDto[] = [
   {
     allExercises: [
       {
-        exercise: exerciseMockData[0],
+        exerciseName: exerciseMockData[0].name,
         repetition: [8, 8, 8],
         weight: [80, 80, 80],
         comment: 'This is a test comment',

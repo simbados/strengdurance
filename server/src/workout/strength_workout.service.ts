@@ -19,19 +19,16 @@ export class StrengthWorkoutService {
     const exercises = await Promise.all(
       strengthWorkoutDto.allExercises.map(async entry => {
         const model = await this.exerciseModel
-          .find(
-            { name: entry.exercise.name, category: entry.exercise.category },
-            '_id',
-          )
+          .findOne({ name: entry.exerciseName })
           .exec();
         if (model.length == 0) {
           throw new HttpException(
-            `Could not find exercise with name ${entry.exercise.name} and category ${entry.exercise.category}`,
+            `Could not find exercise with name ${entry.exerciseName}`,
             HttpStatus.NOT_FOUND,
           );
         }
-        Logger.debug(`Found exercise with id ${model.id}`);
-        return { ...entry, exercise: model.id};
+        Logger.debug(`Found exercise ${model} and id ${model._id}`);
+        return { ...entry, exercise: model._id };
       }),
     );
 

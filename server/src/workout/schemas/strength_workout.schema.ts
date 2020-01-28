@@ -4,7 +4,7 @@ export const StrengthWorkoutSchema = new Schema({
         date: Date,
         allExercises: [
                 {
-                        exercise: mongoose.Schema.Types.ObjectId,
+                        exercise: { type: mongoose.Schema.Types.ObjectId, ref: 'Exercise'},
                         repetition: [Number],
                         weight: [Number],
                         comment: String,
