@@ -18,14 +18,28 @@
           </q-item>
         </template>
       </q-select>
-      <q-input class="strength" label="Repetitions" v-model.number="reps" type="number" filled />
       <q-input
-        class="strength validation"
-        label="Weight"
-        v-model="weight"
+        hint="Format 8/8/8"
+        hide-hint
+        class="correct-addons strength"
+        label="Repetitions"
+        v-model="repetitions"
+        type="string"
         debounce="300"
         lazy-rules
-        :rules="[validateWeight]"
+        :rules="[validateArray]"
+        filled
+      />
+      <q-input
+        class="strength correct-addons"
+        label="Weight"
+        v-model="weight"
+        type="string"
+        debounce="300"
+        lazy-rules
+        hint="Format 50/50/50"
+        hide-hint
+        :rules="[validateArray]"
         filled
       />
       <q-input readonly class="strength" label="Volume" v-model="volume" type="string" filled />
@@ -36,7 +50,6 @@
 <script>
 import { mapState } from 'vuex';
 
-/* const stringOptions = ['Bench', 'Incline Bench', 'Row', 'Cable Row', 'Squat']; */
 export default {
   name: 'Exercise',
   props: {
@@ -46,12 +59,19 @@ export default {
     return {
       exerciseName: null,
       weightModel: null,
-      reps: 3,
+      repetitionModel: null,
       options: null,
       // TODO: Make sure error message is displayed if options are undefined
     };
   },
   mounted() {
+    this.weightModel = this.toStringArray(
+      this.workouts[this.workouts.length - 1].allExercises[this.index].weight,
+    );
+    this.repetitionModel = this.toStringArray(
+      this.workouts[this.workouts.length - 1].allExercises[this.index]
+        .repetition,
+    );
     this.options = this.exercisesNames;
     this.exerciseName = this.exercisesNames[this.index];
   },
@@ -63,21 +83,27 @@ export default {
     ]),
     ...mapState('workouts', ['workouts']),
     volume: function() {
-      //TODO: compute real value
-      return 1000;
+      if (this.repetitionModel === null || this.weightModel === null) {
+        return 0;
+      }
+      let calculatedVolume = 0;
+      this.$log.debug(`repetitionModel and weightModel, ${this.repetitionModel}, ${this.weightModel}`);
+      const repetitionsAsNumberArr = this.toNumberArray(this.repetitionModel);
+      const weightAsNumberArr = this.toNumberArray(this.weightModel);
+      if (repetitionsAsNumberArr.length === weightAsNumberArr.length) {
+        for (let i = 0; i < repetitionsAsNumberArr.length; i++) {
+          calculatedVolume += repetitionsAsNumberArr[i] * weightAsNumberArr[i];
+        }
+      }
+      return calculatedVolume;
     },
     weight: {
       get: function() {
         let displayedWeight = '';
         if (this.weightModel === null) {
-          const weightArr = this.workouts[this.workouts.length - 1]
+          const weightArray = this.workouts[this.workouts.length - 1]
             .allExercises[this.index].weight;
-          weightArr.forEach(element => (displayedWeight += `${element}/`));
-          // Need to cut the last slash
-          displayedWeight = displayedWeight.substring(
-            0,
-            displayedWeight.length - 1,
-          );
+          displayedWeight = this.toStringArray(weightArray);
         } else {
           displayedWeight = this.weightModel;
         }
@@ -85,19 +111,50 @@ export default {
       },
       set: function(newWeight) {
         this.weightModel = newWeight;
-        this.$log.debug('weightModel after set');
+      },
+    },
+    repetitions: {
+      get: function() {
+        let displayedRepetitions = '';
+        if (this.repetitionModel === null) {
+          const repetitionArray = this.workouts[this.workouts.length - 1]
+            .allExercises[this.index].repetition;
+          displayedRepetitions = this.toStringArray(repetitionArray);
+        } else {
+          displayedRepetitions = this.repetitionModel;
+        }
+        return displayedRepetitions;
+      },
+      set: function(newRepetition) {
+        this.repetitionModel = newRepetition;
       },
     },
   },
   methods: {
-    validateWeight(val) {
-      this.$log.debug('validate Weight with input' + val);
-      return new Promise((resolve) => {
-        if(!val.match('[^/0-9]') || val === '') {
+    toStringArray(fromNumberArray) {
+      let stringArray = '';
+      fromNumberArray.forEach(element => (stringArray += `${element}/`));
+      // Need to cut the last slash
+      stringArray = stringArray.substring(0, stringArray.length - 1);
+      return stringArray;
+    },
+
+    toNumberArray(fromStringArray) {
+      this.$log.debug(`from String Array is, ${fromStringArray}`);
+      return fromStringArray.split('/').map(value => {
+        const parse = parseInt(value, 10);
+        if (isNaN(parse)) {
+          return 0;
+        }
+        return parse;
+      });
+    },
+    validateArray(val) {
+      return new Promise((resolve, reject) => {
+        if (!val.match('[^/0-9]') || val === '') {
           resolve(true);
         } else {
-          // reject is also possible, but will not display error message
-          resolve('Format: 8/8/8');
+          reject();
         }
       });
     },
@@ -124,6 +181,6 @@ export default {
 
 .strength
   margin: 1em
-.validation
+.correct-addons
   padding-top: 20px
 </style>
