@@ -38,11 +38,12 @@ export default {
       exerciseName: null,
       weightModel: null,
       reps: 3,
-      options: this.exercisesNames,
+      options: null,
       // TODO: Make sure error message is displayed if options are undefined
     };
   },
   mounted() {
+    this.options = this.exercisesNames;
     this.exerciseName = this.exercisesNames[this.index];
   },
   computed: {
@@ -78,12 +79,9 @@ export default {
   methods: {
     filterFn(val, update) {
       if (val === '') {
+        this.exerciseName = null;
         update(() => {
           this.options = this.exercisesNames;
-
-          // with Quasar v1.7.4+
-          // here you have access to "ref" which
-          // is the Vue reference of the QSelect
         });
         return;
       }
