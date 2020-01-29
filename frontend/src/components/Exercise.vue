@@ -19,7 +19,16 @@
         </template>
       </q-select>
       <q-input class="strength" label="Repetitions" v-model.number="reps" type="number" filled />
-      <q-input class="strength" label="Weight" v-model="weight" type="string" filled />
+      <q-input
+        class="strength validation"
+        label="Weight"
+        v-model="weight"
+        debounce="300"
+        lazy-rules
+        :rules="[validateWeight]"
+        filled
+      />
+      <q-input readonly class="strength" label="Volume" v-model="volume" type="string" filled />
     </div>
   </div>
 </template>
@@ -53,6 +62,10 @@ export default {
       'exercises',
     ]),
     ...mapState('workouts', ['workouts']),
+    volume: function() {
+      //TODO: compute real value
+      return 1000;
+    },
     weight: {
       get: function() {
         let displayedWeight = '';
@@ -77,6 +90,17 @@ export default {
     },
   },
   methods: {
+    validateWeight(val) {
+      this.$log.debug('validate Weight with input' + val);
+      return new Promise((resolve) => {
+        if(!val.match('[^/0-9]') || val === '') {
+          resolve(true);
+        } else {
+          // reject is also possible, but will not display error message
+          resolve('Format: 8/8/8');
+        }
+      });
+    },
     filterFn(val, update) {
       if (val === '') {
         this.exerciseName = null;
@@ -100,5 +124,6 @@ export default {
 
 .strength
   margin: 1em
-
+.validation
+  padding-top: 20px
 </style>
