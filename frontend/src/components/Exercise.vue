@@ -42,7 +42,14 @@
         :rules="[validateArray]"
         filled
       />
-      <q-input readonly class="strength" label="Volume" v-model="volume" type="string" filled />
+      <q-input
+        readonly
+        class="strength correct-addons"
+        label="Volume"
+        v-model="volume"
+        type="number"
+        filled
+      />
     </div>
   </div>
 </template>
@@ -87,7 +94,9 @@ export default {
         return 0;
       }
       let calculatedVolume = 0;
-      this.$log.debug(`repetitionModel and weightModel, ${this.repetitionModel}, ${this.weightModel}`);
+      this.$log.debug(
+        `repetitionModel and weightModel, ${this.repetitionModel}, ${this.weightModel}`,
+      );
       const repetitionsAsNumberArr = this.toNumberArray(this.repetitionModel);
       const weightAsNumberArr = this.toNumberArray(this.weightModel);
       if (repetitionsAsNumberArr.length === weightAsNumberArr.length) {
@@ -141,7 +150,12 @@ export default {
 
     toNumberArray(fromStringArray) {
       this.$log.debug(`from String Array is, ${fromStringArray}`);
-      return fromStringArray.split('/').map(value => {
+      return fromStringArray.split('/').filter(value => {
+        if(value ==='') {
+          return false;
+        }
+        return true;
+      }).map(value => {
         const parse = parseInt(value, 10);
         if (isNaN(parse)) {
           return 0;
@@ -149,6 +163,19 @@ export default {
         return parse;
       });
     },
+
+    // Add back later current model alarms too often
+    /* validateVolume() { */
+    /*   return new Promise(resolve => { */
+    /*     if (this.volume === 0) { */
+    /*       resolve( */
+    /*         'Weight and Repetitions must contain equal amount of numbers', */
+    /*       ); */
+    /*     } */
+    /*     resolve(true); */
+    /*   }); */
+    /* }, */
+
     validateArray(val) {
       return new Promise((resolve, reject) => {
         if (!val.match('[^/0-9]') || val === '') {
@@ -180,7 +207,7 @@ export default {
 <style lang="sass" scoped>
 
 .strength
-  margin: 1em
+  margin: 0.5em
 .correct-addons
   padding-top: 20px
 </style>
