@@ -19,7 +19,7 @@ export default function(/* { ssrContext } */) {
   const Store = new Vuex.Store({
     modules: {
       exercise,
-      workouts
+      workouts,
     },
 
     // enable strict mode (adds overhead!)

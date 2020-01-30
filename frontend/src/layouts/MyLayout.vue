@@ -16,8 +16,7 @@
       </q-toolbar>
     </q-header>
 
-    <q-drawer v-model="leftDrawerOpen" show-if-above elevated content-class="bg-grey-2">
-
+    <q-drawer v-model="leftDrawerOpen" :width="200" elevated content-class="bg-grey-2">
     </q-drawer>
 
     <q-page-container>
@@ -32,7 +31,7 @@ export default {
 
   data() {
     return {
-      leftDrawerOpen: false
+      leftDrawerOpen: false,
     };
   }
 };

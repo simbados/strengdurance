@@ -38,11 +38,16 @@ module.exports = function(ctx) {
       //            (not treeshaking Quasar; biggest bundle size; convenient)
       all: 'auto',
 
-      components: ['QSelect'],
+      components: ['QSelect', 'QSeparator', 'QChip', 'QBtn'],
       directives: [],
 
       // Quasar plugins
-      plugins: [],
+      plugins: [
+        'Notify'
+      ],
+      config: {
+        notify: {}
+      }
     },
 
     // https://quasar.dev/quasar-cli/cli-documentation/supporting-ie

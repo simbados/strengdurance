@@ -42,14 +42,8 @@
         :rules="[validateArray]"
         filled
       />
-      <q-input
-        readonly
-        class="strength correct-addons"
-        label="Volume"
-        v-model="volume"
-        type="number"
-        filled
-      />
+      <q-input readonly class="strength" label="Volume" v-model="volume" type="number" filled />
+      <q-input class="strength" label="Comment" v-model="comment" type="string" filled />
     </div>
   </div>
 </template>
@@ -60,7 +54,9 @@ import { mapState } from 'vuex';
 export default {
   name: 'Exercise',
   props: {
+    exercise: Object,
     index: Number,
+    emitValues: Boolean,
   },
   data() {
     return {
@@ -68,19 +64,21 @@ export default {
       weightModel: null,
       repetitionModel: null,
       options: null,
+      comment: null,
       // TODO: Make sure error message is displayed if options are undefined
     };
   },
   mounted() {
+    this.$log.debug(this.exercise);
     this.weightModel = this.toStringArray(
-      this.workouts[this.workouts.length - 1].allExercises[this.index].weight,
+      this.exercise.weight,
     );
     this.repetitionModel = this.toStringArray(
-      this.workouts[this.workouts.length - 1].allExercises[this.index]
-        .repetition,
+      this.exercise.repetition
     );
+    this.comment = this.exercise.comment;
     this.options = this.exercisesNames;
-    this.exerciseName = this.exercisesNames[this.index];
+    this.exerciseName = this.exercise.exercise.name;
   },
   computed: {
     ...mapState('exercise', [
@@ -88,7 +86,6 @@ export default {
       'exercisesCategories',
       'exercises',
     ]),
-    ...mapState('workouts', ['workouts']),
     volume: function() {
       if (this.repetitionModel === null || this.weightModel === null) {
         return 0;
@@ -108,15 +105,7 @@ export default {
     },
     weight: {
       get: function() {
-        let displayedWeight = '';
-        if (this.weightModel === null) {
-          const weightArray = this.workouts[this.workouts.length - 1]
-            .allExercises[this.index].weight;
-          displayedWeight = this.toStringArray(weightArray);
-        } else {
-          displayedWeight = this.weightModel;
-        }
-        return displayedWeight;
+        return this.weightModel;
       },
       set: function(newWeight) {
         this.weightModel = newWeight;
@@ -124,15 +113,7 @@ export default {
     },
     repetitions: {
       get: function() {
-        let displayedRepetitions = '';
-        if (this.repetitionModel === null) {
-          const repetitionArray = this.workouts[this.workouts.length - 1]
-            .allExercises[this.index].repetition;
-          displayedRepetitions = this.toStringArray(repetitionArray);
-        } else {
-          displayedRepetitions = this.repetitionModel;
-        }
-        return displayedRepetitions;
+          return this.repetitionModel;
       },
       set: function(newRepetition) {
         this.repetitionModel = newRepetition;
@@ -150,18 +131,21 @@ export default {
 
     toNumberArray(fromStringArray) {
       this.$log.debug(`from String Array is, ${fromStringArray}`);
-      return fromStringArray.split('/').filter(value => {
-        if(value ==='') {
-          return false;
-        }
-        return true;
-      }).map(value => {
-        const parse = parseInt(value, 10);
-        if (isNaN(parse)) {
-          return 0;
-        }
-        return parse;
-      });
+      return fromStringArray
+        .split('/')
+        .filter(value => {
+          if (value === '') {
+            return false;
+          }
+          return true;
+        })
+        .map(value => {
+          const parse = parseInt(value, 10);
+          if (isNaN(parse)) {
+            return 0;
+          }
+          return parse;
+        });
     },
 
     // Add back later current model alarms too often
@@ -202,11 +186,27 @@ export default {
       });
     },
   },
+
+  watch: {
+    emitValues: function() {
+      if (this.emitValues) {
+        this.$log.debug('Emit values');
+        const exercise = {
+          comment: this.comment,
+          repetition: this.repetitionModel,
+          exerciseName: this.exerciseName,
+          weight: this.weightModel,
+        };
+        this.$emit('saveExercise', { exercise, index: this.index });
+      }
+    },
+  },
 };
 </script>
 <style lang="sass" scoped>
 
 .strength
+  width: 8em
   margin: 0.5em
 .correct-addons
   padding-top: 20px
