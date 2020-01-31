@@ -50,17 +50,18 @@
 
 <script>
 import { mapState } from 'vuex';
-
+import { ExerciseModel, ExerciseModelBuilder } from '../models/exerciseModel';
 export default {
   name: 'Exercise',
   props: {
-    exercise: Object,
+    exercise: ExerciseModel,
     index: Number,
     emitValues: Boolean,
   },
   data() {
     return {
       exerciseName: null,
+      exerciseDefinition: null,
       weightModel: null,
       repetitionModel: null,
       options: null,
@@ -69,16 +70,17 @@ export default {
     };
   },
   mounted() {
-    this.$log.debug(this.exercise);
+    this.$log.debug('exercises in Exercise, ', this.exercise);
     this.weightModel = this.toStringArray(
-      this.exercise.weight,
+      this.exercise.getWeight(),
     );
     this.repetitionModel = this.toStringArray(
-      this.exercise.repetition
+      this.exercise.getRepetition()
     );
-    this.comment = this.exercise.comment;
+    this.comment = this.exercise.getComment();
     this.options = this.exercisesNames;
-    this.exerciseName = this.exercise.exercise.name;
+    this.exerciseDefinition = this.exercise.getExerciseDefinition();
+    this.exerciseName = this.exerciseDefinition.name;
   },
   computed: {
     ...mapState('exercise', [
@@ -134,9 +136,9 @@ export default {
       return fromStringArray
         .split('/')
         .filter(value => {
-          if (value === '') {
+          if (value === '' || value.match('[^0-9]')) {
             return false;
-          }
+          } 
           return true;
         })
         .map(value => {
@@ -191,12 +193,20 @@ export default {
     emitValues: function() {
       if (this.emitValues) {
         this.$log.debug('Emit values');
-        const exercise = {
-          comment: this.comment,
-          repetition: this.repetitionModel,
-          exerciseName: this.exerciseName,
-          weight: this.weightModel,
-        };
+        const exerciseModelBuilder = new ExerciseModelBuilder();
+        const exerciseCategory = this.exercises.find(value => value.name === this.exerciseName).category || null;
+        const exercise = exerciseModelBuilder.setExerciseDefinition({ name: this.exerciseName, category: exerciseCategory})
+          .setRepetition(this.toNumberArray(this.repetitionModel))
+          .setWeight(this.toNumberArray(this.weightModel))
+          .setComment(this.comment)
+          .build();
+        this.$log.debug('Emit the following exercise, ', exercise);
+        /* const exercise = { */
+        /*   comment: this.comment, */
+        /*   repetition: this.toNumberArray(this.repetitionModel), */
+        /*   weight: this.toNumberArray(this.weightModel), */
+        /*   exerciseName: this.exerciseName, */
+        /* }; */
         this.$emit('saveExercise', { exercise, index: this.index });
       }
     },

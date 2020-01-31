@@ -34,12 +34,7 @@
 
 <script>
 import { mapState } from 'vuex';
-const emptyWorkout = {
-  exercise: { name: '' },
-  repetition: [],
-  weight: [],
-  comment: '',
-};
+import { ExerciseModelBuilder } from '../models/exerciseModel';
 export default {
   name: 'add_workout',
   data() {
@@ -50,6 +45,7 @@ export default {
       emitOldWorkoutValues: false,
       showLastWorkout: true,
       workoutToStore: [],
+      successMessage: '',
       errorMessage: '',
     };
   },
@@ -59,18 +55,17 @@ export default {
     }
     if (this.workouts === undefined) {
       this.$store.dispatch('workouts/loadWorkouts', this).then(() => {
-        this.oldWorkout = JSON.parse(
-          JSON.stringify(this.workouts[this.workouts.length - 1].allExercises),
-        );
+        const deepCloneWorkout = this.workouts[this.workouts.length - 1].deepClone();
+        this.oldWorkout = deepCloneWorkout.getExercises();
       });
     }
-    // Necessary to create a deep copy
+    const exerciseModelBuilder = new ExerciseModelBuilder();
     this.newWorkout = [
-      emptyWorkout,
-      emptyWorkout,
-      emptyWorkout,
-      emptyWorkout,
-      emptyWorkout,
+      exerciseModelBuilder.buildEmptyExerciseModel(),
+      exerciseModelBuilder.buildEmptyExerciseModel(),
+      exerciseModelBuilder.buildEmptyExerciseModel(),
+      exerciseModelBuilder.buildEmptyExerciseModel(),
+      exerciseModelBuilder.buildEmptyExerciseModel(),
     ];
   },
   methods: {
@@ -79,42 +74,86 @@ export default {
       this.$log.debug(`Index is ${index}`);
       this.$log.debug('saveExercise is called');
       this.$log.debug(exercise);
+      this.workoutToStore.push(exercise);
+
+      if (this.newWorkout !== null && !this.showLastWorkout) {
+        if (index === this.newWorkout.length - 1) {
+          this.handleExerciseValidationAndDispatch();
+        }
+      }
 
       if (this.workouts !== null && this.showLastWorkout) {
         if (index === this.oldWorkout.length - 1) {
-          if(this.validateWorkout(this.oldWorkout)) {
-            this.$q.notify({message: this.errorMessage, color: 'red'});
-            }
+          this.handleExerciseValidationAndDispatch();
         }
       }
     },
+    handleExerciseValidationAndDispatch() {
+      if (!this.validateWorkout(this.workoutToStore)) {
+        this.$log.debug(`message is ${this.errorMessage}`);
+        this.$q.notify({ message: this.errorMessage, color: 'red' });
+        this.resetSubmitFields();
+      } else {
+        this.$store
+          .dispatch('workouts/saveWorkout', {
+            vm: this,
+            workout: this.workoutToStore,
+          })
+          .then(() => {
+            const successMessage = 'Successfully stored your workout';
+            this.$q.notify({ message: successMessage, color: 'green' });
+          })
+          .catch(() => {
+            const errorMessage =
+              'Could not save workout, please try again later';
+            this.$q.notify({ message: errorMessage, color: 'red' });
+          });
+      }
+    },
+    resetSubmitFields() {
+      this.workoutToStore = [];
+      this.emitOldWorkoutValues = false;
+      this.emitNewWorkoutValues = false;
+      this.errorMessage = '';
+    },
     validateWorkout: function(workout) {
-      const errorMessage =
+      const defaultErrorMessage =
         'You did not fill all the required fields, please fill exercise Name, Repetition and Weight';
       let validated = true;
+      this.$log.debug('In validated');
       for (let i = 0; i < workout.length; i++) {
-        const currentWorkout = this.workout[i];
+        const currentWorkout = workout[i];
+        this.$log.debug('Current Workout', currentWorkout);
         if (
-          currentWorkout.exercise.name === '' ||
-          currentWorkout.exercise.name === null
+          currentWorkout.getExerciseDefinition === null ||
+          currentWorkout.getExerciseDefinition.name === '' ||
+          currentWorkout.getExerciseDefinition.category === '' ||
+          currentWorkout.getExerciseDefinition.name === null || 
+          currentWorkout.getExerciseDefinition.category === null
         ) {
-          this.errorMessage = errorMessage;
+          this.$log.debug('ExerciseName is empty');
+          this.errorMessage = defaultErrorMessage;
           validated = false;
           break;
         }
         if (
-          currentWorkout.repetition.length === 0 ||
-          currentWorkout.repetition === null
+          currentWorkout.getRepetition.length === 0 ||
+          currentWorkout.getRepetition === null
         ) {
-          this.errorMessage = errorMessage;
+          this.errorMessage = defaultErrorMessage;
           validated = false;
           break;
         }
         if (
-          currentWorkout.weight.length === 0 ||
-          currentWorkout.weight === null
+          currentWorkout.getWeight.length === 0 ||
+          currentWorkout.getWeight === null
         ) {
-          this.errorMessage = errorMessage;
+          this.errorMessage = defaultErrorMessage;
+          validated = false;
+          break;
+        }
+        if (currentWorkout.getWeight.length !== currentWorkout.getRepetition.length) {
+          this.errorMessage = 'Weight and Repetition count must match';
           validated = false;
           break;
         }
@@ -129,10 +168,11 @@ export default {
       }
     },
     addNewWorkout: function() {
+      const exerciseModelBuilder = new ExerciseModelBuilder();
       if (this.workouts !== null && this.showLastWorkout) {
-        this.oldWorkout.push(emptyWorkout);
+        this.oldWorkout.push(exerciseModelBuilder.buildEmptyExerciseModel());
       } else {
-        this.newWorkout.push(emptyWorkout);
+        this.newWorkout.push(exerciseModelBuilder.buildEmptyExerciseModel());
       }
     },
   },
