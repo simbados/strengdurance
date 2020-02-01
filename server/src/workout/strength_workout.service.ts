@@ -19,11 +19,16 @@ export class StrengthWorkoutService {
     const exercises = await Promise.all(
       strengthWorkoutDto.allExercises.map(async entry => {
         const model = await this.exerciseModel
-          .findOne({ name: entry.exerciseName }, '_id')
+          .findOne({ name: entry.exercise.name }, '_id')
           .exec();
-        if (model.length == 0) {
+        if (model === null || model.length == 0) {
+          Logger.debug(
+            `Could not find exercise from posted DTO ${JSON.stringify(
+              strengthWorkoutDto,
+            )}`,
+          );
           throw new HttpException(
-            `Could not find exercise with name ${entry.exerciseName}`,
+            `Could not find exercise with name ${entry.exercise.name}`,
             HttpStatus.NOT_FOUND,
           );
         }
@@ -43,7 +48,11 @@ export class StrengthWorkoutService {
 
   async getAllStrengthWorkouts(): Promise<StrengthWorkout[]> {
     Logger.debug('getAllStrengthWorkouts called');
-    return await this.strengthWorkoutModel.find().select('-_id -__v -allExercises._id').populate({path: 'allExercises.exercise', select: '-_id -__v'}).exec();
+    return await this.strengthWorkoutModel
+      .find()
+      .select('-_id -__v -allExercises._id')
+      .populate({ path: 'allExercises.exercise', select: '-_id -__v' })
+      .exec();
   }
 
   // params: startDate - Date which constitutes the start date of the retrieval

@@ -1,13 +1,11 @@
-import {IsArray} from 'class-validator';
+import {IsArray, ValidateNested, IsNotEmpty} from 'class-validator';
+import {StrengthWorkoutEntryDto} from './strength_workout_entry.dto';
+import {Type} from 'class-transformer';
 
 export class StrengthWorkoutDto {
   @IsArray()
-  readonly allExercises: [
-    {
-      exerciseName: string;
-      repetition: number[];
-      weight: number[];
-      comment: string;
-    },
-  ];
+  @IsNotEmpty()
+  @ValidateNested({each: true})
+  @Type(() => StrengthWorkoutEntryDto)
+  readonly allExercises: [StrengthWorkoutEntryDto];
 }
