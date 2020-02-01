@@ -1,5 +1,5 @@
-import {WorkoutModelBuilder} from '../../models/workoutModel';
-import {ExerciseModelBuilder} from '../../models/exerciseModel';
+import { WorkoutModelBuilder } from '../../models/workoutModel';
+import { ExerciseModelBuilder } from '../../models/exerciseModel';
 /* eslint-disable */
 
 export function saveWorkouts(state, loadedWorkouts) {
@@ -32,5 +32,5 @@ export function saveWorkouts(state, loadedWorkouts) {
 export function storeUserWorkout(state, workoutToStore) {
   // eslint-disable-next-line
   console.log('workout to store from user is, ', workoutToStore);
-  state.workouts = state.workouts.push(workoutToStore);
+  state.workouts.push(workoutToStore);
 }

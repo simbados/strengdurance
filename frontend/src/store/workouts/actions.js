@@ -1,4 +1,5 @@
 import { WorkoutService } from '../services/workout_service';
+import { WorkoutModelBuilder } from '../../models/workoutModel';
 
 export function loadWorkouts({ commit }, vm) {
   return new Promise(resolve => {
@@ -15,11 +16,16 @@ export function loadWorkouts({ commit }, vm) {
 
 export function saveWorkout({ commit }, { vm, workout }) {
   vm.$log.debug('Send following workout, ', workout);
+  const workoutAsObject = { allExercises: workout };
   return new Promise((resolve, reject) => {
-    WorkoutService.postWorkout(workout)
+    WorkoutService.postWorkout(workoutAsObject)
       .then(response => {
         vm.$log.debug('Successfully POST workout', response.data);
-        commit('storeUserWorkout', workout);
+        const workoutModel = new WorkoutModelBuilder()
+          .setDate(response.data.date)
+          .setExercises(workout)
+          .build();
+        commit('storeUserWorkout', workoutModel);
         resolve();
       })
       .catch(error => {

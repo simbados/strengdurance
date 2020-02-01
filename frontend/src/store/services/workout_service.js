@@ -7,10 +7,9 @@ export class WorkoutService {
     return axios.get(URL);
   }
   static postWorkout(workout) {
-    const workoutAsObject = {allExercises: workout};
-    console.log('Send workout in service', workoutAsObject)
+    console.log('Send workout in service', workout)
     // const workoutDto = { allExercises: workout }
     const URL = `${process.env.SERVER_URL}/workouts/strength`;
-    return axios.post(URL, workoutAsObject);
+    return axios.post(URL, workout);
   }
 }
