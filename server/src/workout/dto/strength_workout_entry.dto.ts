@@ -6,7 +6,7 @@ export class StrengthWorkoutEntryDto {
   @IsNotEmpty()
   @ValidateNested({each: true})
   @Type(() => ExerciseDto)
-  readonly exercise: ExerciseDto;
+  readonly exerciseDefinition: ExerciseDto;
 
   @IsArray()
   @IsNotEmpty()
@@ -17,6 +17,5 @@ export class StrengthWorkoutEntryDto {
   readonly weight: number[];
 
   @IsString()
-  @IsNotEmpty()
   readonly comment: string;
 }

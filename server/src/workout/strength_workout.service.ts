@@ -1,9 +1,9 @@
-import { Model } from 'mongoose';
-import { Injectable, Logger, HttpException, HttpStatus } from '@nestjs/common';
-import { StrengthWorkout } from './interfaces/strength_workout';
-import { InjectModel } from '@nestjs/mongoose';
-import { StrengthWorkoutDto } from './dto/strength_workout.dto';
-import { Exercise } from '../exercises/interfaces/exercises';
+import {Model} from 'mongoose';
+import {Injectable, Logger, HttpException, HttpStatus} from '@nestjs/common';
+import {StrengthWorkout} from './interfaces/strength_workout';
+import {InjectModel} from '@nestjs/mongoose';
+import {StrengthWorkoutDto} from './dto/strength_workout.dto';
+import {Exercise} from '../exercises/interfaces/exercises';
 
 @Injectable()
 export class StrengthWorkoutService {
@@ -19,7 +19,7 @@ export class StrengthWorkoutService {
     const exercises = await Promise.all(
       strengthWorkoutDto.allExercises.map(async entry => {
         const model = await this.exerciseModel
-          .findOne({ name: entry.exercise.name }, '_id')
+          .findOne({name: entry.exerciseDefinition.name}, '_id')
           .exec();
         if (model === null || model.length == 0) {
           Logger.debug(
@@ -28,12 +28,12 @@ export class StrengthWorkoutService {
             )}`,
           );
           throw new HttpException(
-            `Could not find exercise with name ${entry.exercise.name}`,
+            `Could not find exercise with name ${entry.exerciseDefinition.name}`,
             HttpStatus.NOT_FOUND,
           );
         }
         Logger.debug(`Found exercise ${model} and id ${model._id}`);
-        return { ...entry, exercise: model._id };
+        return {...entry, exercise: model._id};
       }),
     );
 
@@ -51,7 +51,7 @@ export class StrengthWorkoutService {
     return await this.strengthWorkoutModel
       .find()
       .select('-_id -__v -allExercises._id')
-      .populate({ path: 'allExercises.exercise', select: '-_id -__v' })
+      .populate({path: 'allExercises.exercise', select: '-_id -__v'})
       .exec();
   }
 
