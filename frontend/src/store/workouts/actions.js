@@ -13,7 +13,8 @@ export function loadWorkouts({ commit }, vm) {
   });
 }
 
-export function saveWorkout({ commit }, {vm, workout}) {
+export function saveWorkout({ commit }, { vm, workout }) {
+  vm.$log.debug('Send following workout, ', workout);
   return new Promise((resolve, reject) => {
     WorkoutService.postWorkout(workout)
       .then(response => {
@@ -22,7 +23,7 @@ export function saveWorkout({ commit }, {vm, workout}) {
         resolve();
       })
       .catch(error => {
-        vm.$log.debug(error);
+        vm.$log.debug(error.error);
         reject(error);
       });
   });

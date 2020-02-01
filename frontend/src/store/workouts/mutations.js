@@ -1,4 +1,4 @@
-import { WorkoutModelBuilder } from '../../models/workoutModel';
+import {WorkoutModelBuilder} from '../../models/workoutModel';
 import {ExerciseModelBuilder} from '../../models/exerciseModel';
 /* eslint-disable */
 
@@ -13,11 +13,11 @@ export function saveWorkouts(state, loadedWorkouts) {
     const exercises = [];
     loadedWorkouts[i].allExercises.forEach(element => {
       const exerciseModel = exerciseModelBuilder
-      .setWeight(element.weight)
-      .setRepetition(element.repetition)
-      .setExerciseDefinition(element.exercise)
-      .setComment(element.comment)
-      .build();
+        .setWeight(element.weight)
+        .setRepetition(element.repetition)
+        .setExerciseDefinition(element.exercise)
+        .setComment(element.comment)
+        .build();
       exercises.push(exerciseModel);
     });
     console.log('exercises after filling ', exercises);

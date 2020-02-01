@@ -4,7 +4,10 @@
       <h4>Strength Workout</h4>
       <q-toggle v-model="showLastWorkout" label="Show last workout" />
       <div v-if="workouts && showLastWorkout">
-        <div v-for="(exercise, index) in oldWorkout" v-bind:key="`exercise-${index}`">
+        <div
+          v-for="(exercise, index) in oldWorkout"
+          v-bind:key="`exercise-${index}`"
+        >
           <exercise
             :index="index"
             :exercise="exercise"
@@ -15,7 +18,10 @@
         </div>
       </div>
       <div v-else>
-        <div v-for="(exercise, index) in newWorkout" v-bind:key="`exercise-${index}$-{index}`">
+        <div
+          v-for="(exercise, index) in newWorkout"
+          v-bind:key="`exercise-${index}$-{index}`"
+        >
           <exercise
             :index="index"
             :exercise="exercise"
@@ -25,9 +31,20 @@
           <q-separator spaced />
         </div>
       </div>
-      <q-btn style="margin: 1em" round color="primary" icon="add" @click="addNewWorkout" />
+      <q-btn
+        style="margin: 1em"
+        round
+        color="primary"
+        icon="add"
+        @click="addNewWorkout"
+      />
       <q-separator style="height: 1px" />
-      <q-btn style="margin: 2em" color="primary" label="Submit" @click="setEmitValuesTrue" />
+      <q-btn
+        style="margin: 2em"
+        color="primary"
+        label="Submit"
+        @click="setEmitValuesTrue"
+      />
     </div>
   </q-page>
 </template>
@@ -55,7 +72,9 @@ export default {
     }
     if (this.workouts === undefined) {
       this.$store.dispatch('workouts/loadWorkouts', this).then(() => {
-        const deepCloneWorkout = this.workouts[this.workouts.length - 1].deepClone();
+        const deepCloneWorkout = this.workouts[
+          this.workouts.length - 1
+        ].deepClone();
         this.oldWorkout = deepCloneWorkout.getExercises();
       });
     }
@@ -69,7 +88,6 @@ export default {
     ];
   },
   methods: {
-    // eslint-disable-next-line
     saveExercise: function({ exercise, index }) {
       this.$log.debug(`Index is ${index}`);
       this.$log.debug('saveExercise is called');
@@ -107,6 +125,7 @@ export default {
             const errorMessage =
               'Could not save workout, please try again later';
             this.$q.notify({ message: errorMessage, color: 'red' });
+            this.resetSubmitFields();
           });
       }
     },
@@ -125,11 +144,11 @@ export default {
         const currentWorkout = workout[i];
         this.$log.debug('Current Workout', currentWorkout);
         if (
-          currentWorkout.getExerciseDefinition === null ||
-          currentWorkout.getExerciseDefinition.name === '' ||
-          currentWorkout.getExerciseDefinition.category === '' ||
-          currentWorkout.getExerciseDefinition.name === null || 
-          currentWorkout.getExerciseDefinition.category === null
+          currentWorkout.getExerciseDefinition() === null ||
+          currentWorkout.getExerciseDefinition().name === '' ||
+          currentWorkout.getExerciseDefinition().category === '' ||
+          currentWorkout.getExerciseDefinition().name === null ||
+          currentWorkout.getExerciseDefinition().category === null
         ) {
           this.$log.debug('ExerciseName is empty');
           this.errorMessage = defaultErrorMessage;
@@ -137,22 +156,25 @@ export default {
           break;
         }
         if (
-          currentWorkout.getRepetition.length === 0 ||
-          currentWorkout.getRepetition === null
+          currentWorkout.getRepetition().length === 0 ||
+          currentWorkout.getRepetition() === null
         ) {
           this.errorMessage = defaultErrorMessage;
           validated = false;
           break;
         }
         if (
-          currentWorkout.getWeight.length === 0 ||
-          currentWorkout.getWeight === null
+          currentWorkout.getWeight().length === 0 ||
+          currentWorkout.getWeight() === null
         ) {
           this.errorMessage = defaultErrorMessage;
           validated = false;
           break;
         }
-        if (currentWorkout.getWeight.length !== currentWorkout.getRepetition.length) {
+        if (
+          currentWorkout.getWeight().length !==
+          currentWorkout.getRepetition().length
+        ) {
           this.errorMessage = 'Weight and Repetition count must match';
           validated = false;
           break;
@@ -183,5 +205,4 @@ export default {
 };
 </script>
 
-<style lang="sass" scoped>
-</style>
+<style lang="sass" scoped></style>

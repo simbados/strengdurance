@@ -42,8 +42,21 @@
         :rules="[validateArray]"
         filled
       />
-      <q-input readonly class="strength" label="Volume" v-model="volume" type="number" filled />
-      <q-input class="strength" label="Comment" v-model="comment" type="string" filled />
+      <q-input
+        readonly
+        class="strength"
+        label="Volume"
+        v-model="volume"
+        type="number"
+        filled
+      />
+      <q-input
+        class="strength"
+        label="Comment"
+        v-model="comment"
+        type="string"
+        filled
+      />
     </div>
   </div>
 </template>
@@ -71,12 +84,8 @@ export default {
   },
   mounted() {
     this.$log.debug('exercises in Exercise, ', this.exercise);
-    this.weightModel = this.toStringArray(
-      this.exercise.getWeight(),
-    );
-    this.repetitionModel = this.toStringArray(
-      this.exercise.getRepetition()
-    );
+    this.weightModel = this.toStringArray(this.exercise.getWeight());
+    this.repetitionModel = this.toStringArray(this.exercise.getRepetition());
     this.comment = this.exercise.getComment();
     this.options = this.exercisesNames;
     this.exerciseDefinition = this.exercise.getExerciseDefinition();
@@ -115,7 +124,7 @@ export default {
     },
     repetitions: {
       get: function() {
-          return this.repetitionModel;
+        return this.repetitionModel;
       },
       set: function(newRepetition) {
         this.repetitionModel = newRepetition;
@@ -138,7 +147,7 @@ export default {
         .filter(value => {
           if (value === '' || value.match('[^0-9]')) {
             return false;
-          } 
+          }
           return true;
         })
         .map(value => {
@@ -149,18 +158,6 @@ export default {
           return parse;
         });
     },
-
-    // Add back later current model alarms too often
-    /* validateVolume() { */
-    /*   return new Promise(resolve => { */
-    /*     if (this.volume === 0) { */
-    /*       resolve( */
-    /*         'Weight and Repetitions must contain equal amount of numbers', */
-    /*       ); */
-    /*     } */
-    /*     resolve(true); */
-    /*   }); */
-    /* }, */
 
     validateArray(val) {
       return new Promise((resolve, reject) => {
@@ -192,21 +189,24 @@ export default {
   watch: {
     emitValues: function() {
       if (this.emitValues) {
-        this.$log.debug('Emit values');
+        this.$log.debug('Emit values', this.exercises);
         const exerciseModelBuilder = new ExerciseModelBuilder();
-        const exerciseCategory = this.exercises.find(value => value.name === this.exerciseName).category || null;
-        const exercise = exerciseModelBuilder.setExerciseDefinition({ name: this.exerciseName, category: exerciseCategory})
+        const exerciseDefinition = this.exercises.find(
+          value => value.name === this.exerciseName,
+        );
+        const exerciseCategory = exerciseDefinition
+          ? exerciseDefinition.category
+          : '';
+        const exercise = exerciseModelBuilder
+          .setExerciseDefinition({
+            name: this.exerciseName,
+            category: exerciseCategory,
+          })
           .setRepetition(this.toNumberArray(this.repetitionModel))
           .setWeight(this.toNumberArray(this.weightModel))
           .setComment(this.comment)
           .build();
         this.$log.debug('Emit the following exercise, ', exercise);
-        /* const exercise = { */
-        /*   comment: this.comment, */
-        /*   repetition: this.toNumberArray(this.repetitionModel), */
-        /*   weight: this.toNumberArray(this.weightModel), */
-        /*   exerciseName: this.exerciseName, */
-        /* }; */
         this.$emit('saveExercise', { exercise, index: this.index });
       }
     },
