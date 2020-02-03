@@ -2,7 +2,7 @@
 export class WorkoutModelBuilder {
   constructor() {}
   setDate(date) {
-    this.date = date;
+    this.date = new Date(date);
     return this;
   }
   setExercises(exercises) {
@@ -28,7 +28,10 @@ export class WorkoutModel {
     return this.exercises;
   }
   deepClone() {
-    const cloneDate = this.date;
+    const cloneDate = this.getDate().valueOf();
+    // eslint-disable-next-line
+    console.log('Date on Model ', this.date.toString());
+    console.log('Date on clone ', cloneDate);
     let cloneExercises = [];
     this.exercises.forEach(element => cloneExercises.push(element.deepClone()));
     return new WorkoutModelBuilder().setDate(cloneDate).setExercises(cloneExercises).build();

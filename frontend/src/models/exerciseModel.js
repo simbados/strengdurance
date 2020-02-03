@@ -1,3 +1,5 @@
+import { Utils } from '../utils';
+
 export class ExerciseModelBuilder {
   constructor() {}
   setExerciseDefinition(exerciseDefinition) {
@@ -42,11 +44,20 @@ export class ExerciseModel {
   getWeight() {
     return this.weight;
   }
+  getWeightAsString() {
+    return Utils.numberArrayToString(this.getWeight());
+  }
   getRepetition() {
     return this.repetition;
   }
+  getRepetitionAsString() {
+    return Utils.numberArrayToString(this.getRepetition());
+  }
   getComment() {
     return this.comment;
+  }
+  getVolume() {
+    return Utils.calculateVolume(this.repetition, this.weight);
   }
   deepClone() {
     return new ExerciseModelBuilder()
