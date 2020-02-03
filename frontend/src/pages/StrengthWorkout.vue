@@ -123,9 +123,18 @@ export default {
             .reverse();
         } else if (this.displaySelectionModel === 'Last month') {
           const firstOfMonth = new Date(now.getFullYear(), now.getMonth(), 1);
+          const firstOfNextMonth = new Date(
+            now.getFullYear(),
+            now.getMonth() + 1,
+            1,
+          );
           this.$log.debug(firstOfMonth);
           return this.workouts
-            .filter(value => value.getDate() > firstOfMonth)
+            .filter(
+              value =>
+                value.getDate() > firstOfMonth &&
+                value.getDate() < firstOfNextMonth,
+            )
             .slice()
             .reverse();
         } else {
