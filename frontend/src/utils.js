@@ -46,4 +46,20 @@ export class Utils {
     }
     return calculatedVolume;
   }
+
+  // Adds and subtracts daysToAdd from date
+  static calculateNewDate(date, daysToAdd) {
+    let dateWithAddedDays = new Date(date);
+    dateWithAddedDays.setDate(date.getDate() + daysToAdd);
+    return dateWithAddedDays;
+  }
+
+  // Set hours, minutes, seconds, milliseconds to 0
+  static setToMidnight(date) {
+    date.setMinutes(0);
+    date.setHours(0);
+    date.setSeconds(0);
+    date.setMilliseconds(0);
+    return date;
+  }
 }

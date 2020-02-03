@@ -36,4 +36,10 @@ export class WorkoutModel {
     this.exercises.forEach(element => cloneExercises.push(element.deepClone()));
     return new WorkoutModelBuilder().setDate(cloneDate).setExercises(cloneExercises).build();
   }
+  // Returns the overall volume of this workout
+  getTotalVolume() {
+    const totalVolume = this.getExercises().reduce((acc, exercise) => acc + exercise.getVolume(), 0);
+    console.log('Total volume, ', totalVolume);
+    return totalVolume
+  }
 }

@@ -214,7 +214,6 @@ export default {
 };
 </script>
 <style lang="sass" scoped>
-
 .strength
   width: 8em
   margin: 0.5em

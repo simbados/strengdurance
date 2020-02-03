@@ -77,6 +77,11 @@ export default {
         ].deepClone();
         this.oldWorkout = deepCloneWorkout.getExercises();
       });
+    } else {
+      const deepCloneWorkout = this.workouts[
+        this.workouts.length - 1
+      ].deepClone();
+      this.oldWorkout = deepCloneWorkout.getExercises();
     }
     const exerciseModelBuilder = new ExerciseModelBuilder();
     this.newWorkout = [
