@@ -7,26 +7,36 @@ import Category from './categories';
 
 @Injectable()
 export class ExerciseService {
-        constructor(@InjectModel('Exercise') private readonly exerciseModel: Model<Exercise>) {
-        }
+  constructor(@InjectModel('Exercise') private readonly exerciseModel: Model<Exercise>) {
+  }
 
-        validateCategory(category: string) {
-                if (!Category.includes(category)) throw new HttpException(`Category must be of type ${Category.toString()}`, HttpStatus.UNPROCESSABLE_ENTITY);
-        }
+  validateCategory(category: string) {
+    if (!Category.includes(category)) throw new HttpException(`Category must be of type ${Category.toString()}`, HttpStatus.UNPROCESSABLE_ENTITY);
+  }
 
-        async postExercise(exerciseDto: ExerciseDto): Promise<Exercise> {
-                this.validateCategory(exerciseDto.category.toString());
-                Logger.debug(`Save items, ${exerciseDto}`);
-                const createdExercise = new this.exerciseModel(exerciseDto);
-                return await createdExercise.save();
-        }
+  async checkForDuplicatedName(name: string) {
+    // TODO: validation maybe for all similiar names to
+    const model = await this.exerciseModel.find({name: name});
+    Logger.debug(model);
+    if (model.length !== 0) {
+      throw new HttpException('Exercise name is already in use', HttpStatus.UNPROCESSABLE_ENTITY);
+    }
+  }
 
-        async getAllExercises(): Promise<Exercise[]> {
-                return await this.exerciseModel.find().select('-_id -__v').exec();
-        }
+  async postExercise(exerciseDto: ExerciseDto): Promise<Exercise> {
+    this.validateCategory(exerciseDto.category.toString());
+    await this.checkForDuplicatedName(exerciseDto.name);
+    Logger.debug(`Save items, ${exerciseDto}`);
+    const createdExercise = new this.exerciseModel(exerciseDto);
+    return await createdExercise.save();
+  }
 
-        async getExercisesByCategory(category: string): Promise<Exercise[]> {
-                this.validateCategory(category);
-                return await this.exerciseModel.find({ category });
-        }
+  async getAllExercises(): Promise<Exercise[]> {
+    return await this.exerciseModel.find().select('-_id -__v').exec();
+  }
+
+  async getExercisesByCategory(category: string): Promise<Exercise[]> {
+    this.validateCategory(category);
+    return await this.exerciseModel.find({category});
+  }
 }

@@ -21,7 +21,7 @@ export class StrengthWorkoutService {
         const model = await this.exerciseModel
           .findOne({name: entry.exerciseDefinition.name}, '_id')
           .exec();
-        if (model === null || model.length == 0) {
+        if (model === null || model.length === 0) {
           Logger.debug(
             `Could not find exercise from posted DTO ${JSON.stringify(
               strengthWorkoutDto,
