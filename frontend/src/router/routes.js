@@ -19,6 +19,10 @@ const routes = [
         path: '/enduranceworkout',
         component: () => import('pages/EnduranceWorkout.vue'),
       },
+      {
+        path: '/exercises',
+        component: () => import('pages/ExercisesOverview.vue'),
+      },
     ],
   },
 ];

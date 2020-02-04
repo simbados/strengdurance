@@ -3,12 +3,11 @@ export function saveExercises(state, loadedExercises) {
   console.log('loaded Exercises is, ', loadedExercises);
   state.exercises = loadedExercises;
   let exercisesNames = [];
-  let exercisesCategories = [];
+  let exercisesCategories = new Set();
   loadedExercises.forEach(exercise => {
     exercisesNames.push(exercise.name);
-    exercisesCategories.push(exercise.category);
+    exercisesCategories.add(exercise.category);
   });
-
   state.exercisesNames = exercisesNames;
-  state.exercisesCategories = exercisesCategories;
+  state.exercisesCategories = Array.from(exercisesCategories);
 }
