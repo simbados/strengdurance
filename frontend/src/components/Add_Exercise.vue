@@ -45,9 +45,12 @@ export default {
   },
   methods: {
     storeExercise() {
-      this.$store.dispatch('saveNewExercise', {
-        name: this.exerciseNameInputModel,
-        category: this.exerciseCategoryInputModel,
+      this.$store.dispatch('exercise/saveNewExercise', {
+        vm: this,
+        exercise: {
+          name: this.exerciseNameInputModel,
+          category: this.exerciseCategoryInputModel,
+        },
       });
     },
   },

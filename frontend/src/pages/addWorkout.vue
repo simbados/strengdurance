@@ -3,7 +3,7 @@
     <div class="column items-center">
       <h4>Strength Workout</h4>
       <q-toggle v-model="showLastWorkout" label="Show last workout" />
-      <div v-if="workouts && showLastWorkout">
+      <div v-if="workouts.length !== 0 && showLastWorkout">
         <div
           v-for="(exercise, index) in oldWorkout"
           v-bind:key="`exercise-${index}`"
@@ -16,6 +16,9 @@
           ></exercise>
           <q-separator />
         </div>
+      </div>
+      <div v-else-if="workouts.length === 0 && showLastWorkout">
+        <h4>No previous data found</h4>
       </div>
       <div v-else>
         <div
@@ -72,16 +75,20 @@ export default {
     }
     if (this.workouts === undefined) {
       this.$store.dispatch('workouts/loadWorkouts', this).then(() => {
+        if (this.workouts.length !== 0) {
+          const deepCloneWorkout = this.workouts[
+            this.workouts.length - 1
+          ].deepClone();
+          this.oldWorkout = deepCloneWorkout.getExercises();
+        }
+      });
+    } else {
+      if (this.workouts.length !== 0) {
         const deepCloneWorkout = this.workouts[
           this.workouts.length - 1
         ].deepClone();
         this.oldWorkout = deepCloneWorkout.getExercises();
-      });
-    } else {
-      const deepCloneWorkout = this.workouts[
-        this.workouts.length - 1
-      ].deepClone();
-      this.oldWorkout = deepCloneWorkout.getExercises();
+      }
     }
     const exerciseModelBuilder = new ExerciseModelBuilder();
     this.newWorkout = [

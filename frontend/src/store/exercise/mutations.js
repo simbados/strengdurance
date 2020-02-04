@@ -11,3 +11,8 @@ export function saveExercises(state, loadedExercises) {
   state.exercisesNames = exercisesNames;
   state.exercisesCategories = Array.from(exercisesCategories);
 }
+
+export function addExercise(state, exercise) {
+  state.exercisesNames.push(exercise.name);
+  state.exercises.push(exercise);
+}

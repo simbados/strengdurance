@@ -44,8 +44,7 @@ export default {
       },
       rowsAllowedArray: [5, 10, 15, 20, 25, 50, 0],
       categoryOptions: null,
-      exerciseData: null,
-      exerciseCategoryModel: null,
+      exerciseCategoryModel: 'All',
       visibleColumns: ['exerciseName', 'exerciseCategory'],
       columns: [
         {
@@ -67,10 +66,6 @@ export default {
     };
   },
   mounted() {
-    if (this.exercises && !this.exerciseData) {
-      this.exerciseData = JSON.parse(JSON.stringify(this.exercises));
-      this.$log.debug(this.exerciseData);
-    }
     if (!this.categoryOptions) {
       this.categoryOptions = JSON.parse(
         JSON.stringify(this.exercisesCategories),
@@ -84,16 +79,24 @@ export default {
       'exercisesCategories',
       'exercises',
     ]),
-  },
-  watch: {
-    exerciseCategoryModel: function() {
-      if (this.exerciseCategoryModel === 'All') {
-        this.exerciseData = JSON.parse(JSON.stringify(this.exercises));
-      } else {
-        this.exerciseData = this.exercises.filter(
-          exercise => exercise.category === this.exerciseCategoryModel,
-        );
-      }
+    exerciseData: {
+      get: function() {
+        if (this.exercises) {
+          const filteredExerciseData =
+            this.exerciseCategoryModel === 'All'
+              ? this.exercises
+              : this.exercises.filter(
+                  exercise => exercise.category === this.exerciseCategoryModel,
+                );
+          this.$log.debug('this exercisedata is, ', filteredExerciseData);
+          return filteredExerciseData;
+        }
+        return [];
+      },
+      set: function(newValue) {
+        this.$log.debug('New value');
+        return newValue;
+      },
     },
   },
 };
