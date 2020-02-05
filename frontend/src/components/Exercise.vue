@@ -1,6 +1,6 @@
 <template>
   <div>
-    <div class="row">
+    <div class="row no-wrap items-center">
       <q-select
         class="strength"
         filled
@@ -56,6 +56,13 @@
         v-model="comment"
         type="string"
         filled
+      />
+      <q-btn
+        style="width: 4em; height: 4em ;margin: 1em"
+        round
+        color="primary"
+        icon="remove"
+        @click="removeExercise"
       />
     </div>
   </div>
@@ -132,6 +139,9 @@ export default {
     },
   },
   methods: {
+    removeExercise() {
+      this.$emit('removeExercise', this.index);
+    },
     toStringArray(fromNumberArray) {
       let stringArray = '';
       fromNumberArray.forEach(element => (stringArray += `${element}/`));
@@ -215,7 +225,7 @@ export default {
 </script>
 <style lang="sass" scoped>
 .strength
-  width: 8em
+  width: 10em
   margin: 0.5em
 .correct-addons
   padding-top: 20px

@@ -27,6 +27,15 @@
               style="min-width: 150px"
             />
           </template>
+          <template v-slot:no-data="">
+            <div class="full-width row flex-center text-accent q-gutter-sm">
+              <q-icon size="2em" name="sentiment_dissatisfied" />
+              <span>
+                There is no data to display, add an exercises or try later
+                again.
+              </span>
+            </div>
+          </template>
         </q-table>
       </div>
       <add-exercise></add-exercise>
@@ -66,7 +75,7 @@ export default {
     };
   },
   mounted() {
-    if (!this.categoryOptions) {
+    if (!this.categoryOptions && this.exercisesCategories) {
       this.categoryOptions = JSON.parse(
         JSON.stringify(this.exercisesCategories),
       );

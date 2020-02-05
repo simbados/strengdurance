@@ -3,14 +3,8 @@ import axios from 'axios';
 
 export class ExerciseService {
   static getAllExercises() {
-    return new Promise(resolve => {
-      console.log('process env is, ', process.env);
-      const URL = `${process.env.SERVER_URL}/exercises/strength`;
-      axios.get(URL).then(response => {
-        console.log(response.data);
-        resolve(response.data);
-      });
-    });
+    const URL = `${process.env.SERVER_URL}/exercises/strength`;
+    return axios.get(URL)
   }
   static postExercise(exercise) {
     console.log('Send exercise in service', exercise)

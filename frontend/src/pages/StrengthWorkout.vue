@@ -10,7 +10,7 @@
         :options="displayOptions"
         label="Range"
       />
-      <div v-if="workoutsToShow">
+      <div v-if="workoutsToShow && workoutsToShow.length !== 0">
         <div
           v-for="(workout, index) in workoutsToShow"
           v-bind:key="`workout-${index}`"
@@ -34,7 +34,7 @@
                 <th class="text-right">Comment</th>
               </tr>
             </thead>
-            <tbody class="bg-grey-3">
+            <tbody class="bg-white">
               <tr
                 v-for="(exercise, index) in workout.getExercises()"
                 v-bind:key="`exercise-${index}`"
@@ -62,6 +62,26 @@
           </q-markup-table>
         </div>
       </div>
+      <div
+        v-else-if="!workoutsToShow"
+        class="full-width row flex-center text-accent q-gutter-sm"
+      >
+        <q-icon size="2em" name="sentiment_dissatisfied" />
+        <span>
+          The server is not responding or you have no active internet
+          connection. Please try again later.
+        </span>
+      </div>
+      <div v-else class="full-width row flex-center text-black q-gutter-sm">
+        <div class="column items-center">
+          <div style="margin: 1em">
+            You have no data records for this time period.
+          </div>
+          <div style="margin: 1em">
+            <q-btn to="/addWorkout" color="primary" dense icon="add" />
+          </div>
+        </div>
+      </div>
     </div>
   </q-page>
 </template>
@@ -86,7 +106,6 @@ export default {
   },
   data() {
     return {
-      /* workoutsToShow: [], */
       displayOptions: ['This week', 'Last week', 'Last month', 'All'],
       displaySelectionModel: 'This week',
     };
@@ -141,7 +160,7 @@ export default {
           return this.workouts.slice().reverse();
         }
       }
-      return [];
+      return null;
     },
   },
   methods: {

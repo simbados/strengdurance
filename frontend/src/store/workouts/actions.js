@@ -2,14 +2,17 @@ import { WorkoutService } from '../services/workout_service';
 import { WorkoutModelBuilder } from '../../models/workoutModel';
 
 export function loadWorkouts({ commit }, vm) {
-  return new Promise(resolve => {
+  return new Promise((resolve, reject) => {
     WorkoutService.getAllStrengthWorkouts()
       .then(response => {
         vm.$log.debug('loadedExercise from api,', response.data);
         commit('saveWorkouts', response.data);
         resolve();
       })
-      .catch(error => vm.$log.debug(error));
+      .catch(error => {
+        vm.$log.debug('Error while loading workouts', error.message);
+        reject(error);
+      });
     vm.$log.debug('loadExercises action has been called!');
   });
 }

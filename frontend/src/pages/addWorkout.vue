@@ -2,52 +2,63 @@
   <q-page padding>
     <div class="column items-center">
       <h4>Strength Workout</h4>
-      <q-toggle v-model="showLastWorkout" label="Show last workout" />
-      <div v-if="workouts.length !== 0 && showLastWorkout">
-        <div
-          v-for="(exercise, index) in oldWorkout"
-          v-bind:key="`exercise-${index}`"
-        >
-          <exercise
-            :index="index"
-            :exercise="exercise"
-            :emitValues="emitOldWorkoutValues"
-            v-on:saveExercise="saveExercise"
-          ></exercise>
-          <q-separator />
+      <div v-if="this.workouts" class="column items-center">
+        <q-toggle v-model="showLastWorkout" label="Show last workout" />
+        <div v-if="showLastWorkout && this.workouts.length !== 0">
+          <div
+            v-for="(exercise, index) in oldWorkout"
+            v-bind:key="`exercise-${index}`"
+          >
+            <exercise
+              :index="index"
+              :exercise="exercise"
+              :emitValues="emitOldWorkoutValues"
+              v-on:saveExercise="saveExercise"
+              v-on:removeExercise="removeExercise"
+            ></exercise>
+            <q-separator />
+          </div>
         </div>
-      </div>
-      <div v-else-if="workouts.length === 0 && showLastWorkout">
-        <h4>No previous data found</h4>
-      </div>
-      <div v-else>
-        <div
-          v-for="(exercise, index) in newWorkout"
-          v-bind:key="`exercise-${index}$-{index}`"
-        >
-          <exercise
-            :index="index"
-            :exercise="exercise"
-            :emitValues="emitNewWorkoutValues"
-            v-on:saveExercise="saveExercise"
-          ></exercise>
-          <q-separator spaced />
+        <div v-else-if="this.workouts.length === 0 && showLastWorkout">
+          <h5>No previous workouts found</h5>
         </div>
+        <div v-else>
+          <div
+            v-for="(exercise, index) in newWorkout"
+            v-bind:key="`exercise-${index}$-{index}`"
+          >
+            <exercise
+              :index="index"
+              :exercise="exercise"
+              :emitValues="emitNewWorkoutValues"
+              v-on:saveExercise="saveExercise"
+              v-on:removeExercise="removeExercise"
+            ></exercise>
+            <q-separator spaced />
+          </div>
+        </div>
+        <q-btn
+          style="margin: 1em; width: 4em; height: 4em"
+          round
+          color="primary"
+          icon="add"
+          @click="addNewWorkout"
+        />
+        <q-separator style="height: 1px" />
+        <q-btn
+          style="margin: 2em"
+          color="primary"
+          label="Submit"
+          @click="setEmitValuesTrue"
+        />
       </div>
-      <q-btn
-        style="margin: 1em"
-        round
-        color="primary"
-        icon="add"
-        @click="addNewWorkout"
-      />
-      <q-separator style="height: 1px" />
-      <q-btn
-        style="margin: 2em"
-        color="primary"
-        label="Submit"
-        @click="setEmitValuesTrue"
-      />
+      <div v-else class="full-width row flex-center text-accent q-gutter-sm">
+        <q-icon size="2em" name="sentiment_dissatisfied" />
+        <span>
+          The server is not responding or you have no active internet
+          connection. Please try again later.
+        </span>
+      </div>
     </div>
   </q-page>
 </template>
@@ -63,33 +74,40 @@ export default {
       newWorkout: [],
       emitNewWorkoutValues: false,
       emitOldWorkoutValues: false,
-      showLastWorkout: true,
+      showLastWorkout: false,
       workoutToStore: [],
       successMessage: '',
       errorMessage: '',
     };
   },
   mounted() {
-    if (this.exercises === undefined) {
-      this.$store.dispatch('exercise/loadExercises', this);
+    /* if (this.exercises === undefined) { */
+    /*   this.$store.dispatch('exercise/loadExercises', this).catch(error => { */
+    /*     this.$q.notify({ message: error.message, color: 'red' }); */
+    /*   }); */
+    /* } */
+    /* if (!this.workouts) { */
+    /*   this.$store */
+    /*     .dispatch('workouts/loadWorkouts', this) */
+    /*     .then(() => { */
+    /*       if (this.workouts.length !== 0) { */
+    /*         const deepCloneWorkout = this.workouts[ */
+    /*           this.workouts.length - 1 */
+    /*         ].deepClone(); */
+    /*         this.oldWorkout = deepCloneWorkout.getExercises(); */
+    /*       } */
+    /*     }) */
+    /*     .catch(error => { */
+    /*       this.$q.notify({ message: error.message, color: 'red' }); */
+    /*     }); */
+    /* } else { */
+    if (this.workouts && this.workouts.length !== 0) {
+      const deepCloneWorkout = this.workouts[
+        this.workouts.length - 1
+      ].deepClone();
+      this.oldWorkout = deepCloneWorkout.getExercises();
     }
-    if (this.workouts === undefined) {
-      this.$store.dispatch('workouts/loadWorkouts', this).then(() => {
-        if (this.workouts.length !== 0) {
-          const deepCloneWorkout = this.workouts[
-            this.workouts.length - 1
-          ].deepClone();
-          this.oldWorkout = deepCloneWorkout.getExercises();
-        }
-      });
-    } else {
-      if (this.workouts.length !== 0) {
-        const deepCloneWorkout = this.workouts[
-          this.workouts.length - 1
-        ].deepClone();
-        this.oldWorkout = deepCloneWorkout.getExercises();
-      }
-    }
+    /* } */
     const exerciseModelBuilder = new ExerciseModelBuilder();
     this.newWorkout = [
       exerciseModelBuilder.buildEmptyExerciseModel(),
@@ -100,6 +118,13 @@ export default {
     ];
   },
   methods: {
+    removeExercise: function(index) {
+      if (this.showLastWorkout) {
+        this.oldWorkout.splice(index, 1);
+      } else {
+        this.newWorkout.splice(index, 1);
+      }
+    },
     saveExercise: function({ exercise, index }) {
       this.$log.debug(`Index is ${index}`);
       this.$log.debug('saveExercise is called');
@@ -132,6 +157,7 @@ export default {
           .then(() => {
             const successMessage = 'Successfully stored your workout';
             this.$q.notify({ message: successMessage, color: 'green' });
+            this.resetSubmitFields();
           })
           .catch(() => {
             const errorMessage =
