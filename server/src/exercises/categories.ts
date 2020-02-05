@@ -1,10 +1,10 @@
 const Category = [
-        'Back',
-        'Chest',
-        'Arms',
-        'Legs',
-        'Abs',
-        'Shoulder'
+  'Back',
+  'Chest',
+  'Arms',
+  'Legs',
+  'Abdominal',
+  'Shoulders'
 ]
 
 export default Category;
