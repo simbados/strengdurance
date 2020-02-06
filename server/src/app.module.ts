@@ -6,6 +6,10 @@ import {ExercisesModule} from './exercises/exercises.module';
 import {ValidationPipe} from './validation/validation.pipes';
 import {APP_PIPE} from '@nestjs/core';
 import {WorkoutModule} from './workout/workout.module';
+import {AuthModule} from './auth/auth.module';
+import {UsersModule} from './users/users.module';
+import {ConfigModule} from '@nestjs/config';
+import * as Joi from '@hapi/joi';
 
 @Module({
   imports: [
@@ -13,6 +17,20 @@ import {WorkoutModule} from './workout/workout.module';
     HttpModule,
     ExercisesModule,
     WorkoutModule,
+    AuthModule,
+    UsersModule,
+    ConfigModule.forRoot({
+      validationSchema: Joi.object({
+        NODE_ENV: Joi.string()
+          .valid('development', 'production', 'test', 'provision')
+          .default('development'),
+        PORT: Joi.number().default(3000),
+      }),
+      validationOptions: {
+        allowUnknown: true,
+        abortEarly: true,
+      },
+    }),
   ],
   controllers: [AppController],
   providers: [

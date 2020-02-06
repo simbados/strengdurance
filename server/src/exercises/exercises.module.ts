@@ -5,8 +5,8 @@ import {ExerciseController} from 'src/exercises/exercises.controller';
 import {ExerciseService} from 'src/exercises/exercises.service';
 
 @Module({
-        imports: [MongooseModule.forFeature([{name: 'Exercise', schema: ExerciseSchema}])],
-        controllers: [ExerciseController],
-        providers: [ExerciseService],
+  imports: [MongooseModule.forFeature([{name: 'Exercise', schema: ExerciseSchema}])],
+  controllers: [ExerciseController],
+  providers: [ExerciseService],
 })
 export class ExercisesModule {}
