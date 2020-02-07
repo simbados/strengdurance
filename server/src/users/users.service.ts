@@ -33,7 +33,17 @@ export class UsersService {
 
   async createNewUser(userDto: UserDto): Promise<User> {
     const hashedPW = await this.hashPassword(userDto.password);
-    const createdUser = new this.userModel({username: userDto.username, hashedPassword: hashedPW});
-    return await createdUser.save();
+    const createdUser = new this.userModel({username: userDto.username, hashedPassword: hashedPW, email: userDto.email});
+    let storedUser: Model<User>;
+    try {
+      storedUser = await createdUser.save();
+    } catch (error) {
+      if (error.errmsg.includes('duplicate')) {
+        throw new HttpException(error.errmsg, HttpStatus.CONFLICT);
+      }
+      throw new HttpException(`Can not store user in db ${error.errormsg}`, HttpStatus.BAD_REQUEST);
+    }
+    const {hashedPassword, __v, ...rest} = storedUser.toObject();
+    return rest;
   }
 }

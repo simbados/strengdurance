@@ -13,7 +13,7 @@ import * as Joi from '@hapi/joi';
 
 @Module({
   imports: [
-    MongooseModule.forRoot('mongodb://localhost/strengdurance'),
+    MongooseModule.forRoot('mongodb://localhost/strengdurance', {useNewUrlParser: true, useUnifiedTopology: true}),
     HttpModule,
     ExercisesModule,
     WorkoutModule,
@@ -41,4 +41,5 @@ import * as Joi from '@hapi/joi';
     },
   ],
 })
-export class AppModule {}
+export class AppModule {
+}
