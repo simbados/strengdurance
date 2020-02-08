@@ -1,4 +1,4 @@
-import {Controller, Headers, Request, UseGuards, Post, Body, Get} from '@nestjs/common';
+import {Controller, Headers, Request, UseGuards, Post, Body, Get, HttpStatus, HttpCode} from '@nestjs/common';
 import {AuthGuard} from '@nestjs/passport';
 import {UsersService} from 'src/users/users.service';
 import {UserDto} from 'src/users/dto/user.dto';
@@ -27,7 +27,8 @@ export class AppController {
   }
 
   @UseGuards(AuthGuard('jwt'))
-  @Get('auth/logout')
+  @HttpCode(200)
+  @Post('auth/logout')
   async logout(@Headers('authorization') bearer) {
     console.log('header is', bearer);
     await this.authService.addToBlacklist(bearer);
