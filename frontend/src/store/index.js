@@ -3,6 +3,7 @@ import Vuex from 'vuex';
 
 import exercise from './exercise/index';
 import workouts from './workouts/index';
+import general from './general/index';
 
 Vue.use(Vuex);
 
@@ -20,6 +21,7 @@ export default function(/* { ssrContext } */) {
     modules: {
       exercise,
       workouts,
+      general,
     },
 
     // enable strict mode (adds overhead!)

@@ -5,7 +5,11 @@ const routes = [
     children: [
       {
         path: '',
-        component: () => import('pages/Overview.vue'),
+        component: () => import('pages/Login.vue'),
+      },
+      {
+        path: '/login',
+        component: () => import('pages/Login.vue'),
       },
       {
         path: '/addWorkout',
@@ -22,6 +26,10 @@ const routes = [
       {
         path: '/exercises',
         component: () => import('pages/ExercisesOverview.vue'),
+      },
+      {
+        path: '/register',
+        component: () => import('pages/Register.vue'),
       },
     ],
   },
