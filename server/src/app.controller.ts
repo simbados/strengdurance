@@ -5,11 +5,12 @@ import {UserDto} from 'src/users/dto/user.dto';
 import {User} from 'src/users/interfaces/users';
 import {AuthService} from 'src/auth/auth.service';
 
-@Controller()
+@Controller('api/v1/')
 export class AppController {
   constructor(private readonly userService: UsersService, private readonly authService: AuthService) {}
 
   @UseGuards(AuthGuard('local'))
+  @HttpCode(200)
   @Post('auth/login')
   async login(@Request() req) {
     return this.authService.login(req.user);
