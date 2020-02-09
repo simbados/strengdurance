@@ -14,7 +14,7 @@ Vue.use(VueRouter);
  * with the Router instance.
  */
 
-export default function(/* { store, ssrContext } */) {
+export default function({ store }) {
   const Router = new VueRouter({
     scrollBehavior: () => ({ x: 0, y: 0 }),
     routes,
@@ -24,6 +24,19 @@ export default function(/* { store, ssrContext } */) {
     // quasar.conf.js -> build -> publicPath
     mode: process.env.VUE_ROUTER_MODE,
     base: process.env.VUE_ROUTER_BASE,
+  });
+  //eslint-disable-next-line
+  console.log(store.state.general.isAuthenticated)
+  Router.beforeEach((to, from, next) => {
+    if (
+      !store.state.general.isAuthenticated &&
+      to.path !== '/login' &&
+      to.path !== '/register'
+    ) {
+      next('/login');
+    } else {
+      next();
+    }
   });
 
   return Router;

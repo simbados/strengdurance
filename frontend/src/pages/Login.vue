@@ -58,6 +58,17 @@ export default {
   methods: {
     login() {
       // TODO: implement login and store jwt
+      this.$store
+        .dispatch('general/login', {
+          user: {
+            username: this.username,
+            password: this.password,
+          },
+          vm: this,
+        })
+        .then(() => {
+          this.$router.replace({ path: '/overview' });
+        });
       // eslint-disable-next-line
       console.log('Login called');
     },
