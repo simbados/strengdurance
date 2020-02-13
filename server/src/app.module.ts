@@ -7,7 +7,7 @@ import {ValidationPipe} from './validation/validation.pipes';
 import {APP_PIPE} from '@nestjs/core';
 import {WorkoutModule} from './workout/workout.module';
 import {AuthModule} from './auth/auth.module';
-import {UsersModule} from './users/users.module';
+import {UserModule} from './user/user.module';
 import {ConfigModule} from '@nestjs/config';
 import * as Joi from '@hapi/joi';
 
@@ -18,7 +18,7 @@ import * as Joi from '@hapi/joi';
     ExercisesModule,
     WorkoutModule,
     AuthModule,
-    UsersModule,
+    UserModule,
     ConfigModule.forRoot({
       validationSchema: Joi.object({
         NODE_ENV: Joi.string()

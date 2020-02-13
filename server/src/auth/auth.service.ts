@@ -1,15 +1,15 @@
 import {Model} from 'mongoose';
 import {Injectable, Logger} from '@nestjs/common';
-import {UsersService} from '../users/users.service';
+import {UserService} from '../user/user.service';
 import * as bcrypt from 'bcrypt';
-import {User} from 'src/users/interfaces/users';
+import {User} from 'src/user/interfaces/user';
 import {JwtService} from '@nestjs/jwt';
 import {InjectModel} from '@nestjs/mongoose';
 import {Blacklist} from './interfaces/blacklist'
 
 @Injectable()
 export class AuthService {
-  constructor(@InjectModel('Blacklist') private readonly blacklistModel: Model<Blacklist>, private readonly usersService: UsersService, private readonly jwtService: JwtService) {}
+  constructor(@InjectModel('Blacklist') private readonly blacklistModel: Model<Blacklist>, private readonly usersService: UserService, private readonly jwtService: JwtService) {}
 
   async validateUser(username: string, password: string): Promise<any> {
     Logger.debug(`Validate user with username ${username} and pw ${password}`);

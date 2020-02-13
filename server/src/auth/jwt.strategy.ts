@@ -21,6 +21,6 @@ export class JwtStrategy extends PassportStrategy(Strategy) {
     if (isBlacklisted) {
       throw new HttpException('JWT token is blacklisted', HttpStatus.UNAUTHORIZED);
     }
-    return {userId: payload.sub, username: payload.username};
+    return {userId: payload.sub, username: payload.username}
   }
 }

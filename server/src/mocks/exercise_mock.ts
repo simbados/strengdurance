@@ -1,12 +1,15 @@
-import { Exercise } from '../exercises/interfaces/exercises';
+import {Exercise} from '../exercises/interfaces/exercises';
 import Category from '../exercises/categories';
+import {User} from 'src/user/interfaces/user';
 
 const testId: string = 'testId';
 
+const userMockData: User = {username: 'test', hashedPassword: 'hash', email: 'email@email.com'};
+
 const exerciseMockData: Exercise[] = [
-  { name: 'Curls', category: Category[0] },
-  { name: 'Pushdowns', category: Category[0] },
-  { name: 'Bench', category: Category[2] },
+  {name: 'Curls', category: Category[0], user: userMockData},
+  {name: 'Pushdowns', category: Category[0], user: userMockData},
+  {name: 'Bench', category: Category[2], user: userMockData},
 ];
 
 const mockExercises: Promise<Exercise[]> = new Promise<Exercise[]>(resolve => {
@@ -51,8 +54,8 @@ class ExerciseMockModel {
     return this;
   }
   static exec() {
-    return this._id === undefined ? mockExercises : { _id: this._id };
+    return this._id === undefined ? mockExercises : {_id: this._id};
   }
 }
 
-export { ExerciseMockService, ExerciseMockModel, exerciseMockData, testId };
+export {ExerciseMockService, ExerciseMockModel, exerciseMockData, testId};

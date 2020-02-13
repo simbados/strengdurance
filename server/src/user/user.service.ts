@@ -1,14 +1,14 @@
 import {Model} from 'mongoose';
 import {Injectable, Logger, HttpException, HttpStatus} from '@nestjs/common';
 import {InjectModel} from '@nestjs/mongoose';
-import {User} from 'src/users/interfaces/users';
-import {UserDto} from 'src/users/dto/user.dto';
+import {User} from 'src/user/interfaces/user';
+import {UserDto} from 'src/user/dto/user.dto';
 import * as bcrypt from 'bcrypt';
 
 const SALT_ROUNDS = 10;
 @Injectable()
-export class UsersService {
-  constructor(@InjectModel('Users') private readonly userModel: Model<User>) {
+export class UserService {
+  constructor(@InjectModel('User') private readonly userModel: Model<User>) {
   }
 
   async hashPassword(password: string) {

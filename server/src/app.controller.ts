@@ -1,13 +1,13 @@
 import {Controller, Headers, Request, UseGuards, Post, Body, Get, HttpStatus, HttpCode} from '@nestjs/common';
 import {AuthGuard} from '@nestjs/passport';
-import {UsersService} from 'src/users/users.service';
-import {UserDto} from 'src/users/dto/user.dto';
-import {User} from 'src/users/interfaces/users';
+import {UserService} from 'src/user/user.service';
+import {UserDto} from 'src/user/dto/user.dto';
+import {User} from 'src/user/interfaces/user';
 import {AuthService} from 'src/auth/auth.service';
 
 @Controller('api/v1/')
 export class AppController {
-  constructor(private readonly userService: UsersService, private readonly authService: AuthService) {}
+  constructor(private readonly userService: UserService, private readonly authService: AuthService) {}
 
   @UseGuards(AuthGuard('local'))
   @HttpCode(200)

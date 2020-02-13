@@ -14,29 +14,31 @@ export class ExerciseService {
     if (!Category.includes(category)) throw new HttpException(`Category must be of type ${Category.toString()}`, HttpStatus.UNPROCESSABLE_ENTITY);
   }
 
-  async checkForDuplicatedName(name: string) {
+  async checkForDuplicatedName(name: string, userId: string) {
     // TODO: validation maybe for all similiar names to
-    const model = await this.exerciseModel.find({name: name});
+    const model = await this.exerciseModel.find({name: name, user: userId});
+    console.log('model is', model);
     Logger.debug(model);
     if (model.length !== 0) {
       throw new HttpException('Exercise name is already in use', HttpStatus.UNPROCESSABLE_ENTITY);
     }
   }
 
-  async postExercise(exerciseDto: ExerciseDto): Promise<Exercise> {
+  async postExercise(exerciseDto: ExerciseDto, userId: string): Promise<Exercise> {
     this.validateCategory(exerciseDto.category.toString());
-    await this.checkForDuplicatedName(exerciseDto.name);
+    await this.checkForDuplicatedName(exerciseDto.name, userId);
     Logger.debug(`Save items, ${exerciseDto}`);
-    const createdExercise = new this.exerciseModel(exerciseDto);
+    const exerciseToStore = {...exerciseDto, user: userId};
+    const createdExercise = new this.exerciseModel(exerciseToStore);
     return await createdExercise.save();
   }
 
-  async getAllExercises(): Promise<Exercise[]> {
-    return await this.exerciseModel.find().select('-_id -__v').exec();
+  async getAllExercises(userId: string): Promise<Exercise[]> {
+    return await this.exerciseModel.find({user: userId}).select('-_id -__v').exec();
   }
 
-  async getExercisesByCategory(category: string): Promise<Exercise[]> {
+  async getExercisesByCategory(category: string, userId: string): Promise<Exercise[]> {
     this.validateCategory(category);
-    return await this.exerciseModel.find({category});
+    return await this.exerciseModel.find({category, user: userId});
   }
 }
