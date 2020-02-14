@@ -8,7 +8,7 @@ const strengthWorkoutMockDto: StrengthWorkoutDto[] = [
   {
     allExercises: [
       {
-        exerciseDefinition: exerciseMockModelData[0],
+        exerciseDefinition: {name: exerciseMockModelData[0].name, category: exerciseMockModelData[0].category},
         repetition: [8, 8, 8],
         weight: [80, 80, 80],
         comment: 'This is a test comment',
@@ -17,12 +17,12 @@ const strengthWorkoutMockDto: StrengthWorkoutDto[] = [
   },
 ];
 
-const strengthWorkoutMockData: StrengthWorkout[] = [
+const strengthWorkoutMockData = [
   {
     date,
     allExercises: [
       {
-        exercise: exerciseMockModelData[0],
+        exerciseDefinition: {name: exerciseMockModelData[0].name, category: exerciseMockModelData[0].category},
         repetition: [8, 8, 8],
         weight: [80, 80, 80],
         comment: 'This is a test comment',
@@ -31,12 +31,12 @@ const strengthWorkoutMockData: StrengthWorkout[] = [
   },
 ];
 
-const strengthWorkoutsBetweenDatesMock: StrengthWorkout[] = [
+const strengthWorkoutsBetweenDatesMock = [
   {
     date: new Date('2019-12-14'),
     allExercises: [
       {
-        exercise: exerciseMockModelData[0],
+        exerciseDefinition: {name: exerciseMockModelData[0].name, category: exerciseMockModelData[0].category},
         repetition: [8, 8, 8],
         weight: [80, 80, 80],
         comment: 'This is a test comment',
@@ -61,30 +61,42 @@ class StrengthWorkoutMockService {
 
 class StrengthWorkoutMockModel {
   constructor(private strengthWorkout: StrengthWorkout) {}
+  static callStack = [];
   save() {
+    StrengthWorkoutMockModel.callStack.push('save');
     return this.strengthWorkout;
   }
   static find() {
+    this.callStack.push('find');
     // Return an instance of mockStrengthWorkoutModel because the exec function is called thereafter
     return this;
   }
   static where() {
+    this.callStack.push('where');
     return this;
   }
   static select() {
+    this.callStack.push('select');
     return this;
   }
   static populate() {
+    this.callStack.push('populate');
     return this;
   }
   static gte() {
+    this.callStack.push('gte');
     return this;
   }
   static lte() {
+    this.callStack.push('lte');
     return this;
   }
   static exec(): Promise<any> {
+    this.callStack.push('exec');
     return new Promise(resolve => resolve(strengthWorkoutMockData));
+  }
+  static reset() {
+    this.callStack = [];
   }
 }
 
