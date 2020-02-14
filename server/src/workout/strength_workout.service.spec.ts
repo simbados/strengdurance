@@ -1,14 +1,15 @@
-import { Test, TestingModule } from '@nestjs/testing';
-import { StrengthWorkoutService } from './strength_workout.service';
-import { getModelToken } from '@nestjs/mongoose';
+import {Test, TestingModule} from '@nestjs/testing';
+import {StrengthWorkoutService} from './strength_workout.service';
+import {getModelToken} from '@nestjs/mongoose';
 import {
   StrengthWorkoutMockModel,
   strengthWorkoutMockData,
   strengthWorkoutMockDto,
   strengthWorkoutsBetweenDatesMock,
 } from '../mocks/strength_workout_mock';
-import { ExerciseMockModel, testId } from '../mocks/exercise_mock';
-import { StrengthWorkout } from './interfaces/strength_workout';
+import ExerciseMockModel from '../mocks/exercise_mock';
+import {testId} from '../mocks/exercise_mock_data';
+import {StrengthWorkout} from './interfaces/strength_workout';
 import {Logger} from '@nestjs/common';
 
 describe('StrengthWorkoutService', () => {
@@ -65,7 +66,7 @@ describe('StrengthWorkoutService', () => {
     // The exercise should be swaped with the provided exercise id of the found db model
     // Because only the objectId reference is stored in the db
     const expectedExercises = [
-      { ...strengthWorkoutMockDto[0].allExercises[0], exercise: testId },
+      {...strengthWorkoutMockDto[0].allExercises[0], exercise: testId},
     ];
     expect(actualResult.allExercises).toEqual(expectedExercises);
   });

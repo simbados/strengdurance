@@ -4,6 +4,7 @@ import {InjectModel} from '@nestjs/mongoose';
 import {ExerciseDto} from './dto/exercise.dto';
 import {Exercise} from './interfaces/exercises';
 import Category from './categories';
+import exerciseDefaultData from './exercise_data';
 
 @Injectable()
 export class ExerciseService {
@@ -34,11 +35,13 @@ export class ExerciseService {
   }
 
   async getAllExercises(userId: string): Promise<Exercise[]> {
-    return await this.exerciseModel.find({user: userId}).select('-_id -__v').exec();
+    const dbExercises = await this.exerciseModel.find({user: userId}).select('-_id -__v').exec();
+    const finalExercises = dbExercises.concat(exerciseDefaultData);
+    return finalExercises;
   }
 
   async getExercisesByCategory(category: string, userId: string): Promise<Exercise[]> {
     this.validateCategory(category);
-    return await this.exerciseModel.find({category, user: userId});
+    return await this.exerciseModel.find({category, user: userId}).exec();
   }
 }
