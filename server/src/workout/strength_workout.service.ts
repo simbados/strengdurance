@@ -35,7 +35,8 @@ export class StrengthWorkoutService {
             HttpStatus.NOT_FOUND,
           );
         }
-        Logger.debug(`Found exercise ${exerciseDbModel} and id ${exerciseDbModel._id}`);
+        console.log('Found exercise', exerciseDbModel);
+        /* Logger.debug(`Found exercise ${exerciseDbModel} and id ${exerciseDbModel._id}`); */
         return {...entry, exercise: exerciseDbModel._id};
       }),
     );

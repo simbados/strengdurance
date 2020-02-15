@@ -9,6 +9,7 @@ export default class ExerciseMockModel {
   static selectCount: number = 0;
   static findOneCount: number = 0;
   static execCount: number = 0;
+  static orCount: number = 0;
   static findParams: Object = undefined;
   constructor() {}
   save() {
@@ -22,6 +23,10 @@ export default class ExerciseMockModel {
   }
   static select() {
     this.selectCount += 1;
+    return this;
+  }
+  static or() {
+    this.orCount += 1;
     return this;
   }
   static findOne() {
@@ -38,6 +43,7 @@ export default class ExerciseMockModel {
     this.selectCount = 0;
     this.findCount = 0;
     this.saveCount = 0;
+    this.orCount = 0;
     this.findParams = undefined;
   }
 }
