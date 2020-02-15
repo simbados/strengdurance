@@ -4,7 +4,6 @@ import {InjectModel} from '@nestjs/mongoose';
 import {ExerciseDto} from './dto/exercise.dto';
 import {Exercise} from './interfaces/exercises';
 import Category from './categories';
-import exerciseDefaultData from './exercise_data';
 
 @Injectable()
 export class ExerciseService {
@@ -36,7 +35,10 @@ export class ExerciseService {
 
   async getAllExercises(userId: string): Promise<Exercise[]> {
     const dbExercises = await this.exerciseModel.find({user: userId}).select('-_id -__v').exec();
-    const finalExercises = dbExercises.concat(exerciseDefaultData);
+    // Find exercises independent of the user
+    const defaultExercises = await this.exerciseModel.find({user: {$exists: false}});
+    console.log('default exercises are', defaultExercises.length);
+    const finalExercises = dbExercises.concat(defaultExercises);
     return finalExercises;
   }
 

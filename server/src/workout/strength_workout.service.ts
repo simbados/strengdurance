@@ -14,14 +14,17 @@ export class StrengthWorkoutService {
   ) {}
 
   async createStrengthWorkout(
+    userId: string,
     strengthWorkoutDto: StrengthWorkoutDto,
   ): Promise<StrengthWorkout> {
     const exercises = await Promise.all(
       strengthWorkoutDto.allExercises.map(async entry => {
-        const model = await this.exerciseModel
-          .findOne({name: entry.exerciseDefinition.name}, '_id')
+        const exerciseDbModel = await this.exerciseModel
+          .findOne()
+          .or([{user: userId, name: entry.exerciseDefinition.name}, {user: {$exists: false}, name: entry.exerciseDefinition.name}])
+          .select('_id')
           .exec();
-        if (model === null || model.length === 0) {
+        if (exerciseDbModel === null || exerciseDbModel.length === 0) {
           Logger.debug(
             `Could not find exercise from posted DTO ${JSON.stringify(
               strengthWorkoutDto,
@@ -32,13 +35,14 @@ export class StrengthWorkoutService {
             HttpStatus.NOT_FOUND,
           );
         }
-        Logger.debug(`Found exercise ${model} and id ${model._id}`);
-        return {...entry, exercise: model._id};
+        Logger.debug(`Found exercise ${exerciseDbModel} and id ${exerciseDbModel._id}`);
+        return {...entry, exercise: exerciseDbModel._id};
       }),
     );
 
     Logger.debug(exercises);
     const createdStrengthWorkout = new this.strengthWorkoutModel({
+      user: userId,
       date: new Date(),
       allExercises: exercises,
     });
@@ -46,10 +50,10 @@ export class StrengthWorkoutService {
     return await createdStrengthWorkout.save();
   }
 
-  async getAllStrengthWorkouts(): Promise<StrengthWorkout[]> {
+  async getAllStrengthWorkouts(userId: string): Promise<StrengthWorkout[]> {
     Logger.debug('getAllStrengthWorkouts called');
     return await this.strengthWorkoutModel
-      .find()
+      .find({user: userId})
       .select('-_id -__v -allExercises._id')
       .populate({path: 'allExercises.exercise', select: '-_id -__v'})
       .exec();
@@ -60,6 +64,7 @@ export class StrengthWorkoutService {
   // CAUTION: Must be given as ISODate
   // return: All the workouts between to Dates beginning at startDate (inclusive) ending at endDate (inclusive)
   async getStrengthWorkoutsInTimeFrame(
+    userId: string,
     startDate: Date,
     endDate: Date,
   ): Promise<StrengthWorkout[]> {
@@ -78,7 +83,7 @@ export class StrengthWorkoutService {
       );
     }
     return await this.strengthWorkoutModel
-      .find()
+      .find({user: userId})
       .where('date')
       .gte(parsedStartDate)
       .lte(parsedEndDate)

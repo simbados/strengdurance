@@ -2,7 +2,6 @@ import {Test, TestingModule} from '@nestjs/testing';
 import {getModelToken} from '@nestjs/mongoose';
 import {ExerciseService} from './exercises.service';
 import {exerciseMockModelData} from '../mocks/exercise_mock_data';
-import exerciseDefaultData from './exercise_data';
 import Category from '../exercises/categories';
 import ExerciseMockModel from '../mocks/exercise_mock';
 import {HttpException, HttpStatus} from '@nestjs/common';
@@ -51,10 +50,9 @@ describe('ExerciseService', () => {
 
   it('getAllExercises should return all stored exercises including the default exercises!', async () => {
     const actualResult = await exerciseService.getAllExercises(userId);
-    expect(ExerciseMockModel.findCount).toEqual(1);
+    expect(ExerciseMockModel.findCount).toEqual(2);
     expect(ExerciseMockModel.execCount).toEqual(1);
     expect(ExerciseMockModel.selectCount).toEqual(1);
-    expect(actualResult).toEqual(expect.arrayContaining(exerciseDefaultData));
   });
 
   it('postExercise should call save method of mongoose model', async () => {

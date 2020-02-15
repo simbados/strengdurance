@@ -44,6 +44,7 @@ describe('StrengthWorkoutService', () => {
     expect(StrengthWorkoutMockModel.callStack.filter(val => val === 'populate').length).toEqual(1);
     expect(StrengthWorkoutMockModel.callStack.filter(val => val === 'exec').length).toEqual(1);
   });
+
   /* it('getStrengthWorkoutsInTimeFrame should return all strength workouts in between dates from DB', async () => { */
   /*   const spy = jest */
   /*     .spyOn(StrengthWorkoutMockModel, 'exec') */
