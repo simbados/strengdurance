@@ -8,7 +8,7 @@ import {
   strengthWorkoutsBetweenDatesMock,
 } from '../mocks/strength_workout_mock';
 import ExerciseMockModel from '../mocks/exercise_mock';
-import {testId} from '../mocks/exercise_mock_data';
+import {testId, exerciseMockModelData} from '../mocks/exercise_mock_data';
 import {StrengthWorkout} from './interfaces/strength_workout';
 
 describe('StrengthWorkoutService', () => {
@@ -63,9 +63,9 @@ describe('StrengthWorkoutService', () => {
     const expectedExercises = [
       {...strengthWorkoutMockDto[0].allExercises[0], exercise: testId},
     ];
-    const spy = jest.spyOn(StrengthWorkoutMockModel, 'exec');
+    const spy = jest.spyOn(ExerciseMockModel, 'exec');
     spy.mockImplementation(() => {
-      return new Promise(resolve => resolve(expectedExercises))
+      return new Promise(resolve => resolve({...exerciseMockModelData[0], _id: testId}))
     });
     const actualResult = await service.createStrengthWorkout(
       userId,

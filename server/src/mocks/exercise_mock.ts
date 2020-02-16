@@ -33,9 +33,9 @@ export default class ExerciseMockModel {
     this.findOneCount += 1;
     return this;
   }
-  static exec() {
+  static exec(): Promise<any> {
     this.execCount += 1;
-    return exerciseMockModelData;
+    return new Promise(resolve => resolve(exerciseMockModelData));
   }
   static reset() {
     this.execCount = 0;
