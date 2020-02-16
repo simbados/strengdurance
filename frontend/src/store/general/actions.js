@@ -39,3 +39,7 @@ export function logout({ commit }, vm) {
       });
   });
 }
+
+export function reset({ commit }) {
+  commit('reset');
+}

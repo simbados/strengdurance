@@ -122,7 +122,10 @@ export default {
     logout() {
       this.$store
         .dispatch('general/logout', this)
-        .then(() => this.$router.replace({ path: '/login' }))
+        .then(() => {
+          this.$router.replace({ path: '/login' });
+          this.$store.dispatch('general/reset');
+        })
         .catch(error =>
           this.$q.notify({ message: `Could not log you out, error: ${error}` }),
         );
