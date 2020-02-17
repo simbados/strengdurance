@@ -13,7 +13,7 @@ import * as Joi from '@hapi/joi';
 
 @Module({
   imports: [
-    MongooseModule.forRoot('mongodb://localhost/strengdurance', {useNewUrlParser: true, useUnifiedTopology: true}),
+    MongooseModule.forRoot(process.env.MONGO_URL, {useNewUrlParser: true, useUnifiedTopology: true}),
     HttpModule,
     ExercisesModule,
     WorkoutModule,

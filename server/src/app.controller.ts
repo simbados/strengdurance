@@ -1,9 +1,9 @@
 import {Controller, Headers, Request, UseGuards, Post, Body, Get, HttpStatus, HttpCode} from '@nestjs/common';
 import {AuthGuard} from '@nestjs/passport';
-import {UserService} from 'src/user/user.service';
-import {UserDto} from 'src/user/dto/user.dto';
-import {User} from 'src/user/interfaces/user';
-import {AuthService} from 'src/auth/auth.service';
+import {UserService} from './user/user.service';
+import {UserDto} from './user/dto/user.dto';
+import {User} from './user/interfaces/user';
+import {AuthService} from './auth/auth.service';
 
 @Controller('api/v1/')
 export class AppController {

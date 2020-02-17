@@ -1,13 +1,13 @@
 import {Module} from '@nestjs/common';
 import {AuthService} from './auth.service';
-import {UserModule} from 'src/user/user.module';
+import {UserModule} from '../user/user.module';
 import {PassportModule} from '@nestjs/passport';
-import {LocalStrategy} from 'src/auth/local.strategy';
+import {LocalStrategy} from './local.strategy';
 import {JwtModule} from '@nestjs/jwt';
 import * as dotenv from 'dotenv';
-import {JwtStrategy} from 'src/auth/jwt.strategy';
+import {JwtStrategy} from './jwt.strategy';
 import {MongooseModule} from '@nestjs/mongoose';
-import {BlacklistSchema} from 'src/auth/schemas/blacklist.schema';
+import {BlacklistSchema} from './schemas/blacklist.schema';
 import {GoogleStrategy} from './google.strategy';
 
 dotenv.config();
