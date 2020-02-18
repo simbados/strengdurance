@@ -1,10 +1,18 @@
 import {Test, TestingModule} from '@nestjs/testing';
 import {getModelToken} from '@nestjs/mongoose';
 import {AuthService} from './auth.service';
-import {UserService} from 'src/user/user.service';
+import {UserService} from '../user/user.service';
+import UserMockService from '../mocks/user_service_mock';
+import BlacklistMockModel from '../mocks/blacklist_mock';
+import {JwtService} from '@nestjs/jwt';
 
 describe('AuthService', () => {
   let authService: AuthService;
+  const jwtMockService = function () {
+    function sign() {
+      return 'testJwt';
+    }
+  }
 
   beforeEach(async () => {
     const module: TestingModule = await Test.createTestingModule({
@@ -15,8 +23,12 @@ describe('AuthService', () => {
         },
         AuthService,
         {
-          provide: getModelToken('User'),
-          useValue: UserMockModel,
+          provide: JwtService,
+          useValue: jwtMockService,
+        },
+        {
+          provide: getModelToken('Blacklist'),
+          useValue: BlacklistMockModel,
         },
       ],
     }).compile();

@@ -1,13 +1,10 @@
-import {userMockData} from "../mocks/user_mock_data";
-
-export default class UserMockModel {
+export default class BlacklistMockModel {
   static _id: string = undefined;
   static callStack = [];
   static findParams: Object = undefined;
   constructor() {}
   save() {
-    UserMockModel.callStack.push('save');
-    return {toObject() {return userMockData} };
+    BlacklistMockModel.callStack.push('save');
   }
   static find(params) {
     this.callStack.push('find');
@@ -24,7 +21,7 @@ export default class UserMockModel {
   }
   static exec(): Promise<any> {
     this.callStack.push('exec');
-    return new Promise(resolve => resolve(userMockData));
+    return new Promise(resolve => resolve({createdAt: Date.now(), jwt: 'testJwt'}));
   }
   static reset() {
     this.callStack = [];

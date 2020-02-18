@@ -37,9 +37,9 @@ describe('UsersService', () => {
     expect(UserMockModel.callStack.filter(val => val === 'exec').length).toEqual(1);
   });
 
-  it('createNewUser should create new user', async () => {
-    await userService.createNewUser(userMockDto);
-    expect(UserMockModel.callStack.filter(val => val === 'find').length).toEqual(1);
-    expect(UserMockModel.callStack.filter(val => val === 'exec').length).toEqual(1);
+  it('createNewUser should create new user and return it', async () => {
+    const user = await userService.createNewUser(userMockDto);
+    expect(UserMockModel.callStack.filter(val => val === 'save').length).toEqual(1);
+    expect(user).toEqual({username: userMockData.username, _id: userMockData._id, email: userMockData.email});
   });
 });
