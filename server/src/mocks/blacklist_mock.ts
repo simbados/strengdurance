@@ -2,7 +2,10 @@ export default class BlacklistMockModel {
   static _id: string = undefined;
   static callStack = [];
   static findParams: Object = undefined;
-  constructor() {}
+  static constructorParams = undefined;
+  constructor(constructorParams) {
+    BlacklistMockModel.constructorParams = constructorParams;
+  }
   save() {
     BlacklistMockModel.callStack.push('save');
   }
@@ -25,6 +28,8 @@ export default class BlacklistMockModel {
   }
   static reset() {
     this.callStack = [];
+    this.findParams = undefined;
+    this.constructorParams = undefined;
   }
 }
 

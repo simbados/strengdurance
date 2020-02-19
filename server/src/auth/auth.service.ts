@@ -52,7 +52,7 @@ export class AuthService {
     };
   }
 
-  extractJwt(bearer: string) {
+  private extractJwt(bearer: string) {
     const extractedJwt = bearer.split('Bearer ')[1];
     return extractedJwt;
   }
