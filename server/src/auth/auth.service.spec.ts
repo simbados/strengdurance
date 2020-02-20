@@ -128,5 +128,6 @@ describe('AuthService', () => {
     await authService.login(userMockData);
     expect(signSpy).toHaveBeenCalledTimes(1);
     expect(signSpy).toHaveBeenCalledWith({username: userMockData.username, sub: userMockData._id});
+    signSpy.mockClear();
   });
 });

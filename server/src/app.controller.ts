@@ -2,7 +2,6 @@ import {Controller, Headers, Request, UseGuards, Post, Body, Get, HttpStatus, Ht
 import {AuthGuard} from '@nestjs/passport';
 import {UserService} from './user/user.service';
 import {UserDto} from './user/dto/user.dto';
-import {User} from './user/interfaces/user';
 import {AuthService} from './auth/auth.service';
 
 @Controller('api/v1/')
@@ -17,7 +16,7 @@ export class AppController {
   }
 
   @Post('auth/register')
-  async create(@Body() userDto: UserDto): Promise<User> {
+  async create(@Body() userDto: UserDto): Promise<any> {
     return this.userService.createNewUser(userDto);
   }
 

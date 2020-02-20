@@ -31,7 +31,7 @@ export class UserService {
     return await this.userModel.find({username}).exec();
   }
 
-  async createNewUser(userDto: UserDto): Promise<User> {
+  async createNewUser(userDto: UserDto): Promise<any> {
     const hashedPW = await this.hashPassword(userDto.password);
     const createdUser = new this.userModel({username: userDto.username, hashedPassword: hashedPW, email: userDto.email});
     let storedUser: Model<User>;
