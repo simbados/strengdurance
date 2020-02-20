@@ -1,6 +1,6 @@
 import {StrengthWorkout} from '../workout/interfaces/strength_workout';
 import {StrengthWorkoutDto} from '../workout/dto/strength_workout.dto';
-import {exerciseMockModelData} from './exercise_mock_data';
+import {exerciseMockModelData, exerciseMockData} from './exercise_mock_data';
 
 const date = new Date();
 
@@ -17,12 +17,12 @@ const strengthWorkoutMockDto: StrengthWorkoutDto[] = [
   },
 ];
 
-const strengthWorkoutMockData = [
+const strengthWorkoutMockData: StrengthWorkout[] = [
   {
     date,
     allExercises: [
       {
-        exerciseDefinition: {name: exerciseMockModelData[0].name, category: exerciseMockModelData[0].category},
+        exercise: exerciseMockData[0],
         repetition: [8, 8, 8],
         weight: [80, 80, 80],
         comment: 'This is a test comment',
@@ -31,12 +31,12 @@ const strengthWorkoutMockData = [
   },
 ];
 
-const strengthWorkoutsBetweenDatesMock = [
+const strengthWorkoutsBetweenDatesMock: StrengthWorkout[] = [
   {
     date: new Date('2019-12-14'),
     allExercises: [
       {
-        exerciseDefinition: {name: exerciseMockModelData[0].name, category: exerciseMockModelData[0].category},
+        exercise: exerciseMockData[0],
         repetition: [8, 8, 8],
         weight: [80, 80, 80],
         comment: 'This is a test comment',

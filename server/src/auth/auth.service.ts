@@ -27,7 +27,7 @@ export class AuthService {
     return null;
   }
 
-  async checkBlacklist(bearer: string) {
+  async checkBlacklist(bearer: string): Promise<boolean> {
     const extractedJwt = this.extractJwt(bearer).trim();
     console.log('extractedJwt', extractedJwt);
     const model = await this.blacklistModel.findOne({jwt: extractedJwt}).exec();

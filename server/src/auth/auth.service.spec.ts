@@ -4,7 +4,7 @@ import {AuthService} from './auth.service';
 import {UserService} from '../user/user.service';
 import UserMockService from '../mocks/user_service_mock';
 import BlacklistMockModel from '../mocks/blacklist_mock';
-import blackListMockData from '../mocks/blacklist_mock_data';
+import {blacklistMockData, jwt} from '../mocks/blacklist_mock_data';
 import {JwtService} from '@nestjs/jwt';
 import {userMockData, userMockDto} from '../mocks/user_mock_data';
 import {User} from '../user/interfaces/user';
@@ -94,11 +94,11 @@ describe('AuthService', () => {
 
   it('checkBlacklist should return true if jwt is found in blacklist', async () => {
     const blackListFindOneSpy = jest.spyOn(BlacklistMockModel, 'findOne');
-    const blackListExecSpy = jest.spyOn(BlacklistMockModel, 'exec').mockReturnValueOnce(new Promise(resolve => resolve(blackListMockData)));
-    const result = await authService.checkBlacklist('Bearer ' + blackListMockData.jwt);
+    const blackListExecSpy = jest.spyOn(BlacklistMockModel, 'exec').mockReturnValueOnce(new Promise(resolve => resolve(blacklistMockData)));
+    const result = await authService.checkBlacklist('Bearer ' + jwt);
     expect(result).toEqual(true);
     expect(blackListFindOneSpy).toHaveBeenCalledTimes(1);
-    expect(blackListFindOneSpy).toBeCalledWith({jwt: blackListMockData.jwt});
+    expect(blackListFindOneSpy).toBeCalledWith({jwt: jwt});
     expect(blackListExecSpy).toHaveBeenCalledTimes(1);
     blackListExecSpy.mockClear();
     blackListFindOneSpy.mockClear();
@@ -107,24 +107,24 @@ describe('AuthService', () => {
   it('checkBlacklist should return false if jwt is not found in blacklist', async () => {
     const blackListFindOneSpy = jest.spyOn(BlacklistMockModel, 'findOne');
     const blackListExecSpy = jest.spyOn(BlacklistMockModel, 'exec').mockReturnValueOnce(new Promise(resolve => resolve([])));
-    const result = await authService.checkBlacklist('Bearer ' + blackListMockData.jwt);
+    const result = await authService.checkBlacklist('Bearer ' + jwt);
     expect(result).toEqual(false);
     expect(blackListFindOneSpy).toHaveBeenCalledTimes(1);
-    expect(blackListFindOneSpy).toBeCalledWith({jwt: blackListMockData.jwt});
+    expect(blackListFindOneSpy).toBeCalledWith({jwt: jwt});
     expect(blackListExecSpy).toHaveBeenCalledTimes(1);
     blackListExecSpy.mockClear();
     blackListFindOneSpy.mockClear();
   });
 
   it('addToBlacklist should save jwt in database', async () => {
-    await authService.addToBlacklist('Bearer ' + blackListMockData.jwt);
+    await authService.addToBlacklist('Bearer ' + blacklistMockData.jwt);
     // Can not spy with jest here because it is an instance function not a static one, use call stack from origin mock here
     expect(BlacklistMockModel.callStack.filter(val => val === 'save').length).toEqual(1);
-    expect(BlacklistMockModel.constructorParams).toEqual({jwt: blackListMockData.jwt});
+    expect(BlacklistMockModel.constructorParams).toEqual({jwt: jwt});
   });
 
   it('login should return jwt', async () => {
-    const signSpy = jest.spyOn(jwtMockService, 'sign').mockReturnValue(blackListMockData.jwt)
+    const signSpy = jest.spyOn(jwtMockService, 'sign').mockReturnValue(jwt)
     await authService.login(userMockData);
     expect(signSpy).toHaveBeenCalledTimes(1);
     expect(signSpy).toHaveBeenCalledWith({username: userMockData.username, sub: userMockData._id});
