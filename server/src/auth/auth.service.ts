@@ -15,7 +15,7 @@ export class AuthService {
     Logger.debug(`Validate user with username ${username} and pw ${password}`);
     const user = await this.usersService.findOne(username);
     if (user[0]) {
-      const userObject: User = user[0].toObject();
+      const userObject = user[0].toObject();
       Logger.debug(`Is user in db? ${userObject}`);
       const isCorrectPW = await bcrypt.compare(password, userObject.hashedPassword);
       Logger.debug(`Hashed pw is correct? ${isCorrectPW}`);

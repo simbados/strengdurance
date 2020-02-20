@@ -12,8 +12,8 @@ const exerciseMockModelData = [
 ];
 
 const exerciseMockData: Exercise[] = [
-  {name: 'Curls', category: Category[0], user: {...userMockData, toObject() {} }},
-  {name: 'Pushdowns', category: Category[0], user: {...userMockData, toObject() {} }},
-  {name: 'Bench', category: Category[2], user: {...userMockData, toObject() {} }},
+  {name: 'Curls', category: Category[0], user: {...userMockData}},
+  {name: 'Pushdowns', category: Category[0], user: {...userMockData}},
+  {name: 'Bench', category: Category[2], user: {...userMockData}},
 ]
 export {exerciseMockModelData, testId, exerciseMockData};

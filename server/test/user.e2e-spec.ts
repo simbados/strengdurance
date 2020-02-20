@@ -36,7 +36,9 @@ describe('AppController (e2e)', () => {
       });
   });
 
-  afterAll(() => {
+  afterAll(async () => {
+    const users = db.collection('users');
+    await users.deleteMany({});
     connection.close();
     db.close();
     app.close();
