@@ -17,7 +17,6 @@ export class StrengthWorkoutService {
     userId: string,
     strengthWorkoutDto: StrengthWorkoutDto,
   ): Promise<StrengthWorkout> {
-    console.log(userId, strengthWorkoutDto);
     const exercises = await Promise.all(
       strengthWorkoutDto.allExercises.map(async entry => {
         const exerciseDbModel = await this.exerciseModel

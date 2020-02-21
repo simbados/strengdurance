@@ -79,7 +79,7 @@ describe('WorkoutController (e2e)', () => {
           ],
         },
       ];
-      await request(app.getHttpServer())
+      return request(app.getHttpServer())
         .get('/api/v1/workouts/strength')
         .set('Authorization', 'Bearer ' + bearer)
         .expect(200)
@@ -107,7 +107,7 @@ describe('WorkoutController (e2e)', () => {
           ],
         },
       ];
-      await request(app.getHttpServer())
+      return request(app.getHttpServer())
         .get(`/api/v1/workouts/strength/${startDate}/${endDate}`)
         .set('Authorization', 'Bearer ' + bearer)
         .expect(200)
@@ -129,16 +129,31 @@ describe('WorkoutController (e2e)', () => {
           },
         ],
       };
-      await request(app.getHttpServer())
+      const expectedResponse = {
+        allExercises: [
+          {
+            exercise: {
+              name: exerciseDbModel.name,
+              category: exerciseDbModel.category,
+              user: userObjectId.toHexString(),
+            },
+            repetition: [10, 10, 10],
+            weight: [80, 80, 80],
+            comment: 'schwer',
+          },
+        ],
+      };
+      return request(app.getHttpServer())
         .post('/api/v1/workouts/strength')
         .set('Authorization', 'Bearer ' + bearer)
         .send(body)
         .expect(201)
         .expect('Content-Type', /json/)
         .then(response => {
-          expect(response.body.date).toBeDefined();
-          expect(response.body.user).toEqual(userObjectId.toHexString());
-          expect(response.body.allExercises).toEqual(body.allExercises);
+          const workout = response.body[0];
+          expect(workout.date).toBeDefined();
+          expect(workout.user).toEqual(userObjectId.toHexString());
+          expect(workout.allExercises).toEqual(expectedResponse.allExercises);
         });
     });
   });
