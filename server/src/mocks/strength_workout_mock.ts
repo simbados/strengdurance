@@ -2,6 +2,7 @@ import {StrengthWorkout} from '../workout/interfaces/strength_workout';
 import {StrengthWorkoutDto} from '../workout/dto/strength_workout.dto';
 import {exerciseMockModelData, exerciseMockData} from './exercise_mock_data';
 import {userMockData} from './user_mock_data';
+import {strengthWorkoutDbModel} from './dbModel_mock_data';
 
 const date = new Date();
 
@@ -63,11 +64,11 @@ class StrengthWorkoutMockService {
 }
 
 class StrengthWorkoutMockModel {
-  constructor(private strengthWorkout: StrengthWorkout) {}
+  constructor() {}
   static callStack = [];
   save() {
     StrengthWorkoutMockModel.callStack.push('save');
-    return this.strengthWorkout;
+    return strengthWorkoutDbModel;
   }
   static find() {
     this.callStack.push('find');

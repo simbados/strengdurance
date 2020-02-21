@@ -1,9 +1,9 @@
-import {Model} from 'mongoose';
-import {Injectable, Logger, HttpException, HttpStatus} from '@nestjs/common';
-import {StrengthWorkout} from './interfaces/strength_workout';
-import {InjectModel} from '@nestjs/mongoose';
-import {StrengthWorkoutDto} from './dto/strength_workout.dto';
-import {Exercise} from '../exercises/interfaces/exercises';
+import { Model } from 'mongoose';
+import { Injectable, Logger, HttpException, HttpStatus } from '@nestjs/common';
+import { StrengthWorkout } from './interfaces/strength_workout';
+import { InjectModel } from '@nestjs/mongoose';
+import { StrengthWorkoutDto } from './dto/strength_workout.dto';
+import { Exercise } from '../exercises/interfaces/exercises';
 
 @Injectable()
 export class StrengthWorkoutService {
@@ -17,11 +17,15 @@ export class StrengthWorkoutService {
     userId: string,
     strengthWorkoutDto: StrengthWorkoutDto,
   ): Promise<StrengthWorkout> {
+    console.log(userId, strengthWorkoutDto);
     const exercises = await Promise.all(
       strengthWorkoutDto.allExercises.map(async entry => {
         const exerciseDbModel = await this.exerciseModel
           .findOne()
-          .or([{user: userId, name: entry.exerciseDefinition.name}, {user: {$exists: false}, name: entry.exerciseDefinition.name}])
+          .or([
+            { user: userId, name: entry.exerciseDefinition.name },
+            { user: { $exists: false }, name: entry.exerciseDefinition.name },
+          ])
           .select('_id')
           .exec();
         if (exerciseDbModel === null || exerciseDbModel.length === 0) {
@@ -37,7 +41,7 @@ export class StrengthWorkoutService {
         }
         console.log('Found exercise', exerciseDbModel);
         /* Logger.debug(`Found exercise ${exerciseDbModel} and id ${exerciseDbModel._id}`); */
-        return {...entry, exercise: exerciseDbModel._id};
+        return { ...entry, exercise: exerciseDbModel._id };
       }),
     );
 
@@ -48,15 +52,20 @@ export class StrengthWorkoutService {
       allExercises: exercises,
     });
     Logger.debug(`Save strength workout, ${createdStrengthWorkout}`);
-    return await createdStrengthWorkout.save();
+    const returnModel = await createdStrengthWorkout.save();
+    return this.strengthWorkoutModel
+      .find({ _id: returnModel._id })
+      .select('-_id -__v -allExercises._id')
+      .populate({ path: 'allExercises.exercise', select: '-_id -__v' })
+      .exec();
   }
 
   async getAllStrengthWorkouts(userId: string): Promise<StrengthWorkout[]> {
     Logger.debug('getAllStrengthWorkouts called');
     return await this.strengthWorkoutModel
-      .find({user: userId})
+      .find({ user: userId })
       .select('-_id -__v -allExercises._id')
-      .populate({path: 'allExercises.exercise', select: '-_id -__v'})
+      .populate({ path: 'allExercises.exercise', select: '-_id -__v' })
       .exec();
   }
 
@@ -84,10 +93,12 @@ export class StrengthWorkoutService {
       );
     }
     return await this.strengthWorkoutModel
-      .find({user: userId})
+      .find({ user: userId })
       .where('date')
       .gte(parsedStartDate)
       .lte(parsedEndDate)
+      .select('-_id -__v -allExercises._id')
+      .populate({ path: 'allExercises.exercise', select: '-_id -__v' })
       .exec();
   }
 }
