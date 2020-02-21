@@ -28,9 +28,6 @@ describe('WorkoutController (e2e)', () => {
     const exercises = db.collection('exercises');
     await exercises.insertOne(exerciseDbModel);
     await workouts.insertOne(strengthWorkoutDbModel);
-    console.log(await users.findOne());
-    console.log(await workouts.findOne());
-    console.log(await exercises.findOne());
   });
 
   beforeEach(async () => {
