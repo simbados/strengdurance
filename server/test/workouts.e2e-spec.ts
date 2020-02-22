@@ -27,7 +27,7 @@ describe('WorkoutController (e2e)', () => {
     const workouts = db.collection('strengthworkouts');
     const exercises = db.collection('exercises');
     await exercises.insertOne(exerciseDbModel);
-    await workouts.insertOne(strengthWorkoutDbModel);
+    return workouts.insertOne(strengthWorkoutDbModel);
   });
 
   beforeEach(async () => {
@@ -37,7 +37,7 @@ describe('WorkoutController (e2e)', () => {
 
     app = moduleFixture.createNestApplication();
     await app.init();
-    await request(app.getHttpServer())
+    return request(app.getHttpServer())
       .post('/api/v1/auth/login')
       .send(user)
       .expect(200)
@@ -51,14 +51,14 @@ describe('WorkoutController (e2e)', () => {
     await users.deleteMany({});
     const workouts = db.collection('strengthworkout');
     const exercises = db.collection('exercise');
-    workouts.deleteMany({});
-    exercises.deleteMany({});
+    await workouts.deleteMany({});
+    await exercises.deleteMany({});
     await connection.close();
-    return app.close();
+    await app.close();
   });
 
   describe('successful tests', () => {
-    it('/workouts/strength (GET)', async () => {
+    it('/workouts/strength (GET)', () => {
       const expectedResult = [
         {
           user: userObjectId.toHexString(),
@@ -84,7 +84,7 @@ describe('WorkoutController (e2e)', () => {
         .expect(expectedResult);
     });
 
-    it('/workouts/strength/startDate/endDate (GET)', async () => {
+    it('/workouts/strength/startDate/endDate (GET)', () => {
       const startDate = new Date('2000-01-16').toISOString();
       const endDate = new Date('3000-12-15').toISOString();
       const expectedResult = [
@@ -112,7 +112,7 @@ describe('WorkoutController (e2e)', () => {
         .expect(expectedResult);
     });
 
-    it('/workouts/strength (POST)', async () => {
+    it('/workouts/strength (POST)', () => {
       const body = {
         allExercises: [
           {

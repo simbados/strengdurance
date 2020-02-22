@@ -1,8 +1,17 @@
-import {Controller, Get, Request, Post, Logger, Body, Param, UseGuards} from '@nestjs/common';
-import {ExerciseService} from './exercises.service';
-import {Exercise} from './interfaces/exercises';
-import {ExerciseDto} from './dto/exercise.dto';
-import {AuthGuard} from '@nestjs/passport';
+import {
+  Controller,
+  Get,
+  Request,
+  Post,
+  Logger,
+  Body,
+  Param,
+  UseGuards,
+} from '@nestjs/common';
+import { ExerciseService } from './exercises.service';
+import { Exercise } from './interfaces/exercises';
+import { ExerciseDto } from './dto/exercise.dto';
+import { AuthGuard } from '@nestjs/passport';
 
 @UseGuards(AuthGuard('jwt'))
 @Controller('api/v1/exercises')
@@ -15,12 +24,21 @@ export class ExerciseController {
   }
 
   @Get('strength/:category')
-  async getExercisesByCategory(@Request() req, @Param() params): Promise<Exercise[]> {
-    return this.exerciseService.getExercisesByCategory(params.category, req.user.userId);
+  async getExercisesByCategory(
+    @Request() req,
+    @Param() params,
+  ): Promise<Exercise[]> {
+    return this.exerciseService.getExercisesByCategory(
+      params.category,
+      req.user.userId,
+    );
   }
 
   @Post('strength')
-  async postExercise(@Request() req, @Body() exerciseDto: ExerciseDto): Promise<Exercise> {
+  async postExercise(
+    @Request() req,
+    @Body() exerciseDto: ExerciseDto,
+  ): Promise<Exercise> {
     Logger.log('Post /exercises');
     Logger.log(`Dto is: , ${exerciseDto}, userId is: ${req.user.userId}`);
     return this.exerciseService.postExercise(exerciseDto, req.user.userId);

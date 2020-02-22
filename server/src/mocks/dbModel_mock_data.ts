@@ -1,11 +1,11 @@
 const mongoose = require('mongoose');
 const ObjectId = mongoose.Types.ObjectId;
-import { exerciseMockData } from './exercise_mock_data';
 import { strengthWorkoutMockData } from './strength_workout_mock';
 
 const userObjectId = new ObjectId();
 const workoutObjectId = new ObjectId();
 const exerciseObjectId = new ObjectId();
+const exerciseObjectId2 = new ObjectId();
 const allExercises = [
   {
     repetition: [10, 10, 10],
@@ -21,12 +21,21 @@ const strengthWorkoutDbModel = {
   date: new Date(),
   allExercises: allExercises,
 };
+
 const exerciseDbModel = {
   _id: exerciseObjectId,
   user: userObjectId,
-  name: exerciseMockData[0].name,
-  category: exerciseMockData[0].category,
+  name: 'Curls',
+  category: 'Arms',
 };
+
+const exerciseDbModel2 = {
+  _id: exerciseObjectId2,
+  user: userObjectId,
+  name: 'Bench',
+  category: 'Chest',
+};
+
 const userDbModel = {
   _id: userObjectId,
   username: 'test',
@@ -38,6 +47,7 @@ const userDbModel = {
 export {
   strengthWorkoutDbModel,
   exerciseDbModel,
+  exerciseDbModel2,
   userDbModel,
   userObjectId,
   exerciseObjectId,

@@ -1,4 +1,8 @@
-import {exerciseMockModelData} from "../mocks/exercise_mock_data";
+import {
+  exerciseMockModelData,
+  exerciseMockData,
+  exerciseMockDataToObject,
+} from '../mocks/exercise_mock_data';
 
 // Very generic mock model, should be replaced with easy to maintain solution.
 // Maybe just provide functions and then let jest handle the mock implementation.
@@ -14,7 +18,7 @@ export default class ExerciseMockModel {
   constructor() {}
   save() {
     ExerciseMockModel.saveCount += 1;
-    return this;
+    return exerciseMockDataToObject;
   }
   static find(params) {
     this.findCount += 1;
@@ -47,4 +51,3 @@ export default class ExerciseMockModel {
     this.findParams = undefined;
   }
 }
-
