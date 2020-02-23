@@ -3,7 +3,7 @@
   "rootDir": ".",
   "preset": "@shelf/jest-mongodb",
   "testEnvironment": "node",
-  "setupFiles": ["./.env"],
+  "setupFiles": ["./.env_e2e"],
   "testRegex": ".e2e-spec.ts$",
   "transform": {
     "^.+\\.(t|j)s$": "ts-jest"
