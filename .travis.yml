@@ -3,8 +3,9 @@ node_js:
   - "node"
 
 env:
-  - JWT_SECRET='TEST_SECRET'
-  - JWT_EXPIRY=1800
+  global:
+    - JWT_SECRET=TEST_SECRET 
+    - JWT_EXPIRY=1800
 
 sudo: false
 cache:
