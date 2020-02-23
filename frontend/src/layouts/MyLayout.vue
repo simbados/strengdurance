@@ -99,6 +99,10 @@
       </q-header>
     </div>
     <q-page-container>
+      <q-banner v-if="showOffline" class="text-black bg-info">
+        You have lost connection to the internet. This app is offline. Please
+        turn on your wifi.
+      </q-banner>
       <router-view />
     </q-page-container>
   </q-layout>
@@ -111,14 +115,24 @@ export default {
 
   data() {
     return {
+      onLine: navigator.onLine,
+      showOffline: !navigator.onLine,
       activeItem: 'Overview',
       leftDrawerOpen: false,
     };
   },
+  mounted() {
+    window.addEventListener('online', this.updateOnlineStatus);
+    window.addEventListener('offline', this.updateOnlineStatus);
+  },
   computed: {
-    ...mapState('general', ['isAuthenticated']),
+    ...mapState('general', ['isAuthenticated', 'errorMessage']),
   },
   methods: {
+    updateOnlineStatus(e) {
+      const { type } = e;
+      this.onLine = type === 'online';
+    },
     logout() {
       this.$store
         .dispatch('general/logout', this)
@@ -129,6 +143,11 @@ export default {
         .catch(error =>
           this.$q.notify({ message: `Could not log you out, error: ${error}` }),
         );
+    },
+  },
+  watch: {
+    onLine(value) {
+      this.showOffline = !value;
     },
   },
 };

@@ -11,16 +11,22 @@ export function loadExercises({ commit }, vm) {
       })
       .catch(error => {
         vm.$log.debug(error);
-        reject(error);
+        reject('Could not fetch exercises, ' + error.message);
       });
   });
 }
 
 export function saveNewExercise({ commit }, { vm, exercise }) {
-  ExerciseService.postExercise(exercise)
-    .then(response => {
-      vm.$log.debug('response from server', response);
-      commit('addExercise', exercise);
-    })
-    .catch(error => vm.$log.debug(error));
+  return new Promise((resolve, reject) => {
+    ExerciseService.postExercise(exercise)
+      .then(response => {
+        vm.$log.debug('response from server, ', response);
+        commit('addExercise', exercise);
+        resolve(response);
+      })
+      .catch(error => {
+        vm.$log.debug(error);
+        reject('Could not create exercise, ' + error.message);
+      });
+  });
 }

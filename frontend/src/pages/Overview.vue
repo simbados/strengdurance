@@ -11,12 +11,12 @@ export default {
   mounted() {
     if (this.exercises === undefined) {
       this.$store.dispatch('exercise/loadExercises', this).catch(error => {
-        this.$q.notify({ message: error.message, color: 'red' });
+        this.$q.notify({ message: error, color: 'red' });
       });
     }
     if (this.workouts === undefined) {
       this.$store.dispatch('workouts/loadWorkouts', this).catch(error => {
-        this.$q.notify({ message: error.message, color: 'red' });
+        this.$q.notify({ message: error, color: 'red' });
       });
     }
   },

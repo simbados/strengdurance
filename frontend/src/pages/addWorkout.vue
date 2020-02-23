@@ -159,10 +159,8 @@ export default {
             this.$q.notify({ message: successMessage, color: 'green' });
             this.resetSubmitFields();
           })
-          .catch(() => {
-            const errorMessage =
-              'Could not save workout, please try again later';
-            this.$q.notify({ message: errorMessage, color: 'red' });
+          .catch(error => {
+            this.$q.notify({ message: error, color: 'red' });
             this.resetSubmitFields();
           });
       }

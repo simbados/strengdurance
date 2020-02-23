@@ -45,13 +45,17 @@ export default {
   },
   methods: {
     storeExercise() {
-      this.$store.dispatch('exercise/saveNewExercise', {
-        vm: this,
-        exercise: {
-          name: this.exerciseNameInputModel,
-          category: this.exerciseCategoryInputModel,
-        },
-      });
+      this.$store
+        .dispatch('exercise/saveNewExercise', {
+          vm: this,
+          exercise: {
+            name: this.exerciseNameInputModel,
+            category: this.exerciseCategoryInputModel,
+          },
+        })
+        .catch(error => {
+          this.$q.notify({ message: error, color: 'red' });
+        });
     },
   },
 };

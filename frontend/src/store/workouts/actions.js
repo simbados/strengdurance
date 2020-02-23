@@ -11,7 +11,7 @@ export function loadWorkouts({ commit }, vm) {
       })
       .catch(error => {
         vm.$log.debug('Error while loading workouts', error.message);
-        reject(error);
+        reject('Could not fetch workouts, ' + error.message);
       });
     vm.$log.debug('loadExercises action has been called!');
   });
@@ -32,8 +32,8 @@ export function saveWorkout({ commit }, { vm, workout }) {
         resolve();
       })
       .catch(error => {
-        vm.$log.debug(error.error);
-        reject(error);
+        vm.$log.debug(error);
+        reject('Could not save workout, ' + error.message);
       });
   });
 }

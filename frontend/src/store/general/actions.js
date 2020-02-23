@@ -15,7 +15,9 @@ export function login({ commit }, { user, vm }) {
       })
       .catch(error => {
         vm.$log.debug(error);
-        reject(error);
+        reject(
+          'Could not log you in, please try later again: ' + error.message,
+        );
       });
   });
 }
@@ -35,7 +37,9 @@ export function logout({ commit }, vm) {
       })
       .catch(error => {
         vm.$log.debug(error);
-        reject(error);
+        reject(
+          'Could not log you out, please try later again: ' + error.message,
+        );
       });
   });
 }

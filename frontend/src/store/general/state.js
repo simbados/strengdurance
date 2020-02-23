@@ -4,6 +4,7 @@ const defaultGeneralState = () => {
     username: '',
     userId: '',
     isAuthenticated: false,
+    errorMessage: '',
   };
 };
 

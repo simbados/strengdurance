@@ -68,6 +68,9 @@ export default {
         })
         .then(() => {
           this.$router.replace({ path: '/overview' });
+        })
+        .catch(error => {
+          this.$q.notify({ message: error, color: 'red' });
         });
       // eslint-disable-next-line
       console.log('Login called');
