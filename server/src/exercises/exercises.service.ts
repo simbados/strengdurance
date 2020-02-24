@@ -40,11 +40,16 @@ export class ExerciseService {
     await this.checkForDuplicatedName(exerciseDto.name, userId);
     Logger.debug(`Save items, ${exerciseDto}`);
     const exerciseToStore = { ...exerciseDto, user: userId };
-    const createdExercise = new this.exerciseModel(exerciseToStore);
-    const savedExercise = await createdExercise.save();
-    console.log('savedExercise', savedExercise);
-    const { _id, __v, ...rest } = savedExercise.toObject();
-    return rest;
+    try {
+      const createdExercise = new this.exerciseModel(exerciseToStore);
+      const savedExercise = await createdExercise.save();
+      console.log('savedExercise', savedExercise);
+      const { _id, __v, ...rest } = savedExercise.toObject();
+      return rest;
+    } catch (error) {
+      console.log(error);
+      throw new HttpException(error.errmsg, HttpStatus.INTERNAL_SERVER_ERROR);
+    }
   }
 
   async getAllExercises(userId: string): Promise<Exercise[]> {

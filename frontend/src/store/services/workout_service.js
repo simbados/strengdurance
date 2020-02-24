@@ -2,11 +2,11 @@
 import axios from 'axios';
 
 export class WorkoutService {
-  static getAllStrengthWorkouts() {
+  static async getAllStrengthWorkouts() {
     const URL = `${process.env.SERVER_URL}/workouts/strength`;
     return axios.get(URL);
   }
-  static postWorkout(workout) {
+  static async postWorkout(workout) {
     console.log('Send workout in service', workout)
     // const workoutDto = { allExercises: workout }
     const URL = `${process.env.SERVER_URL}/workouts/strength`;

@@ -2,11 +2,11 @@ import axios from 'axios';
 /* eslint-disable */
 
 export class ExerciseService {
-  static getAllExercises() {
+  static async getAllExercises() {
     const URL = `${process.env.SERVER_URL}/exercises/strength`;
     return axios.get(URL)
   }
-  static postExercise(exercise) {
+  static async postExercise(exercise) {
     console.log('Send exercise in service', exercise)
     // const workoutDto = { allExercises: workout }
     const URL = `${process.env.SERVER_URL}/exercises/strength`;

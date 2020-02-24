@@ -44,6 +44,51 @@ export function logout({ commit }, vm) {
   });
 }
 
+// eslint-disable-next-line
+export function register({state}, {vm, newUser}) {
+  vm.$log.debug('register action has been called!');
+  return new Promise((resolve, reject) => {
+    AuthenticationService.register(newUser)
+      .then(response => {
+        vm.$log.debug('response from api', response);
+        if (response.status == 201) {
+          resolve();
+        } else {
+          // eslint-disable-next-line
+          console.log(response);
+          reject(
+            'Register has failed, please try again later, ' + response.data,
+          );
+        }
+      })
+      .catch(error => {
+        const errorMessage = handleError(error);
+        // eslint-disable-next-line
+        console.log(error);
+        vm.$log.debug(error);
+        reject(errorMessage);
+      });
+  });
+}
+
+function handleError(error) {
+  // eslint-disable-next-line
+  console.log(error.response);
+  if (error.response.data.message) {
+    if (error.response.data.message.includes('E11000 duplicate key')) {
+      if (error.response.data.message.includes('username')) {
+        return 'User name is already in use';
+      } else if (error.response.data.message.includes('email')) {
+        return 'Email is already in use';
+      }
+    }
+    return error.response.data.message;
+  } else if (error.request) {
+    return error.request;
+  }
+  return error.message;
+}
+
 export function reset({ commit }) {
   commit('reset');
 }

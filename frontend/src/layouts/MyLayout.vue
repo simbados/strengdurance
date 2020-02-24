@@ -140,9 +140,7 @@ export default {
           this.$router.replace({ path: '/login' });
           this.$store.dispatch('general/reset');
         })
-        .catch(error =>
-          this.$q.notify({ message: `Could not log you out, error: ${error}` }),
-        );
+        .catch(error => this.$q.notify({ message: error, color: 'red' }));
     },
   },
   watch: {

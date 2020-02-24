@@ -25,8 +25,22 @@ export function saveNewExercise({ commit }, { vm, exercise }) {
         resolve(response);
       })
       .catch(error => {
+        const errorMessage = handleError(error);
+        // eslint-disable-next-line
         vm.$log.debug(error);
-        reject('Could not create exercise, ' + error.message);
+        reject(errorMessage);
       });
   });
+}
+
+function handleError(error) {
+  if (error.response.data.message) {
+    if (error.response.data.message.includes('E11000 duplicate key')) {
+      return 'Exercise name is already in use';
+    }
+    return error.response.data.message;
+  } else if (error.request) {
+    return error.request;
+  }
+  return error.message;
 }

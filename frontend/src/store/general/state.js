@@ -2,6 +2,7 @@ const defaultGeneralState = () => {
   return {
     jwt: '',
     username: '',
+    email: '',
     userId: '',
     isAuthenticated: false,
     errorMessage: '',
