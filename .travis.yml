@@ -1,28 +1,36 @@
 language: node_js
 node_js:
-  - "node"
-
+- node
+services:
+- docker
 env:
   global:
-    - JWT_SECRET=TEST_SECRET 
-    - JWT_EXPIRY=1800
-
-sudo: false
+  - JWT_SECRET=TEST_SECRET
+  - JWT_EXPIRY=1800
+  - secure: nu9pc5KZZQ4B4/0FXG4wuaUuY1PRZ4eqXFmaua3tJjcqHOyLzEbV7l4ScWu5hCv6g+LmnQZLiZjLs2ozUsORcW2FE99gqLq8btL0aN6m4msY1/xdHUTUQHDSzowMVd3O1zLz6TqR6wodNda5IkaPL6cT9OT8fALTX0ze98Gv7DtZfotf30awf7hGJmYae2QmCccydpw3aWrw7DS9T/TcRJaiik00xpy1PvCfEl2QF1cnRa8SzEokP5Pu2fgXRZd4Rl8366NpKFpcbmvzqMriUesrlt0pc/tSNDcNrh2tPgPwtzBcnhnDXPso1Enfwz/HIFbquHWyr67p1ORW1yDgcHreEWuB3Oj9d4mbKnkTdg/PHwpwFLAII6f4ZsSMzKdENZc7gX1Gr8ZvY/vyMM/zD2a0tAyJuWURiXPYaN1tQfQ3HfLVpGWYg0ZYRhUYUmzont+acgE7b1Z5y2ARIqS6SOKRRPCXnx/JmU7K4eyxBvMjxbrBuG+6wNvxkedUHjO0/UmTc49kAAGKVRon0FkOYU+FTKeIbs/4JEWlYrKG1BW466jsfIc4rl+GesNBWwK3h+qF3JrnshbLWUg9DgyRyD7whigTzVpPDD7/7695g99Tt9bDFGFLKCxJvzPwsxsxl4qXzphlslHF2oh3iWrpvxzBaUH002VV7xOK9DGsdXk=
+  - secure: r1/AFzvOFAKrhMTjg7Ctz5bXdfUva1YIoWu44YTFyEbUU431wVgn6NZaA7wfijCntkVoY6S08a3mcHS883HL9mRZtKaGboBSjzL0VsM3q816Emv1/l101MSFnhMHfssbKWcr+PYlfPRc1V2KZWU7HVh5hguVYNf2XNN7ZVIfTKAmw1d/bcy71KDdw+l7FvmozU/CMpgFfnJkCRbpgjopbtLK7wDyQvWzEkmgPJwHXmaiFwKIHg5L/umoDBobC806gPp/BEFf1wNmXqBAE7vdvk3n5e1cXau/t+BAxVTDyvbFmat48vkF1YZ2O0PFf2bSjduQbhVXPTFqWVw5hAnRtcE2oPC0XHAyoW+3REhoWrMGhyesWWjxdJmhuEZ4u6B3nXeRvajHUVV3mRn4vinS+3IIvxTKgdyKJ1ijJ5eIEnBhZcrlfzcE0nDDBDkO8M2+bkJ+m01B+9Ut4mD5n8xOF8ugzLgFM+aHMNGqmSz1dwSlBkRBmgZyK2feWNKqEJFHAG564PZQKmVG4FnBJmQFatbKtkxaeIMi1ajJYxwTCH+wpj+tyKmh+g/4dNdhefKhOLoFvQ6va7j6kLhbwXWa883O528HURqaUsWNB64hlh1kElEiwi+VRuHYiAKNrVB6QjTIVK9QoAVcO1D32NreH5J89JyWSgVSip/MaBZVIn8=
+os: linux
 cache:
   directories:
   - "$HOME/.npm"
-
 before_install:
-  - cd server/
-  - npm i -g @nestjs/cli
-
-install: 
-  - npm install
-
+- cd server/
+- npm i -g @nestjs/cli
+install:
+- npm install
 jobs:
-  - include:
-    - stage: test
-      script: npm run test
-    - 
-      script: npm run test:e2e
-
+- include:
+  - stage: test
+    script: npm run test
+  - 
+    script: npm run test:e2e
+  - stage: deploy
+    before_install: 
+      - cd ../
+      - pip install --user awscli
+      - export PATH=$PATH:$HOME/.local/bin
+    script:
+    - eval $(aws ecr get-login --region us-east-2)
+    - docker-compose build
+    - docker tag strengdurance:latest ec2-3-19-30-225.us-east-2.compute.amazonaws.com/strengdurance:latest
+    - docker push ec2-3-19-30-225.us-east-2.compute.amazonaws.com/strengdurance:latest

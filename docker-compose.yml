@@ -1,0 +1,15 @@
+version: '3'
+services:
+  server:
+    build: ./server
+    ports:
+      - "3000:3000"
+    depends_on:
+      - mongo
+    image: schmoll/server
+    container_name: server
+  mongo:
+    image: mongo
+    container_name: mongo
+    ports:
+      - "27017:27017"
