@@ -1,4 +1,6 @@
 # strengdurance
+https://travis-ci.org/simonschmoll/strengdurance.svg?branch=master
+
 The repository for the strengthdurance application
 
 I am building an application that is capable of recording your strength and endurance workouts.

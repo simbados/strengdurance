@@ -26,7 +26,7 @@ jobs:
     script: npm run test:e2e
   - stage: deploy
     before_install: 
-      - cd ../
+      - pwd
       - pip install --user awscli
       - export PATH=$PATH:$HOME/.local/bin
     script:
