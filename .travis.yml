@@ -29,7 +29,7 @@ jobs:
     - pip install --user awscli
     - export PATH=$PATH:$HOME/.local/bin
     script:
-    - eval $(aws ecr get-login --region us-east-2)
+    - eval $(aws ecr get-login --region --no-include-email us-east-2)
     - docker-compose build
     - docker tag strengdurance/server:latest 924554764504.dkr.ecr.us-east-2.amazonaws.com/strengdurance:server-latest
     - docker tag strengdurance/frontend:latest 924554764504.dkr.ecr.us-east-2.amazonaws.com/strengdurance:frontend-latest
