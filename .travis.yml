@@ -7,8 +7,8 @@ env:
   global:
   - JWT_SECRET=TEST_SECRET
   - JWT_EXPIRY=1800
-  - secure: nu9pc5KZZQ4B4/0FXG4wuaUuY1PRZ4eqXFmaua3tJjcqHOyLzEbV7l4ScWu5hCv6g+LmnQZLiZjLs2ozUsORcW2FE99gqLq8btL0aN6m4msY1/xdHUTUQHDSzowMVd3O1zLz6TqR6wodNda5IkaPL6cT9OT8fALTX0ze98Gv7DtZfotf30awf7hGJmYae2QmCccydpw3aWrw7DS9T/TcRJaiik00xpy1PvCfEl2QF1cnRa8SzEokP5Pu2fgXRZd4Rl8366NpKFpcbmvzqMriUesrlt0pc/tSNDcNrh2tPgPwtzBcnhnDXPso1Enfwz/HIFbquHWyr67p1ORW1yDgcHreEWuB3Oj9d4mbKnkTdg/PHwpwFLAII6f4ZsSMzKdENZc7gX1Gr8ZvY/vyMM/zD2a0tAyJuWURiXPYaN1tQfQ3HfLVpGWYg0ZYRhUYUmzont+acgE7b1Z5y2ARIqS6SOKRRPCXnx/JmU7K4eyxBvMjxbrBuG+6wNvxkedUHjO0/UmTc49kAAGKVRon0FkOYU+FTKeIbs/4JEWlYrKG1BW466jsfIc4rl+GesNBWwK3h+qF3JrnshbLWUg9DgyRyD7whigTzVpPDD7/7695g99Tt9bDFGFLKCxJvzPwsxsxl4qXzphlslHF2oh3iWrpvxzBaUH002VV7xOK9DGsdXk=
-  - secure: r1/AFzvOFAKrhMTjg7Ctz5bXdfUva1YIoWu44YTFyEbUU431wVgn6NZaA7wfijCntkVoY6S08a3mcHS883HL9mRZtKaGboBSjzL0VsM3q816Emv1/l101MSFnhMHfssbKWcr+PYlfPRc1V2KZWU7HVh5hguVYNf2XNN7ZVIfTKAmw1d/bcy71KDdw+l7FvmozU/CMpgFfnJkCRbpgjopbtLK7wDyQvWzEkmgPJwHXmaiFwKIHg5L/umoDBobC806gPp/BEFf1wNmXqBAE7vdvk3n5e1cXau/t+BAxVTDyvbFmat48vkF1YZ2O0PFf2bSjduQbhVXPTFqWVw5hAnRtcE2oPC0XHAyoW+3REhoWrMGhyesWWjxdJmhuEZ4u6B3nXeRvajHUVV3mRn4vinS+3IIvxTKgdyKJ1ijJ5eIEnBhZcrlfzcE0nDDBDkO8M2+bkJ+m01B+9Ut4mD5n8xOF8ugzLgFM+aHMNGqmSz1dwSlBkRBmgZyK2feWNKqEJFHAG564PZQKmVG4FnBJmQFatbKtkxaeIMi1ajJYxwTCH+wpj+tyKmh+g/4dNdhefKhOLoFvQ6va7j6kLhbwXWa883O528HURqaUsWNB64hlh1kElEiwi+VRuHYiAKNrVB6QjTIVK9QoAVcO1D32NreH5J89JyWSgVSip/MaBZVIn8=
+  - secure: XWMIUNuiwJpXb8+xN6F5Tah5/fvXx/biPq9JwtDij/JHTgCd1q88yCRu8vIX2AhiJGXJXcP9/FB6fAhA/jj+sbE9TlmH0PJ7IL51Ym2o/7WjsXfv6fRKlnvUaGxUnUz6E2ngy8yB93UTukNRsVXn6JbX7RY61rF7OgpSSuufJ669AJ3fzXXsvWJFOQQbeQ9CjgJ1mhotx+K9PYWxxkv8IbM4+0YQ6ZmWqfdjBc+IEOZcJ0KiBFZTJgTIkBeOLt83RdaN7DCFF2xZl1T9+I+kaeSWp1/kemAErhF2s8c6v8r1DSlAMuC4rpa1xhwp3rXV1bW/lpQVspZsdQnzT+MYKvKEyWrIHMuTBc3X7z5lDAohxPaA1Q7AlA4DUelV+0Mr8nNk/dEg3+z0quiCdjx4Z4RtVvByfyru4hDp//eMq0HewE6U/NfD8FSULrmV6PeGOujvnmRCutbK0v9zgVioLuZ87dbwJH3I0ymKpArX4vzRZulBqE8EnSdZNWySoz2YsuVd3yVIo+cHOXhowlYLX3tky78UFzJ0G2GYl6f8xN0BZz8ipFIRhfZJkh6yZXggWfjz7wp6FiEEjsAJRYc8gTcU6kUTurDL030dekgITcEdyPNQouN8r4tm8q8waRDcIalW4SGIgxLY9uMfa3su7tgxZaKg6G0REfMBJoQ9Jqg=
+  - secure: mJ/E0edswr2iuCDCe7bhHIJe4pW0a+pFqtBy3FcgquMAFPkb9jFqcb0krN96s+tzG01ocC+gdLMeiXAuGpJnQ2fbXFGHriM3RU7g5W3DAZtIVSaprR0E2jFytRbxJZEXcF4Vat12IMGcz45xhQ3C9X7Pe7r+Gc7a1sV2pZG4E6Btkj8tjGdlGg4OESdVVPAr0IElggJ21+Isna9wJPKO34R6Gpm9SDXdMG6IqCcPZ7+KKQaF02xYc2U7vnB6olyjDqu0kSbQPtJ1Dzk8z7xbG2ArXlhSIV9YcEgRSthNONvs/R737PNJoT2Pg0c+p88BKKP7vt0FWMu+SrnFkfwo7mOKWwRNu7e8MSmGoRYGaZK1ix/wfKiXO0MvJumdETwg1RMajkQmX1OufHAlyo7ZPg8XoYqmFfnHyiUoUmKFPaEKoEXiyri8jMFKn1ug4zuLMpfrNRWdiW8RhXxa0sPojnNb/e2V9Lo3+2vbOrYlU2OWOIBxibZ2gh2ei+DtZz81XH21ddd2tdB30nFfnnCWwItfnPobyaSN/Mv3zYjLnUXU80fAkYFq4BB+KsJreKw4qUq66eIc7KbWknvKkTs5rR9nGt5Hy5lVvmogKBpKi8pzeVd7pYw55hF0BTk2mSBXvRBVu1VLmxTlfH5cgCIzskZVWAYdGJj8N0TXgvdx6Ic=
 os: linux
 cache:
   directories:
@@ -22,15 +22,16 @@ jobs:
 - include:
   - stage: test
     script: npm run test
-  - 
-    script: npm run test:e2e
+  - script: npm run test:e2e
   - stage: deploy
-    before_install: 
-      - pwd
-      - pip install --user awscli
-      - export PATH=$PATH:$HOME/.local/bin
+    before_install:
+    - pwd
+    - pip install --user awscli
+    - export PATH=$PATH:$HOME/.local/bin
     script:
     - eval $(aws ecr get-login --region us-east-2)
     - docker-compose build
-    - docker tag strengdurance:latest ec2-3-19-30-225.us-east-2.compute.amazonaws.com/strengdurance:latest
-    - docker push ec2-3-19-30-225.us-east-2.compute.amazonaws.com/strengdurance:latest
+    - docker tag strengdurance/server:latest 924554764504.dkr.ecr.us-east-2.amazonaws.com/strengdurance:server-latest
+    - docker tag strengdurance/frontend:latest 924554764504.dkr.ecr.us-east-2.amazonaws.com/strengdurance:frontend-latest
+    - docker push 924554764504.dkr.ecr.us-east-2.amazonaws.com/strengdurance:server-latest
+    - docker push 924554764504.dkr.ecr.us-east-2.amazonaws.com/strengdurance:frontend-latest

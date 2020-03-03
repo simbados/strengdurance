@@ -6,10 +6,18 @@ services:
       - "3000:3000"
     depends_on:
       - mongo
-    image: schmoll/server
+    image: strengdurance/server
     container_name: server
+  frontend:
+    build: ./frontend
+    ports:
+      - "80:80"
+    depends_on:
+      - server
+    image: strengdurance/frontend
+    container_name: frontend
   mongo:
     image: mongo
-    container_name: mongo
+    container_name: mongodb
     ports:
       - "27017:27017"
