@@ -7,8 +7,6 @@ env:
   global:
   - JWT_SECRET=TEST_SECRET
   - JWT_EXPIRY=1800
-  - secure: AMY2LCg27rS/1uUKLUjsb5N6KQZd3oQr0bSULR0fjdoaJXuj+Hwvzv8zMV7ZyaOV5vR0Ww3B6liXwdKn9waSZQOa4GoXOHltiQhLwenGV0LxXD4Qf76VLbh7vj82GGwFtWwRn4igI6t8kwPuz1XQzN0wSRH6+cZzDgYC+DdC7zXUDsP22Xb8W1YOJzgMQcX/kfJgPVhCj9Bbb0TQG5EB5QKZCWeey3el1gZjw4hGKZsGrmGDuNKwbz1oHl0vyPGbJ6ydLmn0B5IXLhs3zsUaz+XHhCJrEL61a25c4P+/zJB808UPuaj7yqdaoFbwXmMr6PvNnayXDJcodyOYcQNAyi+k1zUfKcNnG9JvcZGYNwJIwbahovxr2w8xe1a46VgjIV4GU2TJWKDkgsQ4DqsL7fdmq5H3DgvFFTl9hpItIbM8PFEkaaeCppgvt+ZKXalb8mtwEKx3bxJjYaNgvZqJNUZ6HcKBKQK0ezS7JTiA+rO4nc6WPLAime6U1iTHsdApp89CDyZZU8KypcQXd6YoHdNGlds3ZPLyfd8UfACZvDK0vObhrgk4mJPF/+2iOWwMFJVMrJmAlZs2vfc/nrI2qYZXyY0ZDKiLWgxNvwVNkdgfNaFb023R2r02TN89XPhlSlRhiKAMZyDq1DNsshSIfAQ+1QBmWAQVhBxaqMcpGu4=
-  - secure: yE1YWbXFQ+biLZbYX+cSoL1Oox8LVK6Q6x5pQCQ6wIyVXLF4nhpPsK+i/WXjYuBYhLRm7zPNsMiwZoXFJxEn3feBWPIGqPpOBJB4TkpGIiZFeSdgtK8Ik3LUZdqofWCoEYjqJrYkfelc56NCwmoXlKDJxgffxoavwO3C6SdYslKuHVpIIBrzjwQlmYqe10qlRhpYfZYoWLJyEmGy7kvtphP4he7XKuRb59g9drbYtYTW6VUjmmV1NdynEc85IWNd0N8ENRCJIV+dwI55NPzbqT9fGmWJGoMvBzT7Tn6GFYAwT5I6EoA35uIEWAPSdtTeLo4ZuAqz7Tn9s42lI0eJZZNVemntUH+QFgeDadOjR97s2z78czMCrpjyoUeda7E9WszEzICm8c0wnn2PmIBq5XLXnbgzhaPj2yI9etX+f6hrd5YnYirLmcIEu74eoSp0N/Lqvq/zWwchldfeFw+aE81uBcGBY8wOuYv5Q91xbtpcOrF14V9HshOceuuvHjjfkqqe0q1pTGxERGKYOo3v+vLv3DAWERflehAlnPf2u8gNjkmLNu6BfUFgku6FfZFoDJHHYyFHMec+7ayJVmOAV5b7JcFtMHTmXbu+L/2PdPP7vP8SpY1kuQFZupE8WgPK80Jf8pBYds6WMOKWtE/OBKqPelISEEvLLKPVcS2VAgU=
 os: linux
 cache:
   directories:
@@ -25,7 +23,6 @@ jobs:
   - script: npm run test:e2e
   - stage: deploy
     before_install:
-    - pwd
     - pip install --user awscli
     - export PATH=$PATH:$HOME/.local/bin
     script:
@@ -35,3 +32,12 @@ jobs:
     - docker tag strengdurance/frontend:latest 924554764504.dkr.ecr.us-east-2.amazonaws.com/strengdurance:frontend-latest
     - docker push 924554764504.dkr.ecr.us-east-2.amazonaws.com/strengdurance:server-latest
     - docker push 924554764504.dkr.ecr.us-east-2.amazonaws.com/strengdurance:frontend-latest
+    provider: elasticbeanstalk
+    access_key_id: $AWS_ACCESS_KEY_ID
+    secret_access_key: $AWS_SECRET_ACCESS_KEY
+    region: "us-east-2"
+    app: "Strengthdurance"
+    env: "Strengthdurance-env"
+    bucket_name: "strengthdurance-s3-bucket-server"
+    on: 
+      branch: master
