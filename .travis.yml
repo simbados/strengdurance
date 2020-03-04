@@ -30,6 +30,7 @@ script:
 - docker tag strengdurance/frontend:latest 924554764504.dkr.ecr.us-east-2.amazonaws.com/strengdurance:frontend-latest
 - docker push 924554764504.dkr.ecr.us-east-2.amazonaws.com/strengdurance:server-latest
 - docker push 924554764504.dkr.ecr.us-east-2.amazonaws.com/strengdurance:frontend-latest
+- docker-compose up
 
 deploy:
     provider: elasticbeanstalk
