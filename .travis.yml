@@ -1,22 +1,22 @@
 language: node_js
 node_js:
-- node
+  - node
 services:
-- docker
+  - docker
 env:
-  global:
-  - JWT_SECRET=TEST_SECRET
-  - JWT_EXPIRY=1800
+  # global:
+  # - JWT_SECRET=TEST_SECRET
+  # - JWT_EXPIRY=1800
 os: linux
-cache:
-  directories:
-  - "$HOME/.npm"
+# cache:
+#   directories:
+#   - "$HOME/.npm"
 before_install:
-- cd server/
-- npm i -g @nestjs/cli
-install:
-- npm install
-- docker build -t strengdurance/server .
+  - cd server/
+# - npm i -g @nestjs/cli
+script:
+# - npm install
+  - docker build -t strengdurance/server .
 # jobs:
 # - include:
 #   - stage: test
