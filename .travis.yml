@@ -17,12 +17,12 @@ language: node_js
   install:
   - npm install
   - docker build -t strengdurance/server .
-  jobs:
-  - include:
-    - stage: test
-      script: npm run test
-    - 
-      script: npm run test:e2e
+  # jobs:
+  # - include:
+  #   - stage: test
+  #     script: npm run test
+  #   - 
+  #     script: npm run test:e2e
 
   deploy:
     provider: elasticbeanstalk
