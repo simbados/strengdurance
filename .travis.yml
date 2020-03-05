@@ -1,38 +1,51 @@
-language: node_js
-node_js:
-- node
-services:
-- docker
-env:
-  global:
-  - JWT_SECRET=TEST_SECRET
-  - JWT_EXPIRY=1800
-os: linux
-cache:
-  directories:
-  - "$HOME/.npm"
-before_install:
-- cd server/
-- npm i -g @nestjs/cli
-install:
-- npm install
 jobs:
-- include:
-  - stage: test
-    script: npm run test
-  - 
-    script: npm run test:e2e
-  - stage: deploy
-    before_install:
-    - pip install --user awscli
-    - export PATH=$PATH:$HOME/.local/bin
-    # - curl https://raw.githubusercontent.com/silinternational/ecs-deploy/master/ecs-deploy | \
-    # - sudo tee -a /usr/bin/ecs-deploy
-    # - sudo chmod +x /usr/bin/ecs-deploy
-    script:
-    - eval $(aws ecr get-login --no-include-email --region us-east-1)
-    - docker-compose build
-    - docker tag strengdurance/server:latest 924554764504.dkr.ecr.us-east-1.amazonaws.com/strengthdurance-server:latest
-    - docker tag strengdurance/frontend:latest 924554764504.dkr.ecr.us-east-1.amazonaws.com/strengthdurance-frontend:latest
-    - docker push 924554764504.dkr.ecr.us-east-1.amazonaws.com/strengthdurance-frontend:latest
-    - docker push 924554764504.dkr.ecr.us-east-1.amazonaws.com/strengthdurance-server:latest
+  include:
+    - language: node_js
+      node_js:
+      - node
+      services:
+      - docker
+      env:
+        global:
+        - JWT_SECRET=TEST_SECRET
+        - JWT_EXPIRY=1800
+      os: linux
+      cache:
+        directories:
+        - "$HOME/.npm"
+      before_install:
+      - cd server/
+      - npm i -g @nestjs/cli
+      install:
+      - npm install
+      - docker build -t strengdurance/server .
+      jobs:
+      - include:
+        - stage: test
+          script: npm run test
+        - 
+          script: npm run test:e2e
+        - stage: deploy
+          deploy:
+            provider: elasticbeanstalk
+            access_key_id:
+              secure: $AWS_ACCESS_KEY_ID
+            secret_access_key:
+              secure: $AWS_SECRET_ACCESS_KEY
+            region: "us-east-1"
+            app: "Strengthdurance"
+            env: "Strengthdurance-env"
+            bucket_name: "strengthdurance-server-bucket"
+          # before_install:
+          # - pip install --user awscli
+          # - export PATH=$PATH:$HOME/.local/bin
+          # # - curl https://raw.githubusercontent.com/silinternational/ecs-deploy/master/ecs-deploy | \
+          # # - sudo tee -a /usr/bin/ecs-deploy
+          # # - sudo chmod +x /usr/bin/ecs-deploy
+          # script:
+          # - eval $(aws ecr get-login --no-include-email --region us-east-1)
+          # - docker-compose build
+          # - docker tag strengdurance/server:latest 924554764504.dkr.ecr.us-east-1.amazonaws.com/strengthdurance-server:latest
+          # - docker tag strengdurance/frontend:latest 924554764504.dkr.ecr.us-east-1.amazonaws.com/strengthdurance-frontend:latest
+          # - docker push 924554764504.dkr.ecr.us-east-1.amazonaws.com/strengthdurance-frontend:latest
+          # - docker push 924554764504.dkr.ecr.us-east-1.amazonaws.com/strengthdurance-server:latest
