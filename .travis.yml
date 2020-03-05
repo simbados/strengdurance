@@ -16,29 +16,23 @@ before_install:
 - npm i -g @nestjs/cli
 install:
 - npm install
-  # - stage: test
-  #   script: npm run test
-  # - 
-  #   script: npm run test:e2e
-before_install:
-- pip install --user awscli
-- export PATH=$PATH:$HOME/.local/bin
-script:
-- eval $(aws ecr get-login --no-include-email --region us-east-2)
-- docker-compose build
-- docker tag strengdurance/server:latest 924554764504.dkr.ecr.us-east-2.amazonaws.com/strengdurance:server-latest
-- docker tag strengdurance/frontend:latest 924554764504.dkr.ecr.us-east-2.amazonaws.com/strengdurance:frontend-latest
-- docker push 924554764504.dkr.ecr.us-east-2.amazonaws.com/strengdurance:server-latest
-- docker push 924554764504.dkr.ecr.us-east-2.amazonaws.com/strengdurance:frontend-latest
-- docker-compose up
-
-deploy:
-    provider: elasticbeanstalk
-    access_key_id: $AWS_ACCESS_KEY_ID
-    secret_access_key: $AWS_SECRET_ACCESS_KEY
-    region: "us-east-2"
-    app: "Strengthdurance"
-    env: "Strengthdurance-env"
-    bucket_name: "strengthdurance-s3-bucket-server"
-    on: 
-      branch: master
+jobs:
+- include:
+  - stage: test
+    script: npm run test
+  - 
+    script: npm run test:e2e
+  - stage: deploy
+    before_install:
+    - pip install --user awscli
+    - export PATH=$PATH:$HOME/.local/bin
+    # - curl https://raw.githubusercontent.com/silinternational/ecs-deploy/master/ecs-deploy | \
+    # - sudo tee -a /usr/bin/ecs-deploy
+    # - sudo chmod +x /usr/bin/ecs-deploy
+    script:
+    - eval $(aws ecr get-login --no-include-email --region us-east-1)
+    - docker-compose build
+    - docker tag strengdurance/server:latest 924554764504.dkr.ecr.us-east-1.amazonaws.com/strengthdurance-server:latest
+    - docker tag strengdurance/frontend:latest 924554764504.dkr.ecr.us-east-1.amazonaws.com/strengthdurance-frontend:latest
+    - docker push 924554764504.dkr.ecr.us-east-1.amazonaws.com/strengthdurance-frontend:latest
+    - docker push 924554764504.dkr.ecr.us-east-1.amazonaws.com/strengthdurance-server:latest
