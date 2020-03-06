@@ -30,7 +30,7 @@ deploy:
   region: "us-east-1"
   app: "Strengthdurance"
   env: "Strengthdurance-env"
-  bucket_name: "strengthdurance-server-bucket"
+  bucket_name: "elasticbeanstalk-us-east-1-924554764504"
 # before_install:
 # - pip install --user awscli
 # - export PATH=$PATH:$HOME/.local/bin
