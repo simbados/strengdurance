@@ -29,7 +29,7 @@ deploy:
   secret_access_key: "$AWS_SECRET_ACCESS_KEY"
   region: "us-east-1"
   app: "Strengthdurance"
-  env: "Strengthdurance-env"
+  env: "Strengthdurance-env-2"
   bucket_name: "elasticbeanstalk-us-east-1-924554764504"
 # before_install:
 # - pip install --user awscli
