@@ -11,12 +11,11 @@ os: linux
 # cache:
 #   directories:
 #   - "$HOME/.npm"
-before_install:
+before_deploy:
   - cd server/
 # - npm i -g @nestjs/cli
 script:
 # - npm install
-  - docker build -t strengdurance/server .
 # jobs:
 # - include:
 #   - stage: test
