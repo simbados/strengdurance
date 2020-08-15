@@ -98,11 +98,7 @@ import { Utils } from '../utils';
 export default {
   name: 'stenghWorkouts',
   async mounted() {
-    if (this.workouts === undefined) {
-      await this.$store.dispatch('workouts/loadWorkouts', this);
-    }
-    /* const lastWorkout = this.workouts[this.workouts.length - 1]; */
-    /* this.workoutsToShow.push(lastWorkout); */
+    await this.$store.dispatch('workouts/loadWorkouts', this);
   },
   data() {
     return {

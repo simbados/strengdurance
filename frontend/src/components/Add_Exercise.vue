@@ -32,6 +32,7 @@
 
 <script>
 import { mapState } from 'vuex';
+
 export default {
   name: 'AddExercise',
   data() {
@@ -55,6 +56,10 @@ export default {
         })
         .catch(error => {
           this.$q.notify({ message: error, color: 'red' });
+        })
+        .then(() => {
+          const successMessage = 'Successfully stored your Exercise';
+          this.$q.notify({ message: successMessage, color: 'green' });
         });
     },
   },
@@ -64,6 +69,7 @@ export default {
 .add-exercise
   width: 100%
   margin: 2em 0
+
 h6
   margin: 0 0
   color: white

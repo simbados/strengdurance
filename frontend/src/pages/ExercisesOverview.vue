@@ -93,12 +93,25 @@ export default {
         if (this.exercises) {
           const filteredExerciseData =
             this.exerciseCategoryModel === 'All'
-              ? this.exercises
-              : this.exercises.filter(
-                  exercise => exercise.category === this.exerciseCategoryModel,
-                );
+              ? [...this.exercises]
+              : [
+                  ...this.exercises.filter(
+                    exercise =>
+                      exercise.category === this.exerciseCategoryModel,
+                  ),
+                ];
           this.$log.debug('this exercisedata is, ', filteredExerciseData);
-          return filteredExerciseData;
+          return filteredExerciseData.sort((a, b) => {
+            let aUpper = a.name.toUpperCase();
+            let bUpper = b.name.toUpperCase();
+            if (aUpper < bUpper) {
+              return -1;
+            }
+            if (aUpper > bUpper) {
+              return 1;
+            }
+            return 0;
+          });
         }
         return [];
       },

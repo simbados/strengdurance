@@ -6,7 +6,7 @@ import {
   Logger,
   Body,
   Param,
-  UseGuards,
+  UseGuards, Delete,
 } from '@nestjs/common';
 import { ExerciseService } from './exercises.service';
 import { Exercise } from './interfaces/exercises';
@@ -35,12 +35,22 @@ export class ExerciseController {
   }
 
   @Post('strength')
-  async postExercise(
+  async postStrengthExercise(
     @Request() req,
     @Body() exerciseDto: ExerciseDto,
   ): Promise<Exercise> {
     Logger.log('Post /exercises');
     Logger.log(`Dto is: , ${exerciseDto}, userId is: ${req.user.userId}`);
     return this.exerciseService.postExercise(exerciseDto, req.user.userId);
+  }
+
+  @Delete('strength')
+  async deleteStrengthExercise(
+      @Request() req,
+      @Body() exerciseDto: ExerciseDto,
+  ): Promise<Exercise> {
+    Logger.log('delete /exercises');
+    Logger.log(`Dto is: , ${exerciseDto}, userId is: ${req.user.userId}`);
+    return this.exerciseService.deleteStrengthExercise(exerciseDto, req.user.userId);
   }
 }

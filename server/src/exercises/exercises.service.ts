@@ -1,8 +1,8 @@
-import { Model } from 'mongoose';
-import { Injectable, Logger, HttpException, HttpStatus } from '@nestjs/common';
-import { InjectModel } from '@nestjs/mongoose';
-import { ExerciseDto } from './dto/exercise.dto';
-import { Exercise } from './interfaces/exercises';
+import {Model} from 'mongoose';
+import {HttpException, HttpStatus, Injectable, Logger} from '@nestjs/common';
+import {InjectModel} from '@nestjs/mongoose';
+import {ExerciseDto} from './dto/exercise.dto';
+import {Exercise} from './interfaces/exercises';
 import Category from './categories';
 
 @Injectable()
@@ -52,6 +52,15 @@ export class ExerciseService {
     }
   }
 
+  async deleteStrengthExercise(
+    exerciseDto: ExerciseDto,
+    userId: string,
+  ): Promise<Exercise> {
+    return await this.exerciseModel
+        .deleteOne({ category: exerciseDto.category, name: exerciseDto.name, user: userId })
+        .exec();
+  }
+
   async getAllExercises(userId: string): Promise<Exercise[]> {
     const dbExercises = await this.exerciseModel
       .find({ user: userId })
@@ -62,8 +71,7 @@ export class ExerciseService {
       user: { $exists: false },
     });
     console.log('default exercises are', defaultExercises.length);
-    const finalExercises = dbExercises.concat(defaultExercises);
-    return finalExercises;
+    return dbExercises.concat(defaultExercises);
   }
 
   async getExercisesByCategory(
@@ -73,7 +81,7 @@ export class ExerciseService {
     this.validateCategory(category);
     console.log('category is: ', category);
     return await this.exerciseModel
-      .find({ category: category, user: userId })
+      .find({ category, user: userId })
       .select('-_id -__v')
       .exec();
   }

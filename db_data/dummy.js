@@ -3,7 +3,7 @@ exports.__esModule = true;
 var exercise_schema_1 = require("../server/src/exercises/schemas/exercise.schema");
 var exercise_data_1 = require("./exercise_data");
 var mongoose = require("mongoose");
-mongoose.connect("mongodb://localhost:27017/strengdurance", {
+mongoose.connect("mongodb://localhost:27017/mongodb", {
     useNewUrlParser: true
 });
 var Exercise = mongoose.model("Exercise", exercise_schema_1.ExerciseSchema);

@@ -10,4 +10,7 @@ export default class ExerciseMockService {
   async postExercise(): Promise<Exercise> {
     return undefined;
   }
+  async deleteStrengthExercise(): Promise<Exercise> {
+    return undefined;
+  }
 }

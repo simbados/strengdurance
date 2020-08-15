@@ -17,7 +17,7 @@ describe('Exercise Controller', () => {
       providers: [{
         provide: ExerciseService,
         useValue: new ExerciseMockService(),
-      }]
+      }],
     }).compile();
 
     controller = module.get<ExerciseController>(ExerciseController);
@@ -35,16 +35,25 @@ describe('Exercise Controller', () => {
     expect(spy).toBeCalledTimes(1);
     expect(spy).toHaveBeenCalledWith(userId);
     expect(actualResponse).toEqual(exerciseMockData);
-  })
+  });
 
   it('postExercise should return provided exercise when called', async () => {
     const spy = jest.spyOn(service, 'postExercise').mockReturnValueOnce(
       new Promise(resolve => resolve(exerciseMockData[0])));
-    const actualResponse = await controller.postExercise(request, exerciseMockData[0]);
+    const actualResponse = await controller.postStrengthExercise(request, exerciseMockData[0]);
     expect(spy).toBeCalledTimes(1);
     expect(spy).toHaveBeenCalledWith(exerciseMockData[0], userId);
     expect(actualResponse).toEqual(exerciseMockData[0]);
-  })
+  });
+
+  it('deleteStrengthExercise should return provided exercise when called', async () => {
+    const spy = jest.spyOn(service, 'deleteStrengthExercise').mockReturnValueOnce(
+        new Promise(resolve => resolve(exerciseMockData[0])));
+    const actualResponse = await controller.deleteStrengthExercise(request, exerciseMockData[0]);
+    expect(spy).toBeCalledTimes(1);
+    expect(spy).toHaveBeenCalledWith(exerciseMockData[0], userId);
+    expect(actualResponse).toEqual(exerciseMockData[0]);
+  });
 
   it('getExercisesByCategory should return expected exercises', async () => {
     const category = {category: 'Arms'};
@@ -55,5 +64,5 @@ describe('Exercise Controller', () => {
     expect(spy).toBeCalledTimes(1);
     expect(spy).toHaveBeenCalledWith('Arms', userId);
     expect(actualResponse).toEqual(expectedValues);
-  })
+  });
 });

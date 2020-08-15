@@ -1,7 +1,7 @@
 import { ExerciseSchema } from "../server/src/exercises/schemas/exercise.schema";
 import exerciseDefaultData from "./exercise_data";
 import * as mongoose from "mongoose";
-mongoose.connect("mongodb://localhost:27017/strengdurance", {
+mongoose.connect("mongodb://localhost:27017/mongodb", {
   useNewUrlParser: true
 });
 

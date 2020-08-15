@@ -1,5 +1,6 @@
 "use strict";
 exports.__esModule = true;
+exports.ExerciseSchema = void 0;
 var mongoose = require("mongoose");
 var Schema = mongoose.Schema;
 exports.ExerciseSchema = new Schema({

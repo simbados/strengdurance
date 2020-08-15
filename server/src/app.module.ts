@@ -9,7 +9,7 @@ import {WorkoutModule} from './workout/workout.module';
 import {AuthModule} from './auth/auth.module';
 import {UserModule} from './user/user.module';
 import {ConfigModule} from '@nestjs/config';
-import * as Joi from '@hapi/joi';
+import * as Joi from 'joi';
 
 @Module({
   imports: [
@@ -42,4 +42,7 @@ import * as Joi from '@hapi/joi';
   ],
 })
 export class AppModule {
+  constructor() {
+    console.log(process.env.MONGO_URL);
+  }
 }

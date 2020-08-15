@@ -12,6 +12,7 @@ export default class ExerciseMockModel {
   static findCount: number = 0;
   static selectCount: number = 0;
   static findOneCount: number = 0;
+  static deleteOneCount: number = 0;
   static execCount: number = 0;
   static orCount: number = 0;
   static findParams: Object = undefined;
@@ -37,6 +38,10 @@ export default class ExerciseMockModel {
     this.findOneCount += 1;
     return this;
   }
+  static deleteOne() {
+    this.deleteOneCount += 1;
+    return this;
+  }
   static exec(): Promise<any> {
     this.execCount += 1;
     return new Promise(resolve => resolve(exerciseMockModelData));
@@ -44,6 +49,7 @@ export default class ExerciseMockModel {
   static reset() {
     this.execCount = 0;
     this.findOneCount = 0;
+    this.deleteOneCount = 0;
     this.selectCount = 0;
     this.findCount = 0;
     this.saveCount = 0;

@@ -94,4 +94,12 @@ describe('ExerciseService', () => {
       );
     }
   });
+
+  it('deleteStrengthExercise should call deleteOne method of mongoose model', async () => {
+    const result = await exerciseService.deleteStrengthExercise(
+        exerciseMockModelData[0],
+        userId,
+    );
+    expect(ExerciseMockModel.deleteOneCount).toEqual(1);
+  });
 });
