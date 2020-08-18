@@ -26,10 +26,26 @@ export function saveNewExercise({ commit }, { vm, exercise }) {
       })
       .catch(error => {
         const errorMessage = handleError(error);
-        // eslint-disable-next-line
         vm.$log.debug(error);
         reject(errorMessage);
       });
+  });
+}
+
+export function deleteExercises({ dispatch }, { vm, exercises }) {
+  return new Promise((resolve, reject) => {
+    ExerciseService.deleteExercises(exercises)
+      .then(async response => {
+        vm.$log.debug('response from server, ', response);
+        resolve(response);
+      })
+      .catch(error => {
+        vm.$log.debug('response from server, ', error);
+        const errorMessage = error.message;
+        vm.$log.debug(error, vm);
+        reject(errorMessage);
+      })
+      .finally(dispatch('loadExercises', vm));
   });
 }
 

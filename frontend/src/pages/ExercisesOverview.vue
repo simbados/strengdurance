@@ -10,6 +10,9 @@
           :pagination.sync="pagination"
           :visible-columns="visibleColumns"
           :rows-per-page-options="rowsAllowedArray"
+          selection="multiple"
+          :selected.sync="selected"
+          :loading="loading"
         >
           <template v-slot:top>
             <q-icon name="fitness_center" size="3em" left />
@@ -26,6 +29,9 @@
               options-cover
               style="min-width: 150px"
             />
+          </template>
+          <template v-slot:bottom>
+            <q-btn icon="delete" @click="deleteSelection" name="delete" size="1.5em" flat round dense/>
           </template>
           <template v-slot:no-data="">
             <div class="full-width row flex-center text-accent q-gutter-sm">
@@ -48,6 +54,8 @@ import { mapState } from 'vuex';
 export default {
   data() {
     return {
+      loading: false,
+      selected: [],
       pagination: {
         rowsPerPage: 15,
       },
@@ -81,6 +89,27 @@ export default {
       );
       this.categoryOptions.push('All');
     }
+  },
+  methods: {
+    deleteSelection() {
+      if (this.selected.length > 0) {
+        this.loading = true;
+        this.$log.debug(this.selected);
+        this.$store
+          .dispatch('exercise/deleteExercises', {
+            vm: this,
+            exercises: this.selected,
+          })
+          .catch(error => {
+            this.$q.notify({ message: error, color: 'red' });
+          })
+          .then(() => {
+            this.loading = false;
+            const successMessage = 'Successfully deleted the exercises';
+            this.$q.notify({ message: successMessage, color: 'green' });
+          });
+      }
+    },
   },
   computed: {
     ...mapState('exercise', [
