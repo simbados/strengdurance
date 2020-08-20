@@ -4,21 +4,24 @@ import {InjectModel} from '@nestjs/mongoose';
 import {User} from 'src/user/interfaces/user';
 import {UserDto} from 'src/user/dto/user.dto';
 import * as bcrypt from 'bcrypt';
+import exerciseDefaultData from '../exercises/exercise_data';
+import {ExerciseService} from '../exercises/exercises.service';
+import {ExerciseDto} from '../exercises/dto/exercise.dto';
 
 const SALT_ROUNDS = 10;
 @Injectable()
 export class UserService {
-  constructor(@InjectModel('User') private readonly userModel: Model<User>) {
+  constructor(private readonly exerciseService: ExerciseService, @InjectModel('User') private readonly userModel: Model<User>) {
   }
 
   async hashPassword(password: string) {
     return new Promise(resolve => {
-      bcrypt.genSalt(SALT_ROUNDS, function (err, salt) {
+      bcrypt.genSalt(SALT_ROUNDS, (err, salt) => {
         if (err) {
           throw new HttpException(err, HttpStatus.INTERNAL_SERVER_ERROR);
         }
-        bcrypt.hash(password, salt, function (err, hash) {
-          if (err) {
+        bcrypt.hash(password, salt, (hashError, hash) => {
+          if (hashError) {
             throw new HttpException(err, HttpStatus.INTERNAL_SERVER_ERROR);
           }
           resolve(hash);
@@ -42,6 +45,14 @@ export class UserService {
         throw new HttpException(error.errmsg, HttpStatus.CONFLICT);
       }
       throw new HttpException(`Can not store user in db ${error.errormsg}`, HttpStatus.BAD_REQUEST);
+    }
+    // Store default exercises for every user
+    for (let i = 0; i < exerciseDefaultData.length; i++) {
+        const exerciseToStore = new ExerciseDto();
+        const currentExercise = exerciseDefaultData[i];
+        exerciseToStore.name = currentExercise.name;
+        exerciseToStore.category = currentExercise.category;
+        await this.exerciseService.postExercise(exerciseToStore, storedUser._id);
     }
     const {hashedPassword, __v, ...rest} = storedUser.toObject();
     return rest;

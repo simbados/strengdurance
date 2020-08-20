@@ -12,16 +12,17 @@ export class ExerciseService {
   ) {}
 
   validateCategory(category: string) {
-    if (!Category.includes(category))
+    if (!Category.includes(category)) {
       throw new HttpException(
         `Category must be of type ${Category.toString()}`,
         HttpStatus.UNPROCESSABLE_ENTITY,
       );
+    }
   }
 
   async checkForDuplicatedName(name: string, userId: string) {
     // TODO: validation maybe for all similiar names to
-    const model = await this.exerciseModel.find({ name: name, user: userId });
+    const model = await this.exerciseModel.find({ name, user: userId });
     console.log('model is', model);
     Logger.debug(model);
     if (model.length !== 0) {
