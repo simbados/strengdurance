@@ -44,13 +44,13 @@ export class ExerciseController {
     return this.exerciseService.postExercise(exerciseDto, req.user.userId);
   }
 
-  @Delete('strength')
+  @Delete('strength/:id')
   async deleteStrengthExercise(
       @Request() req,
-      @Body() exerciseDto: ExerciseDto,
+      @Param() params,
   ): Promise<Exercise> {
     Logger.log('delete /exercises');
-    Logger.log(`Dto is: , ${exerciseDto}, userId is: ${req.user.userId}`);
-    return this.exerciseService.deleteStrengthExercise(exerciseDto, req.user.userId);
+    Logger.log(`Id is: , ${params.id}, userId is: ${req.user.userId}`);
+    return this.exerciseService.deleteStrengthExercise(params.id, req.user.userId);
   }
 }

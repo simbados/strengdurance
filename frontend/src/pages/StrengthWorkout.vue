@@ -98,7 +98,11 @@ import { Utils } from '../utils';
 export default {
   name: 'stenghWorkouts',
   async mounted() {
-    await this.$store.dispatch('workouts/loadWorkouts', this);
+    try {
+      await this.$store.dispatch('workouts/loadWorkouts', this);
+    } catch (error) {
+      this.$q.notify({ message: error, color: 'red' });
+    }
   },
   data() {
     return {

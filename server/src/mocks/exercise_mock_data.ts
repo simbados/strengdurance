@@ -7,18 +7,19 @@ const testId: string = 'testId';
 const testUserId: string = 'testUserId';
 
 const exerciseMockModelData = [
-  { name: 'Curls', category: Category[2], user: testUserId },
-  { name: 'Pushdowns', category: Category[0], user: testUserId },
-  { name: 'Bench', category: Category[1], user: testUserId },
+  { _id: 1, name: 'Curls', category: Category[2], user: testUserId },
+  { _id: 2, name: 'Pushdowns', category: Category[0], user: testUserId },
+  { _id: 3, name: 'Bench', category: Category[1], user: testUserId },
 ];
 
 const exerciseMockData: Exercise[] = [
-  { name: 'Curls', category: Category[2], user: { ...userMockData } },
-  { name: 'Pushdowns', category: Category[0], user: { ...userMockData } },
-  { name: 'Bench', category: Category[1], user: { ...userMockData } },
+  { _id: 1, name: 'Curls', category: Category[2], user: { ...userMockData } },
+  { _id: 2, name: 'Pushdowns', category: Category[0], user: { ...userMockData } },
+  { _id: 3, name: 'Bench', category: Category[1], user: { ...userMockData } },
 ];
 
 const exerciseMockDataToObject = {
+  _id: 1,
   name: 'Curls',
   category: Category[2],
   user: testUserId,

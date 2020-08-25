@@ -21,10 +21,12 @@ const strengthWorkoutMockDto: StrengthWorkoutDto[] = [
 
 const strengthWorkoutMockData: StrengthWorkout[] = [
   {
+    _id: 12,
     user: userMockData,
     date,
     allExercises: [
       {
+        _id: 1,
         exercise: exerciseMockData[0],
         repetition: [8, 8, 8],
         weight: [80, 80, 80],
@@ -36,10 +38,12 @@ const strengthWorkoutMockData: StrengthWorkout[] = [
 
 const strengthWorkoutsBetweenDatesMock: StrengthWorkout[] = [
   {
+    _id: 12,
     user: userMockData,
     date: new Date('2019-12-14'),
     allExercises: [
       {
+        _id: 1,
         exercise: exerciseMockData[0],
         repetition: [8, 8, 8],
         weight: [80, 80, 80],

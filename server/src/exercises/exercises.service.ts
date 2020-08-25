@@ -45,7 +45,7 @@ export class ExerciseService {
       const createdExercise = new this.exerciseModel(exerciseToStore);
       const savedExercise = await createdExercise.save();
       console.log('savedExercise', savedExercise);
-      const { _id, __v, ...rest } = savedExercise.toObject();
+      const { __v, ...rest } = savedExercise.toObject();
       return rest;
     } catch (error) {
       console.log(error);
@@ -54,18 +54,18 @@ export class ExerciseService {
   }
 
   async deleteStrengthExercise(
-    exerciseDto: ExerciseDto,
+    workoutId: number,
     userId: string,
   ): Promise<Exercise> {
     return await this.exerciseModel
-        .deleteOne({ category: exerciseDto.category, name: exerciseDto.name, user: userId })
+        .deleteOne({ _id: workoutId, user: userId })
         .exec();
   }
 
   async getAllExercises(userId: string): Promise<Exercise[]> {
     const dbExercises = await this.exerciseModel
       .find({ user: userId })
-      .select('-_id -__v')
+      .select('-__v')
       .exec();
     // Find exercises independent of the user
     const defaultExercises = await this.exerciseModel.find({
@@ -83,7 +83,7 @@ export class ExerciseService {
     console.log('category is: ', category);
     return await this.exerciseModel
       .find({ category, user: userId })
-      .select('-_id -__v')
+      .select('-__v')
       .exec();
   }
 }

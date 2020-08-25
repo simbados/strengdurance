@@ -54,8 +54,8 @@ export class StrengthWorkoutService {
     const returnModel = await createdStrengthWorkout.save();
     return this.strengthWorkoutModel
       .find({ _id: returnModel._id })
-      .select('-_id -__v -allExercises._id')
-      .populate({ path: 'allExercises.exercise', select: '-_id -__v' })
+      .select('-__v -allExercises._id')
+      .populate({ path: 'allExercises.exercise', select: '-__v' })
       .exec();
   }
 
@@ -63,8 +63,8 @@ export class StrengthWorkoutService {
     Logger.debug('getAllStrengthWorkouts called');
     return await this.strengthWorkoutModel
       .find({ user: userId })
-      .select('-_id -__v -allExercises._id')
-      .populate({ path: 'allExercises.exercise', select: '-_id -__v' })
+      .select('-__v -allExercises._id')
+      .populate({ path: 'allExercises.exercise', select: '-__v' })
       .exec();
   }
 
@@ -96,8 +96,8 @@ export class StrengthWorkoutService {
       .where('date')
       .gte(parsedStartDate)
       .lte(parsedEndDate)
-      .select('-_id -__v -allExercises._id')
-      .populate({ path: 'allExercises.exercise', select: '-_id -__v' })
+      .select('-__v -allExercises._id')
+      .populate({ path: 'allExercises.exercise', select: '-__v' })
       .exec();
   }
 }

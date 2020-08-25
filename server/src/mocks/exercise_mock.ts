@@ -7,7 +7,7 @@ import {
 // Very generic mock model, should be replaced with easy to maintain solution.
 // Maybe just provide functions and then let jest handle the mock implementation.
 export default class ExerciseMockModel {
-  static _id: string = undefined;
+  static _id: number = 0;
   static saveCount: number = 0;
   static findCount: number = 0;
   static selectCount: number = 0;

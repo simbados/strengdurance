@@ -47,11 +47,10 @@ export class UserService {
       throw new HttpException(`Can not store user in db ${error.errormsg}`, HttpStatus.BAD_REQUEST);
     }
     // Store default exercises for every user
-    for (let i = 0; i < exerciseDefaultData.length; i++) {
+    for (const item of exerciseDefaultData) {
         const exerciseToStore = new ExerciseDto();
-        const currentExercise = exerciseDefaultData[i];
-        exerciseToStore.name = currentExercise.name;
-        exerciseToStore.category = currentExercise.category;
+        exerciseToStore.name = item.name;
+        exerciseToStore.category = item.category;
         await this.exerciseService.postExercise(exerciseToStore, storedUser._id);
     }
     const {hashedPassword, __v, ...rest} = storedUser.toObject();

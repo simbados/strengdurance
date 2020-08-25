@@ -70,12 +70,7 @@ describe('ExerciseService', () => {
       userId,
     );
     expect(ExerciseMockModel.saveCount).toEqual(1);
-    const expectedExercise = {
-      user: exerciseMockDataToObject.user,
-      category: exerciseDbModel.category,
-      name: exerciseDbModel.name,
-    };
-    expect(result).toEqual(expectedExercise);
+    expect(result).toEqual(exerciseMockDataToObject.toObject());
   });
 
   it('postExercise should throw Error when category of dto is not in the defined Array', async () => {
@@ -97,7 +92,7 @@ describe('ExerciseService', () => {
 
   it('deleteStrengthExercise should call deleteOne method of mongoose model', async () => {
     const result = await exerciseService.deleteStrengthExercise(
-        exerciseMockModelData[0],
+        exerciseMockModelData[0]._id,
         userId,
     );
     expect(ExerciseMockModel.deleteOneCount).toEqual(1);

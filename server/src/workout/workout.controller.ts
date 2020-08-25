@@ -47,4 +47,15 @@ export class WorkoutController {
       strengthWorkoutDto,
     );
   }
+
+  // @Post('strength')
+  // async deleteStrengthWorkout(
+  //     @Request() req,
+  //     @Body() strengthWorkoutDto: StrengthWorkoutDto,
+  // ): Promise<StrengthWorkout> {
+  //   return this.strengthWorkoutService.deleteStrengthWorkout(
+  //       req.user.userId,
+  //       strengthWorkoutDto,
+  //   );
+  // }
 }

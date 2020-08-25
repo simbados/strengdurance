@@ -49,9 +49,9 @@ describe('Exercise Controller', () => {
   it('deleteStrengthExercise should return provided exercise when called', async () => {
     const spy = jest.spyOn(service, 'deleteStrengthExercise').mockReturnValueOnce(
         new Promise(resolve => resolve(exerciseMockData[0])));
-    const actualResponse = await controller.deleteStrengthExercise(request, exerciseMockData[0]);
+    const actualResponse = await controller.deleteStrengthExercise(request, exerciseMockData[0]._id);
     expect(spy).toBeCalledTimes(1);
-    expect(spy).toHaveBeenCalledWith(exerciseMockData[0], userId);
+    expect(spy).toHaveBeenCalledWith(exerciseMockData[0]._id, userId);
     expect(actualResponse).toEqual(exerciseMockData[0]);
   });
 

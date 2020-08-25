@@ -30,8 +30,17 @@
               style="min-width: 150px"
             />
           </template>
-          <template v-slot:bottom>
-            <q-btn icon="delete" @click="deleteSelection" name="delete" size="1.5em" flat round dense/>
+          <template v-slot:bottom-row>
+            <q-btn
+              class="delete-button"
+              icon="delete"
+              @click="deleteSelection"
+              name="delete"
+              size="1.5em"
+              flat
+              round
+              dense
+            />
           </template>
           <template v-slot:no-data="">
             <div class="full-width row flex-center text-accent q-gutter-sm">
@@ -101,10 +110,12 @@ export default {
             exercises: this.selected,
           })
           .catch(error => {
+            this.loading = false;
             this.$q.notify({ message: error, color: 'red' });
           })
-          .then(() => {
+          .then(async () => {
             this.loading = false;
+            await this.$store.dispatch('exercise/loadExercises', this);
             const successMessage = 'Successfully deleted the exercises';
             this.$q.notify({ message: successMessage, color: 'green' });
           });
@@ -158,4 +169,6 @@ export default {
   margin: 2em 0
 h6
   margin: 0 0
+.delete-button
+  margin-left: 0.5em
 </style>
