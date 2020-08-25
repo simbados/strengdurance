@@ -1,10 +1,9 @@
 const defaultGeneralState = () => {
   return {
-    jwt: '',
     username: '',
     email: '',
     userId: '',
-    isAuthenticated: false,
+    isAuthenticated: !!localStorage.getItem('user-token'),
     errorMessage: '',
   };
 };

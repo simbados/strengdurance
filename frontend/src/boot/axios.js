@@ -8,7 +8,7 @@ axios.interceptors.request.use(
   config => {
     /* eslint-disable */
     console.log('store is', store);
-    let token = store.state.general.jwt;
+    let token = localStorage.getItem('user-token');
     console.log('token is', token);
 
     if (token !== null && token !== '') {

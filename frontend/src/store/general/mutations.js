@@ -4,13 +4,13 @@ import { defaultExerciseState } from '../exercise/state';
 import { defaultWorkoutsState } from '../workouts/state';
 
 export function login(state, userData) {
-  state.jwt = userData.jwt;
+  localStorage.setItem('user-token', userData.jwt);
   state.username = userData.user.username;
   state.isAuthenticated = true;
 }
 
 export function logout(state) {
-  state.jwt = '';
+  localStorage.removeItem('user-token');
   state.username = '';
   state.isAuthenticated = false;
 }
